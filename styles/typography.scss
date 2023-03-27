@@ -1,0 +1,140 @@
+@font-face {
+  font-family: "Switzer-Variable";
+  src: url("../assets/fonts/Switzer-Variable.woff2") format("woff2"),
+    url("../assets/fonts/Switzer-Variable.woff") format("woff"),
+    url("../assets/fonts/Switzer-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+// @font-face {
+//   font-family: "Switzer-Bold";
+//   src: url("../assets/fonts/Switzer-Bold.woff2") format("woff2"),
+//     url("../assets/fonts/Switzer-Bold.woff") format("woff"),
+//     url("../assets/fonts/Switzer-Bold.ttf") format("truetype");
+//   font-weight: 700;
+//   font-display: swap;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: "Switzer-Semibold";
+//   src: url("../assets/fonts/Switzer-Semibold.woff2") format("woff2"),
+//     url("../assets/fonts/Switzer-Semibold.woff") format("woff"),
+//     url("../assets/fonts/Switzer-Semibold.ttf") format("truetype");
+//   font-weight: 600;
+//   font-display: swap;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: "Switzer-Regular";
+//   src: url("../assets/fonts/Switzer-Regular.woff2") format("woff2"),
+//     url("../assets/fonts/Switzer-Regular.woff") format("woff"),
+//     url("../assets/fonts/Switzer-Regular.ttf") format("truetype");
+//   font-weight: 400;
+//   font-display: swap;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: "Switzer-Light";
+//   src: url("../assets/fonts/Switzer-Light.woff2") format("woff2"),
+//     url("../assets/fonts/Switzer-Light.woff") format("woff"),
+//     url("../assets/fonts/Switzer-Light.ttf") format("truetype");
+//   font-weight: 300;
+//   font-display: swap;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: "Switzer-LightItalic";
+//   src: url("../assets/fonts/Switzer-LightItalic.woff2") format("woff2"),
+//     url("../assets/fonts/Switzer-LightItalic.woff") format("woff"),
+//     url("../assets/fonts/Switzer-LightItalic.ttf") format("truetype");
+//   font-weight: 300;
+//   font-display: swap;
+//   font-style: italic;
+// }
+
+%heading-322 {
+  font-family: "Switzer-Variable";
+  font-size: 32.2rem;
+  color: $light;
+  line-height: 96%;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+%heading-123 {
+  font-family: "Switzer-Variable";
+  font-size: 12.3rem;
+  color: $light;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 84.5%;
+  font-weight: 700;
+}
+
+%heading-76 {
+  font-family: "Switzer-Variable";
+  font-size: 7.6rem;
+  color: $light;
+  letter-spacing: -0.01em;
+  line-height: 110%;
+  font-weight: 300;
+}
+
+%heading-47 {
+  font-family: "Switzer-Variable";
+  font-size: 4.7rem;
+  color: $light;
+  letter-spacing: -0.01em;
+  line-height: 110%;
+  font-weight: 300;
+}
+
+%description-29 {
+  font-family: "Switzer-Variable";
+  letter-spacing: 0.005em;
+  font-size: 2.9rem;
+  line-height: 125%;
+  font-weight: 250;
+}
+
+%description-22 {
+  font-family: "Switzer-Variable";
+  font-weight: 100;
+  letter-spacing: 0.01em;
+  font-size: 2.2rem;
+  line-height: 150%;
+  font-weight: 300;
+}
+
+%description-18 {
+  font-family: "Switzer-Variable";
+  letter-spacing: 0.01em;
+  font-size: 1.8rem;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+%description-14 {
+  font-family: "Switzer-Variable";
+  font-size: 1.2rem;
+  line-height: 84.5%;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+
+%description-14-normal {
+	font-family: "Switzer-Variable";
+	font-size: 1.4rem;
+	line-height: 125%;
+	letter-spacing: 0.01em;
+	font-weight: 400;
+  }

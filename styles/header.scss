@@ -1,0 +1,84 @@
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6rem;
+  z-index: 10;
+
+  &__logo {
+    width: 23rem;
+    display: flex;
+    align-items: center;
+
+    .symbol {
+      height: 3.9rem;
+    }
+
+    .logo-text {
+      width: 15.6rem;
+      margin-left: 2rem;
+    }
+
+    .symbol-blue {
+      display: block;
+    }
+
+    .symbol-white {
+      display: none;
+    }
+  }
+
+  .logo-color {
+    .symbol-blue {
+      display: none;
+    }
+
+    .symbol-white {
+      display: block;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav {
+	margin-right: 3rem;
+	a {
+		@extend %description-14;
+		color: $white;
+	}
+  }
+}
+
+.burger-btn {
+	display: none;
+
+  flex-direction: column;
+  align-items: flex-end;
+  cursor: pointer;
+  margin-left: 4.5rem;
+
+  span {
+    display: block;
+    width: 3.5rem;
+    height: 1px;
+    background: $light;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+
+    &:nth-child(2) {
+      width: 3rem;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

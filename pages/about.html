@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+    />
+
+    <title>Case Engine</title>
+  </head>
+  <body class="body">
+    <header class="header">
+      <a href="/" class="header__logo">
+        <img
+          class="symbol symbol-blue"
+          src="../assets/symbol-logo.svg"
+          alt="#"
+        />
+        <img
+          class="symbol symbol-white"
+          src="../assets/symbol-logo-white.svg"
+          alt="#"
+        />
+        <img class="logo-text" src="../assets/text-logo.svg" alt="#" />
+      </a>
+      <div class="header__nav">
+        <nav class="nav">
+          <a href="/"><p>About</p></a>
+        </nav>
+
+        <a href="#" class="border-btn">
+          <p class="small-cap">Let’s talk</p>
+        </a>
+        <div class="burger-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </header>
+
+	
+    <div class="preloader">
+		<div class="wrapper">
+		  <div class="preloader__inner">
+			<div class="preloader__percentage">
+			  <h2>0<span>%</span></h2>
+			</div>
+			<div class="preloader__title">
+			  <p>Loading...</p>
+			</div>
+			<div class="preloader__bars">
+			  <span class="preloader__bar"></span>
+			  <span></span>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+    <div id="content" class="content" data-template="about">
+      <div class="about">
+        <section class="about-hero">
+          <div class="wrapper">
+            <div class="about-hero__top">
+              <div class="about-hero__heading">
+                <h1>
+                  <span>We help Local</span>
+                  <span>businesses reach</span>
+                  <span>their potential</span>
+                  <span>through SEO.</span>
+                </h1>
+                <p>
+                  Case Engine facilitates businesses in realizing their online
+                  potential through expert search engine optimization services.
+                </p>
+              </div>
+              <div class="scroll-down">
+                <img src="../assets/arrow-down.svg" alt="scroll-down" />
+                <p>Scroll</p>
+              </div>
+            </div>
+            <div class="about-hero__bottom">
+              <div>
+                <h5 class="label">Why Choose Us</h5>
+                <h2 data-splitting data-animation="text">
+                  At Case Engine, we're dedicated to helping our clients
+                  succeed. With years of experience in the SEO industry, we have
+                  a deep understanding of what it takes to drive results in a
+                  constantly evolving digital landscape.
+                </h2>
+                <p>
+                  At Case Engine, we are passionate about helping our clients
+                  succeed. We work closely with businesses of all sizes, from
+                  startups to Fortune 500 companies, to identify opportunities
+                  for growth and develop strategies to achieve their goals.
+                  Whether you're looking to improve your website's search engine
+                  rankings, drive more traffic, or increase online sales, we
+                  have the expertise and experience to help you succeed.
+                </p>
+              </div>
+              <span class="circle-arrow">
+                <img src="../assets/arrow-left.svg" alt="" />
+              </span>
+            </div>
+          </div>
+          <img
+            class="about-hero__bg"
+            src="../assets/about-hero-bg.svg"
+            alt=""
+          />
+        </section>
+
+        <section class="about-video">
+          <div class="about-video__video">
+            <img src="../assets/about-video.png" alt="" />
+          </div>
+
+          <div class="about-video__btn">
+            <img src="../assets/play-icon.svg" />
+            <p>Play Video</p>
+          </div>
+        </section>
+
+        <section class="about-gallery">
+          <div class="wrapper">
+            <div class="about-gallery__text">
+              <h2 data-animation="title">
+                <span>We have a passion</span>
+                <span>for helping</span>
+                <span>businesses of all</span>
+                <span
+                  >sizes succeed
+                  <!-- <svg
+                    width="635"
+                    height="118"
+                    viewBox="0 0 635 118"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M412.5 104.748C378 112.248 274.2 122.748 135 104.748C-39 82.2482 -15 43.7482 60 26.2482C135 8.74819 214 -1.25181 359.5 4.74819C505 10.7482 681.5 43.748 619 79.248C556.5 114.748 395.5 120.248 303 110.748"
+                      stroke="#FFCA0C"
+                      stroke-width="5"
+                      stroke-linecap="round"
+                    />
+                  </svg> -->
+                </span>
+                <span>online.</span>
+              </h2>
+            </div>
+          </div>
+          <div class="about-gallery__imgs">
+			<div class="about-gallery__img" data-parallax="1.2" data-depth="1">1</div>
+			<div class="about-gallery__img" data-parallax="2.3" data-depth="1.5">2</div>
+			<div class="about-gallery__img" data-parallax="2.5" data-depth="-1">3</div>
+			<div class="about-gallery__img" data-parallax="3.7" data-depth="3.5">4</div>
+			<div class="about-gallery__img" data-parallax="2.5" data-depth="1.5">5</div>
+			<div class="about-gallery__img" data-parallax="3.6" data-depth="4.2">6</div>
+			<div class="about-gallery__img" data-parallax="2.5" data-depth="3.6">7</div>
+          </div>
+		  <div class="about-gallery__team-img">
+
+		  </div>
+          <img
+            class="about-gallery__bg"
+            src="../assets/about-bg-2.svg"
+            alt=""
+          />
+        </section>
+
+        <section class="about-team">
+          <div class="wrapper">
+            <div class="about-team__inner">
+              <h5 class="label">Our team</h5>
+              <h2 data-splitting data-animation="text">
+                Our team of experts uses cutting-edge technology and data-driven
+                approaches to deliver customized, effective solutions that drive
+                real business value.
+              </h2>
+
+              <div class="about-team__nav">
+                <div class="about-team__arrow about-arrow-left">
+                  <img src="../assets/arrow-right.svg" alt="" />
+                </div>
+                <div class="about-team__arrow about-arrow-right">
+                  <img src="../assets/arrow-right.svg" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="about-team__slider">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <div class="team-name">
+                    <h3>Cyle Patnode</h3>
+                    <p>Founder & Partner</p>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="team-name">
+                    <h3>Cyle Patnode</h3>
+                    <p>Founder & Partner</p>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="team-name">
+                    <h3>Cyle Patnode</h3>
+                    <p>Founder & Partner</p>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="team-name">
+                    <h3>Cyle Patnode</h3>
+                    <p>Founder & Partner</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <img src="../assets/about-bg-3.svg" alt="" class="about-team__bg" />
+        </section>
+
+        <section class="blue-section">
+          <div class="wrapper">
+            <div class="what-we-do__top">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="568"
+                height="568"
+                fill="none"
+              >
+                <path
+                  stroke="#fff"
+                  stroke-dasharray="3 3"
+                  stroke-miterlimit="10"
+                  d="M566.741 283.825C566.741 127.575 440.075.909 283.825.909S.909 127.575.909 283.825c0 156.251 126.666 282.917 282.916 282.917s282.916-126.666 282.916-282.917Z"
+                />
+                <path
+                  stroke="#fff"
+                  stroke-dasharray="3 3"
+                  stroke-miterlimit="10"
+                  d="M283.951 332.56c156.25 0 282.916-21.809 282.916-48.712 0-26.903-126.666-48.712-282.916-48.712S1.035 256.945 1.035 283.848c0 26.903 126.666 48.712 282.916 48.712ZM446.983 512.331c0 14.652-72.991 26.521-163.07 26.521-90.078 0-162.837-11.869-162.837-26.521 0-14.652 72.991-26.521 163.031-26.521s162.876 11.869 162.876 26.521ZM283.95 455.887c137.375 0 248.74-18.122 248.74-40.477 0-22.355-111.365-40.478-248.74-40.478-137.376 0-248.74 18.123-248.74 40.478s111.364 40.477 248.74 40.477ZM283.948 81.888c90.061 0 163.069-11.874 163.069-26.521 0-14.648-73.008-26.521-163.069-26.521-90.061 0-163.069 11.873-163.069 26.52 0 14.648 73.008 26.522 163.069 26.522ZM283.946 192.764c137.376 0 248.741-18.122 248.741-40.477 0-22.355-111.365-40.477-248.741-40.477-137.375 0-248.74 18.122-248.74 40.477 0 22.355 111.365 40.477 248.74 40.477Z"
+                />
+                <path
+                  stroke="#fff"
+                  stroke-dasharray="3 3"
+                  stroke-miterlimit="10"
+                  d="M283.95 566.764c106.8 0 193.379-126.666 193.379-282.916S390.75.932 283.95.932 90.571 127.598 90.571 283.848 177.15 566.764 283.95 566.764Z"
+                />
+                <path
+                  stroke="#fff"
+                  stroke-dasharray="3 3"
+                  stroke-miterlimit="10"
+                  d="M283.95 566.764c33.031 0 59.807-126.665 59.807-282.916 0-156.25-26.776-282.916-59.807-282.916-33.031 0-59.807 126.666-59.807 282.916 0 156.251 26.776 282.916 59.807 282.916Z"
+                />
+              </svg>
+              <div class="what-we-do__heading">
+                <h5 class="label">WHAT WE DO</h5>
+                <h2  data-splitting data-animation="text">
+                  We offer innovative strategies and AI technology to help
+                  businesses achieve growth quickly.
+                </h2>
+              </div>
+            </div>
+            <div class="what-we-do__items">
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">01</h6>
+                <h3 data-splitting data-animation="fade-up">Google My Business optimization</h3>
+                <p>
+                  We optimize local business listings and citations to improve
+                  visibility in local search results and attract more local
+                  customers.
+                </p>
+              </div>
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">02</h6>
+                <h3 data-splitting data-animation="fade-up">On-page optimization for local search</h3>
+                <p>
+                  We identify the most relevant and profitable keywords for a
+                  business and optimize the website to rank for those keywords.
+                </p>
+              </div>
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">03</h6>
+                <h3 data-splitting data-animation="fade-up">Google Maps optimization</h3>
+                <p>
+                  We identify the most relevant and profitable keywords for a
+                  business and optimize the website to rank for those keywords.
+                </p>
+              </div>
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">04</h6>
+                <h3 data-splitting data-animation="fade-up">Local link building</h3>
+                <p>
+                  We identify the most relevant and profitable keywords for a
+                  business and optimize the website to rank for those keywords.
+                </p>
+              </div>
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">05</h6>
+                <h3 data-splitting data-animation="fade-up">Local reporting and analytics tracking</h3>
+                <p>
+                  We identify the most relevant and profitable keywords for a
+                  business and optimize the website to rank for those keywords.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <footer class="footer">
+      <!-- <div class="footer__overlay"></div> -->
+      <div class="wrapper">
+        <div class="footer__inner">
+          <div class="footer__top">
+            <div>
+              <h5 class="label">contact</h5>
+              <h2 data-splitting data-animation="fade-up">Ready to take your business to the next level?</h2>
+            </div>
+            <div>
+              <a class="button btn-white" href="#">
+                <p>Get in Touch</p>
+                <img src="../assets/arrow-right.svg" alt="#" />
+              </a>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <h4>Let's Connect!</h4>
+          </div>
+          <img class="footer__bg" src="../assets/footer-bg.svg" alt="#" />
+          <div class="footer__links">
+            <div>
+              <a href="#">Terms Of Use</a>
+              <a href="#">Privacy Policy</a>
+              <a href="#"> Disclaimer</a>
+            </div>
+
+            <div>
+              <p>© 2023 Case Engine LLC. All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+	  <img class="footer__glow" src="../assets/footer-glow.svg" alt="" />
+    </footer>
+    <script type="module" src="../main.js"></script>
+  </body>
+</html>

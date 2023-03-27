@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+    />
+    <title>Case Engine</title>
+  </head>
+  <body class="body">
+    <header class="header">
+      <a href="/" class="header__logo">
+        <img
+          class="symbol symbol-blue"
+          src="./assets/symbol-logo.svg"
+          alt="#"
+        />
+        <img
+          class="symbol symbol-white"
+          src="./assets/symbol-logo-white.svg"
+          alt="#"
+        />
+        <img class="logo-text" src="./assets/text-logo.svg" alt="#" />
+      </a>
+      <div class="header__nav">
+        <nav class="nav">
+          <a href="./pages/about.html"><p>About</p></a>
+        </nav>
+        <a href="#" class="border-btn">
+          <p class="small-cap">Let’s talk</p>
+        </a>
+        <div class="burger-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </header>
+
+    <div class="preloader">
+      <div class="wrapper">
+        <div class="preloader__inner">
+          <div class="preloader__percentage">
+            <h2>0<span>%</span></h2>
+          </div>
+          <div class="preloader__title">
+            <p>Loading...</p>
+          </div>
+		  <div class="preloader__bars">
+			<span class="preloader__bar"></span>
+			<span></span>
+		  </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="content" class="content" data-template="home">
+      <div class="home">
+        <section class="hero">
+          <div class="wrapper">
+            <div class="hero__first">
+              <div class="hero__title">
+                <h1>
+                  <span>best in local </span>
+                  <span>business</span>
+                  <span class="margin-left">Marketing</span>
+                  <!-- <svg
+                    width="835"
+                    height="118"
+                    viewBox="0 0 835 118"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      class="svg-path"
+                      d="M7.49988 104.208C3.49988 100.041 -2.10013 89.8078 7.49988 82.2078C19.4999 72.7078 74 44.2078 196 25.7078C318 7.20775 500.5 0.707752 628 2.20775C755.5 3.70775 857 30.708 827.5 49.208C798 67.708 659.5 98.208 500 108.708C340.5 119.208 292.5 117.208 201 106.708C109.5 96.208 108 76.708 188.5 52.708C269 28.708 395.5 15.708 525.5 7.20801C655.5 -1.29199 745 2.70801 747.5 17.708"
+                      stroke="#FFCA0C"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                    />
+                  </svg> -->
+                </h1>
+                <p>
+                  Revolutionizing Local Business Growth with Pay for Results
+                  Marketing Services and AI Technology
+                </p>
+              </div>
+              <div class="scroll-down">
+                <img src="./assets/arrow-down.svg" alt="scroll-down" />
+                <p>Scroll</p>
+              </div>
+            </div>
+          </div>
+		  <img class="hero__bg" src="./assets/bg-2.svg" alt="" />
+		  <img class="hero__bg-2" src="./assets/bg-2.svg" alt="#" />
+        </section>
+
+        <section class="results">
+          <div class="result">
+            <div class="wrapper">
+              <div class="results__inner">
+                <div class="results__problem">
+                  <div>
+                    <h2>93<span>%</span></h2>
+                  </div>
+                  <div>
+                    <p>of people looking for local business use searches</p>
+                  </div>
+                </div>
+                <div class="results__result">
+                  <h5 class="label">results</h5>
+                  <div>
+                    <p>
+                      Le Garcia law grows their Google Maps listing by 400% over
+                      year
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="result">
+            <div class="wrapper">
+              <div class="results__inner">
+                <div class="results__problem">
+                  <div>
+                    <h2>88<span>%</span></h2>
+                  </div>
+                  <div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing</p>
+                  </div>
+                </div>
+                <div class="results__result">
+                  <h5 class="label">results</h5>
+                  <div>
+                    <p>
+                      2 Le Garcia law grows their Google Maps listing by 400%
+                      over year
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="result">
+            <div class="wrapper">
+              <div class="results__inner">
+                <div class="results__problem">
+                  <div>
+                    <h2>25<span>%</span></h2>
+                  </div>
+                  <div>
+                    <p>of people looking for local business use searches</p>
+                  </div>
+                </div>
+                <div class="results__result">
+                  <h5 class="label">results</h5>
+                  <div>
+                    <p>
+                      3 Le Garcia law grows their Google Maps listing by 400%
+                      over year
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="results__nav">
+            <span>1 / 3</span>
+          </div>
+          <div class="results__trigger"></div>
+          <div class="results__follow">
+            <div>
+              <p>Next</p>
+            </div>
+          </div>
+          <div class="results__border"></div>
+          <div class="results__overlay"></div>
+        </section>
+
+        <section class="blue-section who-we-are">
+          <div class="wrapper">
+            <div class="who-we-are__inner">
+              <div class="who-we-are__intro">
+                <div>
+                  <h5 class="label">who we are</h5>
+                  <h2 data-splitting data-animation="text">
+                    We help local businesses increase their online visibility
+                    and drive more traffic to their websites.
+                  </h2>
+                  <div class="who-we-are__intro__text">
+                    <span class="circle-arrow">
+                      <img src="./assets/arrow-left.svg" alt="" />
+                    </span>
+                    <p>
+                      Our team of experienced SEO professionals has a deep
+                      understanding of how search engines work and knows how to
+                      create a strategy that will get your business to the top
+                      of the search results.
+                    </p>
+                  </div>
+                </div>
+                <svg
+                  width="702"
+                  height="443"
+                  viewBox="0 0 702 443"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M256.259 312.598C267.635 176.218 327.665 111.016 440.912 123.702C442.208 123.861 443.399 124.639 444.226 125.866C445.053 127.093 445.447 128.668 445.324 130.248C433.431 267.558 373.006 332.205 260.659 319.114C259.37 318.95 258.185 318.175 257.362 316.956C256.538 315.736 256.142 314.171 256.259 312.598Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M240.213 313.634C261.497 163.502 332.176 96.9486 456.896 121.69C457.603 121.836 458.28 122.15 458.888 122.614C459.496 123.079 460.022 123.684 460.438 124.397C460.853 125.109 461.149 125.914 461.309 126.766C461.469 127.618 461.49 128.5 461.369 129.362C439.457 280.44 368.372 346.393 244.662 321.276C243.242 320.978 241.976 320.007 241.142 318.575C240.308 317.142 239.974 315.366 240.213 313.634Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M222.368 313.109C255.508 148.759 338.079 81.6203 474.753 120.82C475.536 121.046 476.273 121.46 476.922 122.038C477.572 122.615 478.12 123.345 478.536 124.183C478.951 125.022 479.225 125.953 479.342 126.922C479.458 127.891 479.415 128.879 479.215 129.828C445.323 295.213 362.321 361.586 226.817 321.997C226.046 321.769 225.318 321.359 224.677 320.789C224.036 320.22 223.493 319.502 223.08 318.676C222.667 317.851 222.392 316.934 222.269 315.979C222.147 315.023 222.181 314.048 222.368 313.109Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M202.612 310.917C249.801 131.884 345.572 65.2558 494.583 121.63C495.429 121.956 496.215 122.483 496.893 123.18C497.572 123.878 498.13 124.732 498.535 125.694C498.941 126.656 499.186 127.706 499.257 128.784C499.327 129.862 499.221 130.947 498.946 131.974C450.882 312.133 354.643 377.83 206.95 321.231C206.109 320.902 205.329 320.374 204.655 319.677C203.981 318.981 203.427 318.129 203.024 317.171C202.621 316.212 202.377 315.167 202.307 314.094C202.236 313.02 202.34 311.941 202.612 310.917Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M180.848 306.638C244.539 112.652 354.976 47.9005 516.52 124.468C517.442 124.896 518.285 125.546 518.998 126.377C519.712 127.209 520.281 128.207 520.672 129.311C521.064 130.415 521.27 131.603 521.279 132.806C521.287 134.008 521.098 135.201 520.723 136.313C455.959 331.485 345.129 395.186 185.038 318.513C184.119 318.075 183.281 317.419 182.571 316.582C181.862 315.746 181.296 314.747 180.906 313.642C180.516 312.537 180.311 311.349 180.301 310.147C180.291 308.945 180.477 307.752 180.848 306.638Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M157.001 299.837C239.943 90.8231 366.511 29.4342 540.663 129.527C541.651 130.098 542.536 130.901 543.268 131.89C544 132.88 544.564 134.036 544.927 135.292C545.29 136.548 545.445 137.879 545.384 139.209C545.323 140.539 545.046 141.84 544.57 143.039C460.359 353.224 333.47 413.412 160.896 313.304C159.914 312.732 159.034 311.929 158.306 310.943C157.579 309.956 157.018 308.805 156.657 307.554C156.295 306.303 156.139 304.978 156.198 303.653C156.257 302.329 156.53 301.032 157.001 299.837Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M131.009 290.033C236.245 66.2017 380.376 10.0973 567.098 137.484C568.156 138.213 569.085 139.188 569.832 140.356C570.579 141.523 571.13 142.859 571.451 144.286C571.773 145.714 571.86 147.204 571.707 148.673C571.555 150.141 571.165 151.558 570.561 152.843C463.859 377.8 319.371 432.599 134.46 305.332C133.409 304.604 132.485 303.63 131.743 302.467C131 301.304 130.453 299.974 130.133 298.554C129.812 297.133 129.725 295.649 129.875 294.187C130.026 292.725 130.411 291.314 131.009 290.033Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M102.812 276.732C233.694 38.5623 397.037 -10.0204 595.887 148.819C597.014 149.726 597.982 150.896 598.736 152.261C599.49 153.626 600.015 155.159 600.281 156.772C600.546 158.385 600.548 160.046 600.284 161.66C600.021 163.274 599.498 164.808 598.746 166.174C466.163 405.44 302.524 452.521 105.671 294.012C104.551 293.106 103.589 291.941 102.84 290.582C102.09 289.223 101.568 287.698 101.302 286.093C101.037 284.489 101.033 282.836 101.292 281.229C101.551 279.623 102.068 278.095 102.812 276.732Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M72.4207 259.316C232.634 7.69526 416.769 -30.7385 627.067 164.088C628.26 165.199 629.261 166.587 630.012 168.171C630.762 169.756 631.248 171.506 631.44 173.321C631.633 175.135 631.528 176.978 631.133 178.743C630.738 180.508 630.06 182.161 629.138 183.605C466.965 436.292 282.596 473.044 74.4787 278.758C73.2926 277.649 72.298 276.266 71.5522 274.687C70.8064 273.108 70.324 271.365 70.1328 269.558C69.9415 267.752 70.0451 265.917 70.4377 264.159C70.8304 262.402 71.5043 260.756 72.4207 259.316Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M39.8233 237.142C233.423 -26.6251 439.963 -51.8322 660.663 183.965C661.913 185.309 662.933 186.941 663.663 188.767C664.393 190.594 664.819 192.578 664.917 194.606C665.014 196.634 664.781 198.666 664.231 200.583C663.68 202.501 662.824 204.267 661.71 205.779C465.88 470.552 259.193 493.867 40.8709 258.866C38.3674 256.154 36.8505 252.342 36.6541 248.268C36.4576 244.194 37.5975 240.192 39.8233 237.142Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <path
+                    d="M5.11899 209.487C236.479 -64.5934 467.014 -73.0308 696.637 209.172C697.937 210.778 698.963 212.682 699.656 214.774C700.35 216.865 700.696 219.104 700.675 221.359C700.655 223.615 700.268 225.843 699.536 227.915C698.805 229.988 697.744 231.863 696.415 233.433C462.516 508.43 231.932 514.751 4.89709 233.674C3.60769 232.068 2.59062 230.169 1.90393 228.084C1.21723 226 0.874319 223.771 0.894919 221.525C0.915519 219.279 1.29922 217.059 2.02398 214.994C2.74874 212.929 3.80047 211.058 5.11899 209.487Z"
+                    stroke="white"
+                    stroke-miterlimit="10"
+                    stroke-dasharray="3 3"
+                  />
+                  <circle
+                    cx="352.882"
+                    cy="223.342"
+                    r="20.9408"
+                    transform="rotate(-45 352.882 223.342)"
+                    fill="white"
+                  />
+                </svg>
+              </div>
+              <div class="who-we-are__two-rows">
+                <div class="who-we-are__two-rows__row border">
+                  <h5 class="label">mission</h5>
+                  <p>
+                    At Case Engine, our mission is to provide high-quality and
+                    result-driven search engine optimization services to
+                    businesses of all sizes. We strive to increase our clients'
+                    online visibility, drive traffic to their websites, and
+                    boost their revenue through ethical and sustainable SEO
+                    practices.
+                  </p>
+                </div>
+                <div class="who-we-are__two-rows__row border">
+                  <h5 class="label">vission</h5>
+                  <p>
+                    Our vision at Case Engine is to become the leading provider
+                    of SEO solutions, setting the standard for the industry. We
+                    aim to empower businesses with the knowledge and tools they
+                    need to succeed online, and to help them achieve their
+                    marketing goals through the power of search engine
+                    optimization.
+                  </p>
+                </div>
+              </div>
+              <div class="who-we-are__founders">
+                <div class="who-we-are__founders__text">
+                  <h5 class="label">founder and partners</h5>
+                  <h3 data-splitting data-animation="fade-up">
+                    For the last 4 years working with Personal Injury Firms, all
+                    we have ever heard is that the lead generation vendors they
+                    have hired didn’t work… Ripped them off… & Wasted their
+                    time…
+                  </h3>
+                  <p>Cyle Patnode - <span>Founder & Partner</span></p>
+                  <div class="who-we-are__bulets">
+                    <span class="active-bullet"></span>
+                    <span></span>
+                  </div>
+                </div>
+
+                <figure class="who-we-are__founders__img">
+                  <img src="./assets/cyle.png" alt="" />
+                </figure>
+              </div>
+              <div class="who-we-are__cta">
+                <h2 data-splitting data-animation="fade-up">
+                  Discover the Power of SEO with Case Engine
+                </h2>
+                <!-- <svg
+                  width="466"
+                  height="131"
+                  viewBox="0 0 466 131"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    class="svg-path"
+                    d="M386.501 29.2521C408.835 31.7521 455.301 40.7521 462.501 56.7521C471.501 76.7521 405.501 88.7521 314.501 110.252C223.501 131.752 -33.4987 148.252 7.00132 74.2521C47.5013 0.252121 310 -20.7479 378 29.2521"
+                    stroke="#FFCA0C"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                  />
+                </svg> -->
+
+                <!-- <h2>
+                  <span class="text-right">Discover the</span>
+                  <span class="text-svg"
+                    >Power of SEO
+                    <svg
+                      width="466"
+                      height="131"
+                      viewBox="0 0 466 131"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        class="svg-path"
+                        d="M386.501 29.2521C408.835 31.7521 455.301 40.7521 462.501 56.7521C471.501 76.7521 405.501 88.7521 314.501 110.252C223.501 131.752 -33.4987 148.252 7.00132 74.2521C47.5013 0.252121 310 -20.7479 378 29.2521"
+                        stroke="#FFCA0C"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                  <span class="text-left">with Case Engine</span>
+                </h2> -->
+                <a class="button" href="#">
+                  <p>More About Us</p>
+                  <img src="./assets/arrow-right.svg" alt="#" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="clients">
+          <div class="clients__inner">
+            <div class="client-slider">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="./assets/clients/1.png" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="./assets/clients/2.png" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="./assets/clients/3.png" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="./assets/clients/4.png" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="./assets/clients/5.png" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="./assets/clients/6.png" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="./assets/clients/7.png" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="./assets/clients/4.png" alt="" />
+                </div>
+              </div>
+            </div>
+
+
+			<div class="client-slider-bottom">
+				<div class="swiper-wrapper">
+				  <div class="swiper-slide">
+					<img src="./assets/clients/8.png" alt="" />
+				  </div>
+				  <div class="swiper-slide">
+					<img src="./assets/clients/9.png" alt="" />
+				  </div>
+				  <div class="swiper-slide">
+					<img src="./assets/clients/10.png" alt="" />
+				  </div>
+				  <div class="swiper-slide">
+					<img src="./assets/clients/11.png" alt="" />
+				  </div>
+				  <div class="swiper-slide">
+					<img src="./assets/clients/12.png" alt="" />
+				  </div>
+				  <div class="swiper-slide">
+					<img src="./assets/clients/13.png" alt="" />
+				  </div>
+				  <div class="swiper-slide">
+					<img src="./assets/clients/14.png" alt="" />
+				  </div>
+				  <div class="swiper-slide">
+					<img src="./assets/clients/15.png" alt="" />
+				  </div>
+		
+				</div>
+			  </div>
+
+          </div>
+
+          <img class="clients__bg" src="./assets/gradient-3.svg" alt="#" />
+        </section>
+        <section class="case-study">
+          <div class="wrapper">
+            <div class="case-study-slider">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <div class="case-study__info">
+                    <h5 class="label">CASE STUDY</h5>
+                    <h2 data-splitting data-animation="fade-up">
+                      Objective: Appear in local search for Small business
+                      accountancy and tax services in the immediate proximity of
+                      Tampa, Florida
+                    </h2>
+                    <p>Company Name goes here</p>
+                  </div>
+                  <div class="case-study__stats">
+                    <div class="case-study__stat">
+                      <h3>14%</h3>
+                      <h4>Increase in Site Clicks</h4>
+                      <p>
+                        Website Clicks made from Google Business Profile (YoY vs
+                        Apr 2021–Aug 2021).
+                      </p>
+                    </div>
+                    <div class="case-study__stat">
+                      <h3>21.7%</h3>
+                      <h4>Increase in Calls</h4>
+                      <p>
+                        Calls made from Google Business Profile (YoY vs Apr
+                        2021–Aug 2021).
+                      </p>
+                    </div>
+                    <div class="case-study__stat">
+                      <h3>75%</h3>
+                      <h4>Top 3 Positions</h4>
+                      <p>
+                        % of Keyword Location combinations on Page 1 of Google
+                        Position 1, 2, or 3.
+                      </p>
+                    </div>
+                    <div class="case-study__stat">
+                      <h3>5.0</h3>
+                      <h4>Average Position</h4>
+                      <p>
+                        Average Position of all Ranked Keyword / Location
+                        Combinations.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="case-study__img">
+                    <img src="./assets/case-1.jpg" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="what-we-do trigger-footer">
+          <div class="wrapper">
+            <div class="what-we-do__top">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="568"
+                height="568"
+                fill="none"
+              >
+                <path
+                  stroke="#fff"
+                  stroke-dasharray="3 3"
+                  stroke-miterlimit="10"
+                  d="M566.741 283.825C566.741 127.575 440.075.909 283.825.909S.909 127.575.909 283.825c0 156.251 126.666 282.917 282.916 282.917s282.916-126.666 282.916-282.917Z"
+                />
+                <path
+                  stroke="#fff"
+                  stroke-dasharray="3 3"
+                  stroke-miterlimit="10"
+                  d="M283.951 332.56c156.25 0 282.916-21.809 282.916-48.712 0-26.903-126.666-48.712-282.916-48.712S1.035 256.945 1.035 283.848c0 26.903 126.666 48.712 282.916 48.712ZM446.983 512.331c0 14.652-72.991 26.521-163.07 26.521-90.078 0-162.837-11.869-162.837-26.521 0-14.652 72.991-26.521 163.031-26.521s162.876 11.869 162.876 26.521ZM283.95 455.887c137.375 0 248.74-18.122 248.74-40.477 0-22.355-111.365-40.478-248.74-40.478-137.376 0-248.74 18.123-248.74 40.478s111.364 40.477 248.74 40.477ZM283.948 81.888c90.061 0 163.069-11.874 163.069-26.521 0-14.648-73.008-26.521-163.069-26.521-90.061 0-163.069 11.873-163.069 26.52 0 14.648 73.008 26.522 163.069 26.522ZM283.946 192.764c137.376 0 248.741-18.122 248.741-40.477 0-22.355-111.365-40.477-248.741-40.477-137.375 0-248.74 18.122-248.74 40.477 0 22.355 111.365 40.477 248.74 40.477Z"
+                />
+                <path
+                  stroke="#fff"
+                  stroke-dasharray="3 3"
+                  stroke-miterlimit="10"
+                  d="M283.95 566.764c106.8 0 193.379-126.666 193.379-282.916S390.75.932 283.95.932 90.571 127.598 90.571 283.848 177.15 566.764 283.95 566.764Z"
+                />
+                <path
+                  stroke="#fff"
+                  stroke-dasharray="3 3"
+                  stroke-miterlimit="10"
+                  d="M283.95 566.764c33.031 0 59.807-126.665 59.807-282.916 0-156.25-26.776-282.916-59.807-282.916-33.031 0-59.807 126.666-59.807 282.916 0 156.251 26.776 282.916 59.807 282.916Z"
+                />
+              </svg>
+              <div class="what-we-do__heading">
+                <h5 class="label">WHAT WE DO</h5>
+                <h2 data-splitting data-animation="text">
+                  We offer innovative strategies and AI technology to help
+                  businesses achieve growth quickly.
+                </h2>
+              </div>
+            </div>
+            <div class="what-we-do__items">
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">01</h6>
+                <h3 data-splitting data-animation="fade-up">
+                  Google My Business optimization
+                </h3>
+                <p>
+                  We optimize local business listings and citations to improve
+                  visibility in local search results and attract more local
+                  customers.
+                </p>
+              </div>
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">02</h6>
+                <h3 data-splitting data-animation="fade-up">
+                  On-page optimization for local search
+                </h3>
+                <p>
+                  We identify the most relevant and profitable keywords for a
+                  business and optimize the website to rank for those keywords.
+                </p>
+              </div>
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">03</h6>
+                <h3 data-splitting data-animation="fade-up">
+                  Google Maps optimization
+                </h3>
+                <p>
+                  We identify the most relevant and profitable keywords for a
+                  business and optimize the website to rank for those keywords.
+                </p>
+              </div>
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">04</h6>
+                <h3 data-splitting data-animation="fade-up">
+                  Local link building
+                </h3>
+                <p>
+                  We identify the most relevant and profitable keywords for a
+                  business and optimize the website to rank for those keywords.
+                </p>
+              </div>
+              <div class="what-we-do__item border">
+                <h6 data-splitting data-animation="fade-up">05</h6>
+                <h3 data-splitting data-animation="fade-up">
+                  Local reporting and analytics tracking
+                </h3>
+                <p>
+                  We identify the most relevant and profitable keywords for a
+                  business and optimize the website to rank for those keywords.
+                </p>
+              </div>
+            </div>
+          </div>
+          <img class="what-we-do__bg" src="./assets/services-bg.svg" alt="" />
+        </section>
+      </div>
+    </div>
+    <footer class="footer">
+      <!-- <div class="footer__overlay"></div> -->
+      <div class="wrapper">
+        <div class="footer__inner">
+          <div class="footer__top">
+            <div>
+              <h5 class="label">contact</h5>
+              <h2 data-splitting data-animation="fade-up">
+                Ready to take your business to the next level?
+              </h2>
+            </div>
+            <div>
+              <a class="button btn-white" href="#">
+                <p>Get in Touch</p>
+                <img src="./assets/arrow-right.svg" alt="#" />
+              </a>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <h4>Let's Connect!</h4>
+          </div>
+          <img class="footer__bg" src="./assets/footer-bg.svg" alt="#" />
+          <div class="footer__links">
+            <div>
+              <a href="#">Terms Of Use</a>
+              <a href="#">Privacy Policy</a>
+              <a href="#"> Disclaimer</a>
+            </div>
+
+            <div>
+              <p>© 2023 Case Engine LLC. All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img class="footer__glow" src="./assets/footer-glow.svg" alt="" />
+    </footer>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

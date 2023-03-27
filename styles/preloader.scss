@@ -1,0 +1,82 @@
+.preloader {
+  background: $black;
+  width: 100%;
+  position: fixed;
+  height: 100vh;
+  z-index: 20;
+
+  &__inner {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &__percentage {
+    overflow: hidden;
+    height: 32rem;
+    margin-bottom: 4rem;
+    width: 100%;
+
+    h2 {
+      width: 94%;
+      @extend %heading-322;
+      color: $white;
+      margin-top: 3rem;
+      will-change: transform;
+      transform: translateX(0);
+      position: relative;
+      display: flex;
+      span {
+        margin-top: -9rem;
+        margin-left: 2rem;
+        display: block;
+        font-size: 24px;
+        color: $white;
+      }
+    }
+  }
+
+  &__title {
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    bottom: 6rem;
+    right: 6rem;
+    height: 3rem;
+
+    p {
+      @extend %description-22;
+      color: $white;
+    }
+  }
+
+  &__bars {
+    width: 100%;
+    margin-bottom: 6rem;
+    position: relative;
+    span {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+
+      &:last-child {
+        z-index: -1;
+        height: 2px;
+        background-color: rgba(255, 255, 255, 0.2);
+        width: 100%;
+        display: block;
+      }
+    }
+  }
+  &__bar {
+    z-index: 1;
+    height: 2px;
+    background-color: $white;
+    width: 100%;
+    display: block;
+    transform: scaleX(0);
+    transform-origin: top left;
+  }
+}
