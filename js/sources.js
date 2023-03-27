@@ -22,5 +22,11 @@ export default [
     path: "../assets/notification.mp4",
   },
 
+  {
+    name: "aboutVideo",
+    type: "video",
+    path: "../assets/video-about.webm",
+  },
+
 
 ];

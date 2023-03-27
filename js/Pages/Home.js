@@ -19,19 +19,15 @@ export default class Home extends Page {
         results: ".results",
         blueSection: ".who-we-are",
         canvas: "canvas.home-webgl",
-		hero_bg: '.hero__bg',
-		hero_title: '.hero__title h1 span',
-		hero_svg: '.hero__title h1 svg',
-		hero_text: '.hero__title p',
-		scroll_down: '.scroll-down',
+        hero_bg: ".hero__bg",
+        hero_title: ".hero__title h1 span",
+        hero_svg: ".hero__title h1 svg",
+        hero_text: ".hero__title p",
+        scroll_down: ".scroll-down",
       },
     });
 
     gsap.registerPlugin(ScrollTrigger);
-
-
-
-
   }
 
   create() {
@@ -40,29 +36,40 @@ export default class Home extends Page {
     this.pinSection();
     this.blueSection();
     this.clientSliderFirst();
-	this.clientSliderSecond();
+    this.clientSliderSecond();
     // this.drawSvg();
   }
 
   createPageAnimations() {
-	super.create();
-	this.initHomeAnimation();
-}
-
-
-  initHomeAnimation() {
-
-
-	console.log('start home')
-	this.heroTl = gsap.timeline({defaults: {
-		delay: 1.5,
-	}});
-	this.heroTl.fromTo(this.elements.hero_bg, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.5, });
-	this.heroTl.fromTo(this.elements.hero_title, { autoAlpha: 0, y: 50, }, { autoAlpha: 1, y: 0,  }, 0);
-	this.heroTl.fromTo(this.elements.hero_text, { autoAlpha: 0, y: 50, }, { autoAlpha: 1, y: 0,  }, 0);
-
+    super.create();
+    this.initHomeAnimation();
   }
 
+  initHomeAnimation() {
+    console.log("start home");
+    this.heroTl = gsap.timeline({
+      defaults: {
+        delay: 1.5,
+      },
+    });
+    this.heroTl.fromTo(
+      this.elements.hero_bg,
+      { autoAlpha: 0 },
+      { autoAlpha: 1, duration: 1.5 }
+    );
+    this.heroTl.fromTo(
+      this.elements.hero_title,
+      { autoAlpha: 0, y: 50 },
+      { autoAlpha: 1, y: 0 },
+      0
+    );
+    this.heroTl.fromTo(
+      this.elements.hero_text,
+      { autoAlpha: 0, y: 50 },
+      { autoAlpha: 1, y: 0 },
+      0
+    );
+  }
 
   drawSvg() {
     const myPath = document.querySelector(".svg-path");
@@ -127,7 +134,7 @@ export default class Home extends Page {
   }
 
   clientSliderFirst() {
-    const clientSldier = new Swiper(".client-slider", {
+    this.clientSldier = new Swiper(".client-slider", {
       modules: [Autoplay],
       slidesPerView: 4,
       spaceBetween: 90,
@@ -141,14 +148,14 @@ export default class Home extends Page {
   }
 
   clientSliderSecond() {
-    const clientSldier = new Swiper(".client-slider-bottom", {
+    this.clientSldierSecond = new Swiper(".client-slider-bottom", {
       modules: [Autoplay],
       slidesPerView: 4,
       spaceBetween: 90,
       autoplay: {
         delay: 0,
         disableOnInteraction: false,
-		reverseDirection: true,
+        reverseDirection: true,
       },
       loop: true,
       speed: 6000,
@@ -167,9 +174,12 @@ export default class Home extends Page {
     ScrollTrigger.getById("blueSection")?.kill();
 
     // Destroy the clientsSlider Swiper instance
-    const clientSlider = document.querySelector(".client-slider").swiper;
-    if (clientSlider) {
-      clientSlider.destroy();
+    // Destroy the Swiper instance
+    if (this.clientSldier) {
+      this.clientSldier.destroy();
+    }
+    if (this.clientSldierSecond) {
+      this.clientSldierSecond.destroy();
     }
   }
 }

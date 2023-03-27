@@ -385,7 +385,6 @@ export default class Model {
       trigger: ".result",
       start: "top top",
       onLeave: () => {
-        console.log("leave");
         this.model.visible = false;
       },
       onEnterBack: () => {
@@ -431,8 +430,6 @@ export default class Model {
 
       // Add active class to next section
       sections[nextIndex].classList.add("active-result");
-
-      console.log(currentActiveIndex, "currentActiveIndex");
 
       // Animate the text
       gsap.set([currentActiveH2, currentActiveP, currentResult], { y: "0%" });
@@ -519,7 +516,6 @@ export default class Model {
         trigger: ".about-video",
         start: "top top",
 		end: "10px",
-		markers: true,
         scrub: true,
 		onEnter: () => {
 			this.model.visible = false;
