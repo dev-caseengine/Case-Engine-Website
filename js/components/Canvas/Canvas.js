@@ -33,13 +33,15 @@ export default class Canvas {
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1;
 
+
+
     //apend render to body
     document.body.appendChild(this.renderer.domElement);
   }
 
   createScene() {
     this.scene = new THREE.Scene();
-  }
+}
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(

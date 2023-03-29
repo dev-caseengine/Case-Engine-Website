@@ -22,7 +22,7 @@ export default class Page {
 
   createSmoothScroll() {
     this.lenis = new Lenis({
-      lerp: 0.6,
+    //   lerp: 0.6,
       smooth: true,
     });
 

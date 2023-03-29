@@ -56,48 +56,57 @@ export default class About extends Page {
     });
   }
 
-videoModal() {
-  const modalBtn = document.querySelector(".about-video__btn");
-  const closeModalBtn = document.querySelector(".close-modal");
-  const modal = document.querySelector(".about-video__modal");
-  const videoIframe = document.querySelector(".vimeo-video");
-  let player = null;
+  videoModal() {
+    const modalBtn = document.querySelector(".about-video__btn");
+    const closeModalBtn = document.querySelector(".close-modal");
+    const modal = document.querySelector(".about-video__modal");
+    const videoIframe = document.querySelector(".vimeo-video");
+    let player = null;
 
-  const loadVimeoPlayerAPI = () => {
-    const script = document.createElement("script");
-    script.src = "https://player.vimeo.com/api/player.js";
-    script.onload = createVimeoPlayerInstance;
-    document.body.appendChild(script);
-  };
+    const loadVimeoPlayerAPI = () => {
+      const script = document.createElement("script");
+      script.src = "https://player.vimeo.com/api/player.js";
+      script.onload = createVimeoPlayerInstance;
+      document.body.appendChild(script);
+    };
 
-  const createVimeoPlayerInstance = () => {
-	
-    player = new Vimeo.Player(videoIframe);
-    player.play(); 
-  };
+    const createVimeoPlayerInstance = () => {
+      player = new Vimeo.Player(videoIframe);
+      player.play();
+    };
 
-  modalBtn.addEventListener("click", () => {
-	document.body.style.overflow = "hidden";
-	this.lenis.stop();
-    modal.classList.add("about-video__modal-active");
-    if (player === null) {
-      loadVimeoPlayerAPI();
-    } else {
-      player.play().catch((error) => {
-        console.error(error);
-      });
-    }
-  });
+    modalBtn.addEventListener("click", () => {
+      document.body.style.overflow = "hidden";
+      this.lenis.stop();
+      modal.style.display = "flex"; // set display to block before animating opacity
+      gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+      if (player === null) {
+        loadVimeoPlayerAPI();
+      } else {
+        player.play().catch((error) => {
+          console.error(error);
+        });
+      }
+    });
 
-  closeModalBtn.addEventListener("click", () => {
-    modal.classList.remove("about-video__modal-active");
-	document.body.style.overflow = "auto";
-	this.lenis.start();
-    player.pause();
-
-
-  });
-}
+    closeModalBtn.addEventListener("click", () => {
+      gsap.fromTo(
+        modal,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            modal.classList.remove("about-video__modal-active");
+            document.body.style.overflow = "auto";
+            this.lenis.start();
+            player.pause();
+            modal.style.display = "none"; // set display to none after animating opacity
+          },
+        }
+      );
+    });
+  }
 
   aboutGallery() {
     this.section = document.querySelector(".about-gallery");
@@ -134,7 +143,7 @@ videoModal() {
   }
 
   teamSlide() {
-    const teamSlider = new Swiper(".about-team__slider", {
+    this.teamSlider = new Swiper(".about-team__slider", {
       modules: [Navigation],
       slidesPerView: 2.5,
       spaceBetween: 30,
@@ -168,9 +177,8 @@ videoModal() {
     // Remove the blueSection ScrollTrigger
     ScrollTrigger.getById("blueSection")?.kill();
 
-    const teamSlider = document.querySelector(".about-team__slider").swiper;
-    if (teamSlider) {
-      teamSlider.destroy();
+    if (this.teamSlider) {
+      this.teamSlider.destroy();
     }
   }
 }
