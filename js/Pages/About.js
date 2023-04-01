@@ -28,6 +28,7 @@ export default class About extends Page {
     this.moveImages();
   }
 
+
   moveImages() {
     const images = document.querySelectorAll(".about-gallery__img");
     images.forEach((image) => {
@@ -155,16 +156,16 @@ export default class About extends Page {
   }
 
   blueSection() {
-    ScrollTrigger.create({
-      trigger: this.elements.blueSection,
-      start: "top top",
-
-      toggleClass: {
-        targets: ".logo-about",
-        className: "logo-color",
+    gsap.to(".logo-symbol", {
+      fill: "#fff",
+      duration: 0.3,
+      scrollTrigger: {
+        trigger: this.elements.blueSection,
+        start: "top top",
+        end: "bottom top",
+        toggleActions: "play reverse play reverse",
+        id: "blueSection",
       },
-
-      id: "blueSection",
     });
   }
 
@@ -180,5 +181,9 @@ export default class About extends Page {
     if (this.teamSlider) {
       this.teamSlider.destroy();
     }
+
+    // Reset the logo color to its default value
+    gsap.set(".logo-symbol", { fill: "#3573FF" });
+
   }
 }

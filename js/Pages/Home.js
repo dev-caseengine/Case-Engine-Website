@@ -8,7 +8,6 @@ import Swiper, {
   EffectFade,
 } from "swiper";
 import Page from "../classes/Page";
-import Model from "../components/Canvas/Model";
 
 export default class Home extends Page {
   constructor() {
@@ -18,12 +17,13 @@ export default class Home extends Page {
       elements: {
         results: ".results",
         blueSection: ".who-we-are",
-        canvas: "canvas.home-webgl",
-        hero_bg: ".hero__bg",
-        hero_title: ".hero__title h1 span",
-        hero_svg: ".hero__title h1 svg",
-        hero_text: ".hero__title p",
-        scroll_down: ".scroll-down",
+        results_nav: ".results__nav span",
+        results_headings: ".results__problem h2",
+        results_text: ".results__problem p",
+        results_result: ".results__result p",
+        results_label: ".results__label p",
+        results_border: ".results__border",
+        results_cursor: ".results__follow",
       },
     });
 
@@ -32,7 +32,7 @@ export default class Home extends Page {
 
   create() {
     super.create();
-
+    this.initResults();
     this.pinSection();
     this.blueSection();
     this.clientSliderFirst();
@@ -40,53 +40,78 @@ export default class Home extends Page {
     // this.drawSvg();
   }
 
-  createPageAnimations() {
-    super.create();
-    this.initHomeAnimation();
-  }
 
-  initHomeAnimation() {
-    console.log("start home");
-    this.heroTl = gsap.timeline({
-      defaults: {
-        delay: 1.5,
-      },
-    });
-    this.heroTl.fromTo(
-      this.elements.hero_bg,
-      { autoAlpha: 0 },
-      { autoAlpha: 1, duration: 1.5 }
-    );
-    this.heroTl.fromTo(
-      this.elements.hero_title,
-      { autoAlpha: 0, y: 50 },
-      { autoAlpha: 1, y: 0 },
+  initResults() {
+    const initTl = gsap.timeline({ paused: true });
+
+    initTl.fromTo(
+      this.elements.results_headings[0],
+      { autoAlpha: "0", y: "100%" },
+      { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
       0
     );
-    this.heroTl.fromTo(
-      this.elements.hero_text,
-      { autoAlpha: 0, y: 50 },
-      { autoAlpha: 1, y: 0 },
-      0
+    initTl.fromTo(
+      this.elements.results_text[0],
+      { autoAlpha: "0", y: "100%" },
+      { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+      0.2
     );
-  }
+    initTl.fromTo(
+      this.elements.results_result[0],
+      { autoAlpha: "0", y: "100%" },
+      { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+      1
+    );
+    initTl.fromTo(
+      this.elements.results_label,
+      { autoAlpha: "0", y: "100%" },
+      { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+      1
+    );
+    initTl.fromTo(
+      this.elements.results_nav,
+      { autoAlpha: "0", y: 40 },
+      { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+      1
+    );
+    initTl.fromTo(
+      this.elements.results_border,
+      { scaleX: 0, y: 40 },
+      { scaleX: 1, y: 0, duration: 1, ease: "Power2.out" },
+      1
+    );
+    initTl.fromTo(
+      this.elements.results_cursor,
+      { autoAlpha: "0" },
+      { autoAlpha: "1", duration: 1, ease: "Power2.out" },
+      1.2
+    );
 
-  drawSvg() {
-    const myPath = document.querySelector(".svg-path");
-    // Get the length of the path
-    const pathLength = myPath.getTotalLength();
-
-    // Set the initial values for the stroke-dasharray and stroke-dashoffset properties
-    myPath.style.strokeDasharray = pathLength;
-    myPath.style.strokeDashoffset = pathLength;
-
-    // Animate the stroke-dashoffset property from pathLength to 0
-    gsap.to(myPath, {
-      strokeDashoffset: 0,
-      duration: 2,
-      ease: "Power1.easeOut",
+    ScrollTrigger.create({
+      trigger: ".result",
+      start: "-20% top ",
+      once: true,
+      animation: initTl,
     });
   }
+
+
+  //   drawSvg() {
+  //     const myPath = document.querySelector(".svg-path");
+  //     // Get the length of the path
+  //     const pathLength = myPath.getTotalLength();
+
+  //     // Set the initial values for the stroke-dasharray and stroke-dashoffset properties
+  //     myPath.style.strokeDasharray = pathLength;
+  //     myPath.style.strokeDashoffset = pathLength;
+
+  //     // Animate the stroke-dashoffset property from pathLength to 0
+  //     gsap.to(myPath, {
+  //       strokeDashoffset: 0,
+  //       duration: 2,
+  //       ease: "Power1.easeOut",
+  //     });
+  //   }
 
   modelAnimation() {
     this.scrollTl = gsap.timeline({ paused: true });
@@ -122,14 +147,16 @@ export default class Home extends Page {
   }
 
   blueSection() {
-    ScrollTrigger.create({
-      trigger: this.elements.blueSection,
-      start: "top top",
-      toggleClass: {
-        targets: ".logo-home",
-        className: "logo-color",
+    gsap.to(".logo-symbol", {
+      fill: "#fff",
+      duration: 0.3,
+      scrollTrigger: {
+        trigger: this.elements.blueSection,
+        start: "top top",
+        end: "bottom top",
+        toggleActions: "play reverse play reverse",
+        id: "blueSection",
       },
-      id: "blueSection",
     });
   }
 
@@ -181,5 +208,8 @@ export default class Home extends Page {
     if (this.clientSldierSecond) {
       this.clientSldierSecond.destroy();
     }
+
+    // Reset the logo color to its default value
+    gsap.set(".logo-symbol", { fill: "#3573FF" });
   }
 }

@@ -18,8 +18,10 @@ export default class Preloader extends Component {
   }
 
   createLoader() {
+
     //animate the progress
     this.resources.on("progress", (loaded, toLoad) => {
+
       this.percentage = Math.round((loaded / toLoad) * 100);
 
       this.elements.percentage.firstChild.nodeValue = this.percentage;
@@ -33,6 +35,10 @@ export default class Preloader extends Component {
         ease: "linear",
       });
 
+	//   gsap.set('.bg-anim', {autoAlpha: 0})
+	//   gsap.to('.bg-anim', {autoAlpha: this.percentage / 100, ease: "linear",})
+
+
       if (loaded === toLoad) {
         this.onLoaded();
       }
@@ -40,19 +46,20 @@ export default class Preloader extends Component {
   }
 
   onLoaded() {
+
     // when assets are loaded animate out
     this.animateOut = gsap.timeline({
-		delay: 1,
+		delay: .5,
 	});
 
-    this.animateOut.to(
-      this.element,
-      {
-        yPercent: -100,
-        duration: 1,
-      },
+    // this.animateOut.to(
+    //   this.element,
+    //   {
+    //     yPercent: -100,
+    //     duration: 1,
+    //   },
 
-    );
+    // );
 
     this.animateOut.to(
       this.elements.percentage,
@@ -67,9 +74,17 @@ export default class Preloader extends Component {
 
     this.animateOut.to(
       this.elements.bars,
-      { autoAlpha: 0, duration: 1,  },
+      { autoAlpha: 0, duration: .3,  },
       0
     );
+
+	this.animateOut.to(
+		this.elements.bar,
+		{ autoAlpha: 0, duration: .3,  },
+		0
+	  );
+
+
 
     this.animateOut.call(() => {
       this.destroy();

@@ -45,11 +45,11 @@ export default class Navigation extends Component {
 
   onChange(template) {
     if (template === "home") {
-      this.elements.logo.classList.remove("logo-about");
-      this.elements.logo.classList.add("logo-home");
+    //   this.elements.logo.classList.remove("logo-about");
+    //   this.elements.logo.classList.add("logo-home");
     } else {
-      this.elements.logo.classList.remove("logo-home");
-      this.elements.logo.classList.add("logo-about");
+    //   this.elements.logo.classList.remove("logo-home");
+    //   this.elements.logo.classList.add("logo-about");
     }
   }
 }

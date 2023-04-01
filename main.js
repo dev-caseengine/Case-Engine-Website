@@ -16,8 +16,6 @@ class App {
 
 	this.resources = new Resources();
 
-
-
     this.createContent();
     this.createNavigation();
     this.createFooter();
@@ -36,6 +34,7 @@ class App {
 		resources: this.resources,
 	});
     this.preloader.on("loaded", () => {
+		console.log("loaded");
       this.onPreloaded();
     });
   }
@@ -77,8 +76,9 @@ class App {
 onPreloaded() {
 	this.onResize();
 	this.canvas.onPreloaded();
-	this.page.createPageAnimations();
+	// this.page.preloadInitAnimation();
 	this.page.show();
+
 
   }
 

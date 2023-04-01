@@ -9,6 +9,30 @@ export default class Text {
     this.opacity();
     this.label();
     this.border();
+    this.splitHeadings();
+  }
+
+  splitHeadings() {
+    let revealText = document.querySelectorAll(".split-lines");
+
+    this.results = Splitting({ target: revealText, by: "lines" });
+
+    this.results.forEach((splitResult) => {
+      const wrappedLines = splitResult.lines
+        .map(
+          (wordsArr) => `
+							<span class="line-heading"><div class="words">
+							  ${wordsArr
+                  .map(
+                    (word) => `${word.outerHTML}<span class="whitespace"> 
+								</span>`
+                  )
+                  .join("")}
+							</div></span>`
+        )
+        .join("");
+      splitResult.el.innerHTML = wrappedLines;
+    });
   }
 
   fadeUp() {
@@ -24,14 +48,14 @@ export default class Text {
         const wrappedLines = splitResult.lines
           .map(
             (wordsArr) => `
-			<span class="line"><div class="words">
-			  ${wordsArr
-          .map(
-            (word) => `${word.outerHTML}<span class="whitespace"> 
-				</span>`
-          )
-          .join("")}
-			</div></span>`
+							<span class="line"><div class="words">
+							  ${wordsArr
+                  .map(
+                    (word) => `${word.outerHTML}<span class="whitespace"> 
+								</span>`
+                  )
+                  .join("")}
+							</div></span>`
           )
           .join("");
         splitResult.el.innerHTML = wrappedLines;
@@ -46,10 +70,10 @@ export default class Text {
           delay: 0.2,
           scrollTrigger: {
             trigger: element,
-			start: "top bottom-=20%",
+            start: "top bottom-=20%",
             end: "center top+=40%",
             scrub: true,
-			once: true,	
+            once: true,
           },
         });
       });
@@ -128,6 +152,4 @@ export default class Text {
       );
     });
   }
-
-
 }

@@ -22,7 +22,7 @@ export default class Page {
 
   createSmoothScroll() {
     this.lenis = new Lenis({
-    //   lerp: 0.6,
+      //   lerp: 0.6,
       smooth: true,
     });
 
@@ -53,20 +53,57 @@ export default class Page {
         }
       }
     });
-
-    this.createAnimations();
+	this.createAnimations();
     this.createSmoothScroll();
+
   }
   createAnimations() {
     this.fadeText = new Text();
   }
 
-  createPageAnimations() {
-    console.log("create page animations");
+  //Create Initial animation after laoding
+  preloadInitAnimation() {
+	
+    this.introAnim = gsap.timeline({ delay: 1 });
+	this.introAnim.to(".overlay span",{scaleY:0, duration: 1, ease: "power3.out",},-0.2);
+
+    this.introAnim.to(
+      "h1 .line-heading div",
+      { y: 0, duration: 1, ease: "power2.out", stagger: 0.1 },
+      0.4
+    );
+    this.introAnim.to(
+      ".hero-desc",
+      { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
+      0.8
+    );
+    this.introAnim.to(
+      ".header",
+      { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
+      .8
+    );
+    this.introAnim.to(
+      ".scroll-down img",
+      { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
+      1
+    );
+    this.introAnim.to(
+      ".scroll-down p",
+      { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
+      1.2
+    );
+    this.introAnim.to(
+      ".scroll-down",
+      { autoAlpha: 1, duration: 1, ease: "power2.out" },
+      1.2
+    );
   }
 
   show() {
     return new Promise((resolve) => {
+      this.preloadInitAnimation();
+
+      console.log("show");
       // Scroll to top of page
       window.scrollTo(0, 0);
 
@@ -76,7 +113,7 @@ export default class Page {
       }, 1000);
 
       gsap.from(this.element, {
-        autoAlpha: 0,
+        // autoAlpha: 0,
         duration: 0.5,
         onComplete: resolve,
       });
@@ -86,11 +123,14 @@ export default class Page {
   hide() {
     return new Promise((resolve) => {
       this.destroy();
-      gsap.to(this.element, {
-        autoAlpha: 0,
-        duration: 0.5,
-        onComplete: resolve,
-      });
+
+	  gsap.to(".overlay span",{ scaleY: 1, duration: .5, ease: "Power2.out", onComplete: resolve,})
+	  
+    //   gsap.to(this.element, {
+    //     autoAlpha: 0,
+    //     duration: .5,
+    //     onComplete: resolve,
+    //   });
     });
   }
 

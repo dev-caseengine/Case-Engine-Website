@@ -277,8 +277,27 @@ export default class Model {
 
             // Add other images to the clones
             // For example, you could create new materials with the other images and assign them to the clones' meshes
+
+
+			this.videoTexture2 = {};
+            this.video2 = this.resources.items.problemOne;
+            this.video2.crossOrigin = "anonymous";
+            this.video2.muted = "muted";
+            this.video2.muted = true;
+            this.video2.preload = "auto";
+            this.video2.autoplay = "autoplay";
+            this.video2.loop = "loop";
+            this.videoTexture2.minFilter = THREE.LinearFilter;
+            this.videoTexture2.magFilter = THREE.LinearFilter;
+
+            this.video2.play();
+
+            this.videoTexture2 = new THREE.VideoTexture(this.video2);
+            this.videoTexture2.flipY = true;
+
+
             this.clone1.material = new THREE.MeshBasicMaterial({
-              color: "red",
+			  map: this.videoTexture2,
               transparent: true,
               opacity: 0,
               side: THREE.DoubleSide,
@@ -332,7 +351,7 @@ export default class Model {
   }
 
   resultsSection() {
-    const navEl = document.querySelector(".results__nav");
+    const navEl = document.querySelector(".results__nav span");
     const sections = document.querySelectorAll(".result");
     const headingEls = document.querySelectorAll(".results__problem h2");
     const textEls = document.querySelectorAll(".results__problem p");
@@ -363,7 +382,7 @@ export default class Model {
     });
 
     // Set initial state for animation
-    gsap.set([headingEls, textEls, resultEls], { y: "-100%" });
+    gsap.set([headingEls, textEls, resultEls], { y: "-101%" });
     gsap.set([headingEls[0], textEls[0], resultEls[0]], { y: "0%" });
 
     //set the red to have 1 opacity
@@ -448,6 +467,8 @@ export default class Model {
       );
 
       if (currentActiveIndex === 0) {
+        navEl.textContent = "2 / 3";
+
         tl.to(
           this.model.children.find((child) => child.name === "red").material,
           { opacity: 0 },
@@ -461,6 +482,8 @@ export default class Model {
       }
 
       if (currentActiveIndex === 1) {
+        navEl.textContent = "3 / 3";
+
         tl.to(
           this.model.children.find((child) => child.name === "blue").material,
           { opacity: 0 },
@@ -474,6 +497,8 @@ export default class Model {
       }
 
       if (currentActiveIndex === 2) {
+        navEl.textContent = "1 / 3";
+
         tl.to(
           this.model.children.find((child) => child.name === "green").material,
           { opacity: 0 },
@@ -512,20 +537,22 @@ export default class Model {
       animation: this.scrollTl,
     });
 
-      ScrollTrigger.create({
-        trigger: ".about-video",
-        start: "top top",
-		end: "10px",
-        scrub: true,
-		onEnter: () => {
-			this.model.visible = false;
-		},
+    ScrollTrigger.create({
+      trigger: ".about-video",
+      start: "top top",
+      end: "10px",
+      scrub: true,
+      onEnter: () => {
+        this.model.visible = false;
+      },
 
       onEnterBack: () => {
         this.model.visible = true;
       },
     });
   }
+
+  //Hide Model
 
   hide() {
     if (!this.model) return;
@@ -592,7 +619,7 @@ export default class Model {
     await this.destroy();
     this.model.visible = true;
 
-    this.showTl = gsap.timeline({ delay: 1 });
+    this.showTl = gsap.timeline({ delay: 1.3 });
 
     if (this.name === "phone") {
       this.showTl.fromTo(

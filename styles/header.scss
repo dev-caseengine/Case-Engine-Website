@@ -10,8 +10,12 @@
   padding: 0 6rem;
   z-index: 10;
 
+  transform: translateY(-100%);
+  opacity: 0;
+  will-change: transform opacity;
+
   &__logo {
-    width: 23rem;
+	width: 20.9rem;
     display: flex;
     align-items: center;
 

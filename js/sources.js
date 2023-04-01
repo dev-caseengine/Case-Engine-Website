@@ -23,6 +23,12 @@ export default [
   },
 
   {
+    name: "problemOne",
+    type: "video",
+    path: "../assets/problem-1.webm",
+  },
+
+  {
     name: "aboutVideo",
     type: "video",
     path: "../assets/video-about.webm",

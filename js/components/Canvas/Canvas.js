@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import Resources from "../../utils/Resources";
 import Sizes from "../../utils/Sizes";
 import Time from "../../utils/Time";
 import CameraParallax from "../../utils/CameraParallax";
@@ -31,7 +30,7 @@ export default class Canvas {
     this.renderer.setSize(this.sizes.width, this.sizes.height);
     this.renderer.setPixelRatio(this.sizes.pixelRatio);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1;
+    this.renderer.toneMappingExposure = 1.1;
 
 
 
