@@ -60,38 +60,12 @@ export default class Plane {
     this.camera = obj.camera;
     this.renderer = obj.renderer;
     this.sizes = obj.sizes;
-
     this.init();
   }
 
   init() {
     const { width, height } = this.sizes;
     const aspectRatio = width / height;
-
-    // // Create a noise texture
-    // const noiseSize = 512;
-    // const noiseData = new Uint8Array(noiseSize * noiseSize * 4);
-    // const noiseGenerator = new noise.Noise(Math.random());
-    // for (let i = 0; i < noiseSize; i++) {
-    //   for (let j = 0; j < noiseSize; j++) {
-    //     const index = (i * noiseSize + j) * 4;
-    //     const value = (noiseGenerator.perlin2(i / 100, j / 100) + 1) / 2;
-    //     noiseData[index] = value * 255;
-    //     noiseData[index + 1] = value * 255;
-    //     noiseData[index + 2] = value * 255;
-    //     noiseData[index + 3] = 255;
-    //   }
-    // }
-    // const noiseTexture = new THREE.DataTexture(
-    //   noiseData,
-    //   noiseSize,
-    //   noiseSize,
-    //   THREE.RGBAFormat,
-    //   THREE.UnsignedByteType
-    // );
-    // noiseTexture.wrapS = THREE.RepeatWrapping;
-    // noiseTexture.wrapT = THREE.RepeatWrapping;
-    // noiseTexture.needsUpdate = true;
 
     // Create the plane geometry
     this.geometry = new THREE.SphereGeometry(aspectRatio * 2, 32, 32);
@@ -109,15 +83,17 @@ export default class Plane {
 
     // Create the mesh
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+	this.mesh.name = "backgroundPlane";
+	
 
     // Set position and scale
     this.mesh.position.set(0, 0, -5);
     this.mesh.scale.set(width, height, 1);
 
 	this.mesh.userData.isBackground = true;
-
     // Add the mesh to the scene
     this.scene.add(this.mesh);
+
 
   }
 
@@ -125,5 +101,12 @@ export default class Plane {
   update(time) {
     // Update the time uniform of the material
     this.material.uniforms.time.value = time * 0.0006;
+
+
+
+
+
+
+
   }
 }

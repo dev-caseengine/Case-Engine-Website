@@ -15,6 +15,9 @@ export default class Model {
     this.resource = this.file;
     this.currentVideoTexture = null;
     this.videoTextureAdded = false;
+
+
+	
     this.init();
   }
 
@@ -48,6 +51,8 @@ export default class Model {
 
     this.model.children[0].material = this.m;
 
+
+	
     if (this.name === "phone") {
       this.setHomeModel();
       setTimeout(() => {
@@ -302,6 +307,64 @@ export default class Model {
               opacity: 0,
               side: THREE.DoubleSide,
             });
+
+// Create a glow material with the same video texture
+var glowMaterial = new THREE.MeshBasicMaterial({
+    map: this.videoTexture2,
+    transparent: true,
+    opacity: 0.5,
+    side: THREE.BackSide,
+});
+
+// Create a mesh to hold the glow material
+var glowMesh = new THREE.Mesh(phoneScreenMesh.geometry, glowMaterial);
+glowMesh.scale.set(1.1, 1.1, 1.1); // adjust the size of the glow
+
+// Add the glow mesh as a child of the original phone screen mesh
+phoneScreenMesh.add(glowMesh);
+
+// Set the position and rotation of the glow mesh to match the original
+glowMesh.position.z = 0.0722;
+glowMesh.rotation.y = Math.PI;
+glowMesh.rotation.z = Math.PI;
+glowMesh.scale.set(0.45, 0.45, 0.46);
+
+// Make the glow mesh invisible to start with
+glowMesh.visible = false;
+
+// Add a custom shader to the glow material to make it glow
+glowMaterial.onBeforeCompile = function (shader) {
+    shader.uniforms.viewVector = { value: new THREE.Vector3(0, 0, 1) };
+    shader.vertexShader = 'uniform vec3 viewVector;\n' + shader.vertexShader;
+    shader.vertexShader = shader.vertexShader.replace(
+        '#include <begin_vertex>',
+        [
+            'vec3 transformedNormal = normal;',
+            'vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );',
+            'gl_Position = projectionMatrix * mvPosition;',
+            'vec3 vNormal = normalize( transformedNormal );',
+            'vec3 vNormel = normalize( normalMatrix * viewVector );',
+            'float dotProduct = dot( vNormal, vNormel );',
+            'vec3 color = vec3( 0.0, 1.0, 0.0 );',
+            'gl_FrontColor = vec4( color * dotProduct, 1.0 );'
+        ].join('\n')
+    );
+    shader.fragmentShader = 'varying vec4 vColor;\n' + shader.fragmentShader;
+    shader.fragmentShader = shader.fragmentShader.replace(
+        'void main() {',
+        [
+            'void main() {',
+            'vec4 sum = vec4( 0.0 );',
+            'for ( int i = 0; i < 10; i ++ ) {',
+            'sum += texture2D( map, vUv + float( i ) * uOffset ) * glowColor * glowPower * ( 10.0 / ( float( i ) + 10.0 ) );',
+            '}',
+            'gl_FragColor = sum;',
+        ].join('\n')
+    );
+};
+
+
+
             this.clone2.material = new THREE.MeshBasicMaterial({
               color: "blue",
               transparent: true,

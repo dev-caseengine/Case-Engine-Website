@@ -12,7 +12,6 @@ class CameraParallax {
 	}
   
 	init() {
-	  this.initZ = this.camera.position.z;
 	  window.addEventListener("mousemove", this.onMouseMove);
 	}
   

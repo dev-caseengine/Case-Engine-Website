@@ -53,9 +53,8 @@ export default class Page {
         }
       }
     });
-	this.createAnimations();
+    this.createAnimations();
     this.createSmoothScroll();
-
   }
   createAnimations() {
     this.fadeText = new Text();
@@ -63,24 +62,36 @@ export default class Page {
 
   //Create Initial animation after laoding
   preloadInitAnimation() {
-	
     this.introAnim = gsap.timeline({ delay: 1 });
-	this.introAnim.to(".overlay span",{scaleY:0, duration: 1, ease: "power3.out",},-0.2);
+    this.introAnim.to(
+      ".overlay span",
+      { scaleY: 0, duration: 1, ease: "power3.out" },
+      -0.2
+    );
 
     this.introAnim.to(
       "h1 .line-heading div",
       { y: 0, duration: 1, ease: "power2.out", stagger: 0.1 },
       0.4
     );
-    this.introAnim.to(
+    this.introAnim.fromTo(
       ".hero-desc",
-      { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
+      { autoAlpha: 0, yPercent: 50 },
+      { autoAlpha: 1, yPercent: 0, duration: 1, ease: "power2.out" },
       0.8
     );
+
+    this.introAnim.fromTo(
+      ".hero-btn",
+      { autoAlpha: 0, yPercent: 50 },
+      { autoAlpha: 1, yPercent: 0, duration: 1, ease: "power2.out" },
+      0.9
+    );
+
     this.introAnim.to(
       ".header",
       { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
-      .8
+      0.8
     );
     this.introAnim.to(
       ".scroll-down img",
@@ -124,13 +135,18 @@ export default class Page {
     return new Promise((resolve) => {
       this.destroy();
 
-	  gsap.to(".overlay span",{ scaleY: 1, duration: .5, ease: "Power2.out", onComplete: resolve,})
-	  
-    //   gsap.to(this.element, {
-    //     autoAlpha: 0,
-    //     duration: .5,
-    //     onComplete: resolve,
-    //   });
+      gsap.to(".overlay span", {
+        scaleY: 1,
+        duration: 0.5,
+        ease: "Power2.out",
+        onComplete: resolve,
+      });
+
+      //   gsap.to(this.element, {
+      //     autoAlpha: 0,
+      //     duration: .5,
+      //     onComplete: resolve,
+      //   });
     });
   }
 

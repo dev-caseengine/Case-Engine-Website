@@ -2,24 +2,22 @@ import * as THREE from "three";
 import Sizes from "../../utils/Sizes";
 import Time from "../../utils/Time";
 import CameraParallax from "../../utils/CameraParallax";
-// import sources from "../../sources";
 import Model from "./Model";
 import Plane from "./Plane";
 export default class Canvas {
   constructor({ template, resources }) {
-	this.template = template;
+    this.template = template;
     this.sizes = new Sizes();
     this.createRenderer();
     this.time = new Time();
     this.resources = resources;
     this.createScene();
     this.createCamera();
-	this.createParallaxCamera();
+    this.createParallaxCamera();
 
-	this.createPlane();
+    this.createPlane();
 
     this.onResize();
-
   }
 
   createRenderer() {
@@ -32,15 +30,13 @@ export default class Canvas {
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.1;
 
-
-
     //apend render to body
     document.body.appendChild(this.renderer.domElement);
   }
 
   createScene() {
     this.scene = new THREE.Scene();
-}
+  }
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(
@@ -55,30 +51,27 @@ export default class Canvas {
   }
 
   createParallaxCamera() {
-	this.parallaxCamera = new CameraParallax(this.camera);
-	// this.parallaxCamera.init();
+    this.parallaxCamera = new CameraParallax(this.camera);
   }
 
   createPlane() {
-	this.plane = new Plane({
-		scene: this.scene,
-		renderer: this.renderer,
-		camera: this.camera,
-		sizes: this.sizes,
-	});
+    this.plane = new Plane({
+      scene: this.scene,
+      renderer: this.renderer,
+      camera: this.camera,
+      sizes: this.sizes,
+    });
   }
 
   createHome() {
-      this.home = new Model({
-        name: "phone",
-        file: this.resources.items.handModel,
-		// file: this.resources.sources[1].path,
-        scene: this.scene,
-        renderer: this.renderer,
-        camera: this.camera,
-        resources: this.resources,
-
-      });
+    this.home = new Model({
+      name: "phone",
+      file: this.resources.items.handModel,
+      scene: this.scene,
+      renderer: this.renderer,
+      camera: this.camera,
+      resources: this.resources,
+    });
   }
 
   destroyHome() {
@@ -91,13 +84,11 @@ export default class Canvas {
     this.about = new Model({
       name: "logo",
       file: this.resources.items.logoModel,
-	//   file: this.resources.sources[2].path,
+      //   file: this.resources.sources[2].path,
       scene: this.scene,
       renderer: this.renderer,
       camera: this.camera,
       resources: this.resources,
-
-	
     });
   }
   destroyAbout() {
@@ -106,51 +97,46 @@ export default class Canvas {
     this.about = null;
   }
 
-
   // Events
   onPreloaded() {
     this.onChangeEnd(this.template);
   }
 
   onChangeStart(template, url) {
-	if (template === 'home' && this.home) {
-	  this.home.hide();
-	}
-	if (template === 'about' && this.about) {
-	  this.about.hide();
-	}
+    if (template === "home" && this.home) {
+      this.home.hide();
+    }
+    if (template === "about" && this.about) {
+      this.about.hide();
+    }
   }
 
   onChangeEnd(template) {
-	if (template === 'home') {
-		this.createHome();
-	  } else {
-		this.destroyHome();
-	  }
-	  if (template === 'about') {
-		this.createAbout();
-	  } else if (this.about) {
-		this.destroyAbout();
-	  }
-
+    if (template === "home") {
+      this.createHome();
+    } else {
+      this.destroyHome();
+    }
+    if (template === "about") {
+      this.createAbout();
+    } else if (this.about) {
+      this.destroyAbout();
+    }
   }
 
+  //   onChange(template) {
+  //     if (template === "home") {
+  //       this.createHome();
+  //     } else {
+  //       this.destroyHome();
+  //     }
 
-//   onChange(template) {
-//     if (template === "home") {
-//       this.createHome();
-//     } else {
-//       this.destroyHome();
-//     }
-
-//     if (template === "about") {
-//       this.createAbout();
-//     } else {
-//       this.destroyAbout();
-//     }
-//   }
-
-
+  //     if (template === "about") {
+  //       this.createAbout();
+  //     } else {
+  //       this.destroyAbout();
+  //     }
+  //   }
 
   onResize() {
     this.renderer.setSize(this.sizes.width, this.sizes.height);
@@ -163,12 +149,11 @@ export default class Canvas {
   update(time) {
     this.renderer.render(this.scene, this.camera);
 
-	this.parallaxCamera.update();
-
+    this.parallaxCamera.update();
 
     if (this.home) this.home.update(time);
 
     if (this.about) this.about.update(time);
-	if (this.plane) this.plane.update(time);
+    if (this.plane) this.plane.update(time);
   }
 }

@@ -66,6 +66,11 @@
   letter-spacing: -0.05em;
   text-transform: uppercase;
   font-weight: 300;
+
+  @media(max-width: 920px) {
+	font-size: 21.4rem;
+}
+
 }
 
 %heading-123 {
@@ -76,6 +81,12 @@
   letter-spacing: -0.03em;
   line-height: 84.5%;
   font-weight: 700;
+
+
+  @media(max-width: 920px) {
+	font-size: 8.2rem;
+}
+
 }
 
 %heading-76 {
