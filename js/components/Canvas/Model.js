@@ -247,6 +247,7 @@ export default class Model {
             this.video.preload = "auto";
             this.video.autoplay = "autoplay";
             this.video.loop = "loop";
+			this.video.playsinline = true;
             this.videoTexture.minFilter = THREE.LinearFilter;
             this.videoTexture.magFilter = THREE.LinearFilter;
 
@@ -307,6 +308,7 @@ export default class Model {
             this.video2.preload = "auto";
             this.video2.autoplay = "autoplay";
             this.video2.loop = "loop";
+			this.video2.playsinline = true;
             this.videoTexture2.minFilter = THREE.LinearFilter;
             this.videoTexture2.magFilter = THREE.LinearFilter;
 

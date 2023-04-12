@@ -19,7 +19,7 @@ export default [
   {
     name: "notificationVideo",
     type: "video",
-    path: "../assets/notification.mp4",
+    path: "../assets/notification.webm",
   },
 
   {

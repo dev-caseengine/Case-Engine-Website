@@ -352,7 +352,11 @@
     right: 19rem;
     top: 24.5%;
     z-index: 1;
-    display: none;
+  
+
+	@media(max-width: 920px) {
+		display: none;
+	}
 
     // @media (max-width: 920px) {
     //   right: auto;

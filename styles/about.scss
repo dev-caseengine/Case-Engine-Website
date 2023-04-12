@@ -292,10 +292,8 @@
 }
 
 .about-gallery {
-  //   background-color: $black;
   padding-top: 15rem;
   position: relative;
-  //  max-height: 250vh;
 
   &__text {
     width: 100%;
@@ -466,6 +464,12 @@
     right: 0;
     width: 100%;
     z-index: -1;
+
+    @media (max-width: 640px) {
+      top: -15%;
+      right: -100%;
+      width: 300%;
+    }
   }
 }
 
@@ -574,5 +578,11 @@
     z-index: -1;
     pointer-events: none;
     backface-visibility: hidden;
+
+    @media (max-width: 640px) {
+      top: -5%;
+      left: -79%;
+      width: 300%;
+    }
   }
 }
