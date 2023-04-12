@@ -5,6 +5,10 @@
   overflow: hidden;
   position: relative;
 
+  @media (max-width: 920px) {
+	padding-top: 12rem;
+  }
+
   &__overlay {
     background: $black;
     position: absolute;
@@ -31,9 +35,17 @@
     padding-bottom: 8.5rem;
     align-items: flex-end;
 
+    @media (max-width: 920px) {
+      grid-template-columns: 1fr;
+    }
+
     div {
       &:last-child {
         justify-self: flex-end;
+
+        @media (max-width: 920px) {
+          justify-self: flex-start;
+        }
       }
     }
 
@@ -46,6 +58,10 @@
       @extend %heading-47;
       color: $black;
       width: 75%;
+
+      @media (max-width: 920px) {
+        width: 100%;
+      }
     }
   }
 
@@ -55,6 +71,16 @@
       color: $blue;
       font-weight: 700;
       line-height: 0.8;
+
+	  @media (max-width: 920px) {
+		font-size: 17.5rem ;
+	  }
+
+
+	  @media (max-width: 640px) {
+		font-size: 12rem ;
+	  }
+
     }
   }
 
@@ -64,6 +90,15 @@
     right: 0;
     z-index: -2;
     width: 90%;
+	pointer-events: none;
+    backface-visibility: hidden;
+
+    @media (max-width: 920px) {
+      top: -54rem;
+      right: -42%;
+      z-index: -2;
+      width: 200%;
+    }
   }
 
   &__links {
@@ -74,17 +109,34 @@
     z-index: 1;
     position: relative;
 
+	@media (max-width: 640px) {
+		margin-top: 5rem;
+		flex-wrap: wrap;
+		gap: 2rem;
+	  }
+
     a {
       color: $black;
       text-transform: uppercase;
       font-size: 12px;
       font-weight: 600;
       margin-right: 3rem;
+
+	  @media (max-width: 640px) {
+		margin-right: 4rem;
+		margin-bottom: 12rem;
+	  }
+
     }
 
     p {
       color: $black;
       font-size: 16px;
+
+	  @media (max-width: 640px) {
+		font-size: 12px;
+	  }
+
     }
   }
 
@@ -122,14 +174,13 @@
       color: $white;
     }
 
-	&__glow {
-		display: block;
-		position: absolute;
-		top: -90%;
-		left: 50%;
-		z-index: -1;
-		transform: translateX(-50%);
-	  }
+    &__glow {
+      display: block;
+      position: absolute;
+      top: -90%;
+      left: 50%;
+      z-index: -1;
+      transform: translateX(-50%);
+    }
   }
-
 }

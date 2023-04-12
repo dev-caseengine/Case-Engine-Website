@@ -14,9 +14,7 @@ export default class Canvas {
     this.createScene();
     this.createCamera();
     this.createParallaxCamera();
-
     this.createPlane();
-
     this.onResize();
   }
 
@@ -46,7 +44,23 @@ export default class Canvas {
       100
     );
 
-    this.camera.position.z = 3;
+    const laptopQuery = window.matchMedia("(max-width: 1440px)");
+    const tabletQuery = window.matchMedia("(max-width: 1024px)");
+
+    const handleMediaQuery = () => {
+      if (tabletQuery.matches) {
+        this.camera.position.z = 3.3;
+      } else if (laptopQuery.matches) {
+        this.camera.position.z = 3.2;
+      } else {
+        this.camera.position.z = 3;
+      }
+    };
+
+    handleMediaQuery();
+    laptopQuery.addEventListener("change", handleMediaQuery);
+    tabletQuery.addEventListener("change", handleMediaQuery);
+
     this.scene.add(this.camera);
   }
 
@@ -141,9 +155,9 @@ export default class Canvas {
   onResize() {
     this.renderer.setSize(this.sizes.width, this.sizes.height);
     this.renderer.setPixelRatio(this.sizes.pixelRatio);
-
     this.camera.aspect = this.sizes.width / this.sizes.height;
     this.camera.updateProjectionMatrix();
+
   }
 
   update(time) {
@@ -152,7 +166,6 @@ export default class Canvas {
     this.parallaxCamera.update();
 
     if (this.home) this.home.update(time);
-
     if (this.about) this.about.update(time);
     if (this.plane) this.plane.update(time);
   }

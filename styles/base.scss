@@ -5,6 +5,7 @@ $yellow: #ffca0c;
 $light: #f1f5fe;
 $white: #ffffff;
 
+
 *,
 *:before,
 *:after {
@@ -16,8 +17,12 @@ html {
   font-size: calc(100vw / 1920 * 10);
   scroll-behavior: initial;
 
-  @media(max-width: 920px) {
-	font-size: calc(100vw / 920 * 10);
+  @media (max-width: 920px) {
+    font-size: calc(100vw / 920 * 10);
+  }
+
+  @media (max-width: 640px) {
+    font-size: calc(100vw / 640 * 10);
   }
 }
 
@@ -55,7 +60,7 @@ canvas {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: -1;
   background-color: transparent;
   user-select: none;
@@ -84,7 +89,7 @@ canvas {
 
 .wrapper {
   width: 149.6rem;
-  max-width: 95%;
+  max-width: 90%;
   margin: 0 auto;
 }
 
@@ -96,18 +101,20 @@ canvas {
   color: $white;
 }
 
-
-
 .hero-btn {
-	margin-top: 6rem;
-	will-change: transform, opacity;
+  margin-top: 6rem;
+  will-change: transform, opacity;
 
-	span {
-	   @extend %description-18;
-	  color: #fff;
-	  text-transform: capitalize;
-	}
+  span {
+    @extend %description-18;
+    color: #fff;
+    text-transform: capitalize;
+
+    @media (max-width: 640px) {
+      font-size: 14px !important;
+    }
   }
+}
 
 .button {
   padding: 2.2rem 3.5rem;
@@ -118,6 +125,10 @@ canvas {
   width: fit-content;
   border-radius: 45px;
 
+  @media (max-width: 640px) {
+    padding: 15px 30px;
+  }
+
   p {
     color: $white;
     @extend %description-18;
@@ -127,6 +138,11 @@ canvas {
   img {
     width: 3.6rem;
     margin-left: 5.4rem;
+
+    @media (max-width: 640px) {
+      width: 30px;
+      margin-left: 30px;
+    }
   }
 }
 
@@ -179,6 +195,22 @@ canvas {
   margin: 0 3rem;
   border-radius: 20px;
   padding: 10rem 0 17rem 0;
+
+  @media (max-width: 920px) {
+    margin: 0 1.5rem;
+  }
+}
+
+.blue-section {
+  position: relative;
+  background: $blue;
+  margin: 0 3rem;
+  border-radius: 20px;
+  padding: 10rem 0 17rem 0;
+
+  @media (max-width: 920px) {
+    margin: 0 1.5rem;
+  }
 }
 
 #video {
@@ -212,9 +244,12 @@ canvas {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(6px);
-
   opacity: 0;
   will-change: opacity;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
 
   img {
     margin-bottom: 3rem;

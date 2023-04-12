@@ -16,8 +16,6 @@ export default class Model {
     this.currentVideoTexture = null;
     this.videoTextureAdded = false;
 
-
-	
     this.init();
   }
 
@@ -51,8 +49,6 @@ export default class Model {
 
     this.model.children[0].material = this.m;
 
-
-	
     if (this.name === "phone") {
       this.setHomeModel();
       setTimeout(() => {
@@ -72,7 +68,10 @@ export default class Model {
 
   setAboutModel() {
     this.model.scale.set(0.9, 0.9, 0.9);
-    this.model.position.set(1, 0, 0);
+
+	this.x = window.innerWidth < 920 ? 0.2 : 1;
+
+    this.model.position.set(this.x, 0, 0);
     this.model.rotation.set(0, 0, 0);
 
     this.m.onBeforeCompile = (shader) => {
@@ -139,9 +138,26 @@ export default class Model {
 
   setHomeModel() {
     this.model.updateMatrixWorld();
-    // this.environmentMap.mapping = THREE.EquirectangularReflectionMapping;
     this.model.scale.set(3, 3, 3);
-    this.model.position.set(1.5, -0.8, 0);
+
+    // const tabletQuery = window.matchMedia("(max-width: 920px)");
+
+    // const handleMediaQuery = (e) => {
+    //   if (tabletQuery.matches) {
+    //     this.model.position.set(0.6, -1.3, 0);
+    //   } else {
+    //     this.model.position.set(1.5, -0.8, 0);
+    //   }
+    // };
+
+    this.x = window.innerWidth < 920 ? 0.6 : 1.5;
+    this.y = window.innerWidth < 920 ? -1.2 : -0.8;
+
+    this.model.position.set(this.x, this.y, 0);
+
+    // handleMediaQuery();
+    // tabletQuery.addEventListener("change", handleMediaQuery);
+
     this.model.rotation.set(0, -0.08, 0);
 
     this.m.onBeforeCompile = (shader) => {
@@ -283,8 +299,7 @@ export default class Model {
             // Add other images to the clones
             // For example, you could create new materials with the other images and assign them to the clones' meshes
 
-
-			this.videoTexture2 = {};
+            this.videoTexture2 = {};
             this.video2 = this.resources.items.problemOne;
             this.video2.crossOrigin = "anonymous";
             this.video2.muted = "muted";
@@ -300,70 +315,74 @@ export default class Model {
             this.videoTexture2 = new THREE.VideoTexture(this.video2);
             this.videoTexture2.flipY = true;
 
-
             this.clone1.material = new THREE.MeshBasicMaterial({
-			  map: this.videoTexture2,
+              map: this.videoTexture2,
               transparent: true,
               opacity: 0,
               side: THREE.DoubleSide,
             });
 
-// Create a glow material with the same video texture
-var glowMaterial = new THREE.MeshBasicMaterial({
-    map: this.videoTexture2,
-    transparent: true,
-    opacity: 0.5,
-    side: THREE.BackSide,
-});
+            // Create a glow material with the same video texture
+            var glowMaterial = new THREE.MeshBasicMaterial({
+              map: this.videoTexture2,
+              transparent: true,
+              opacity: 0.5,
+              side: THREE.BackSide,
+            });
 
-// Create a mesh to hold the glow material
-var glowMesh = new THREE.Mesh(phoneScreenMesh.geometry, glowMaterial);
-glowMesh.scale.set(1.1, 1.1, 1.1); // adjust the size of the glow
+            // Create a mesh to hold the glow material
+            var glowMesh = new THREE.Mesh(
+              phoneScreenMesh.geometry,
+              glowMaterial
+            );
+            glowMesh.scale.set(1.1, 1.1, 1.1); // adjust the size of the glow
 
-// Add the glow mesh as a child of the original phone screen mesh
-phoneScreenMesh.add(glowMesh);
+            // Add the glow mesh as a child of the original phone screen mesh
+            phoneScreenMesh.add(glowMesh);
 
-// Set the position and rotation of the glow mesh to match the original
-glowMesh.position.z = 0.0722;
-glowMesh.rotation.y = Math.PI;
-glowMesh.rotation.z = Math.PI;
-glowMesh.scale.set(0.45, 0.45, 0.46);
+            // Set the position and rotation of the glow mesh to match the original
+            glowMesh.position.z = 0.0722;
+            glowMesh.rotation.y = Math.PI;
+            glowMesh.rotation.z = Math.PI;
+            glowMesh.scale.set(0.45, 0.45, 0.46);
 
-// Make the glow mesh invisible to start with
-glowMesh.visible = false;
+            // Make the glow mesh invisible to start with
+            glowMesh.visible = false;
 
-// Add a custom shader to the glow material to make it glow
-glowMaterial.onBeforeCompile = function (shader) {
-    shader.uniforms.viewVector = { value: new THREE.Vector3(0, 0, 1) };
-    shader.vertexShader = 'uniform vec3 viewVector;\n' + shader.vertexShader;
-    shader.vertexShader = shader.vertexShader.replace(
-        '#include <begin_vertex>',
-        [
-            'vec3 transformedNormal = normal;',
-            'vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );',
-            'gl_Position = projectionMatrix * mvPosition;',
-            'vec3 vNormal = normalize( transformedNormal );',
-            'vec3 vNormel = normalize( normalMatrix * viewVector );',
-            'float dotProduct = dot( vNormal, vNormel );',
-            'vec3 color = vec3( 0.0, 1.0, 0.0 );',
-            'gl_FrontColor = vec4( color * dotProduct, 1.0 );'
-        ].join('\n')
-    );
-    shader.fragmentShader = 'varying vec4 vColor;\n' + shader.fragmentShader;
-    shader.fragmentShader = shader.fragmentShader.replace(
-        'void main() {',
-        [
-            'void main() {',
-            'vec4 sum = vec4( 0.0 );',
-            'for ( int i = 0; i < 10; i ++ ) {',
-            'sum += texture2D( map, vUv + float( i ) * uOffset ) * glowColor * glowPower * ( 10.0 / ( float( i ) + 10.0 ) );',
-            '}',
-            'gl_FragColor = sum;',
-        ].join('\n')
-    );
-};
-
-
+            // Add a custom shader to the glow material to make it glow
+            glowMaterial.onBeforeCompile = function (shader) {
+              shader.uniforms.viewVector = {
+                value: new THREE.Vector3(0, 0, 1),
+              };
+              shader.vertexShader =
+                "uniform vec3 viewVector;\n" + shader.vertexShader;
+              shader.vertexShader = shader.vertexShader.replace(
+                "#include <begin_vertex>",
+                [
+                  "vec3 transformedNormal = normal;",
+                  "vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
+                  "gl_Position = projectionMatrix * mvPosition;",
+                  "vec3 vNormal = normalize( transformedNormal );",
+                  "vec3 vNormel = normalize( normalMatrix * viewVector );",
+                  "float dotProduct = dot( vNormal, vNormel );",
+                  "vec3 color = vec3( 0.0, 1.0, 0.0 );",
+                  "gl_FrontColor = vec4( color * dotProduct, 1.0 );",
+                ].join("\n")
+              );
+              shader.fragmentShader =
+                "varying vec4 vColor;\n" + shader.fragmentShader;
+              shader.fragmentShader = shader.fragmentShader.replace(
+                "void main() {",
+                [
+                  "void main() {",
+                  "vec4 sum = vec4( 0.0 );",
+                  "for ( int i = 0; i < 10; i ++ ) {",
+                  "sum += texture2D( map, vUv + float( i ) * uOffset ) * glowColor * glowPower * ( 10.0 / ( float( i ) + 10.0 ) );",
+                  "}",
+                  "gl_FragColor = sum;",
+                ].join("\n")
+              );
+            };
 
             this.clone2.material = new THREE.MeshBasicMaterial({
               color: "blue",
@@ -463,16 +482,21 @@ glowMaterial.onBeforeCompile = function (shader) {
     });
 
     //hide model when entering the blue section
-    ScrollTrigger.create({
-      trigger: ".result",
-      start: "top top",
-      onLeave: () => {
-        this.model.visible = false;
-      },
-      onEnterBack: () => {
-        this.model.visible = true;
-      },
-    });
+		ScrollTrigger.create({
+			trigger: '.results',
+			start: "top top",
+			end: "bottom top",
+			invalidateOnRefresh: true,
+			onEnter: () => {
+			  this.model.visible = true;
+			},
+			onLeave: () => {
+			  this.model.visible = false;
+			},
+			onEnterBack: () => {
+			  this.model.visible = true;
+			},
+		  });
 
     const tl = gsap.timeline({ paused: true });
 
@@ -683,6 +707,7 @@ glowMaterial.onBeforeCompile = function (shader) {
     this.model.visible = true;
 
     this.showTl = gsap.timeline({ delay: 1.3 });
+    let mm = gsap.matchMedia();
 
     if (this.name === "phone") {
       this.showTl.fromTo(
@@ -693,7 +718,7 @@ glowMaterial.onBeforeCompile = function (shader) {
       this.showTl.fromTo(
         this.model.position,
         { y: -3 },
-        { y: -0.8, duration: 1 },
+        { y: () => (window.innerWidth < 920 ? -1.3 : -0.8), duration: 1 },
         0
       );
     }
@@ -716,4 +741,5 @@ glowMaterial.onBeforeCompile = function (shader) {
       this.m.userData.shader.uniforms.uTime.value = time;
     }
   }
+
 }

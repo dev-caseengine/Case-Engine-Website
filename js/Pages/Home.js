@@ -21,6 +21,7 @@ export default class Home extends Page {
         results_headings: ".results__problem h2",
         results_text: ".results__problem p",
         results_result: ".results__result p",
+		results_label_problem: ".results__label-problem p",
         results_label: ".results__label p",
         results_border: ".results__border",
         results_cursor: ".results__follow",
@@ -56,12 +57,21 @@ export default class Home extends Page {
       { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
       0.2
     );
+
+	initTl.fromTo(
+		this.elements.results_label_problem,
+		{ autoAlpha: "0", y: "100%" },
+		{ autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+		0.8
+	  );
+
     initTl.fromTo(
       this.elements.results_result[0],
       { autoAlpha: "0", y: "100%" },
       { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
       1
     );
+
     initTl.fromTo(
       this.elements.results_label,
       { autoAlpha: "0", y: "100%" },
@@ -133,6 +143,12 @@ export default class Home extends Page {
     const pinTl = gsap.timeline({ paused: true });
     pinTl.to(".results__overlay", { opacity: 1, delay: 0.15 });
 
+	ScrollTrigger.config({
+		// Define your media query here
+		// This example applies the ScrollTrigger only on screens wider than 768px
+		matchMedia: "(min-width: 768px)"
+	  });
+
     ScrollTrigger.create({
       trigger: ".results",
       invalidateOnRefresh: true,
@@ -163,22 +179,28 @@ export default class Home extends Page {
   clientSliderFirst() {
     this.clientSldier = new Swiper(".client-slider", {
       modules: [Autoplay],
-      slidesPerView: 4,
-      spaceBetween: 90,
+      slidesPerView: 2,
+      spaceBetween: 30,
       autoplay: {
         delay: 0,
         disableOnInteraction: false,
       },
       loop: true,
       speed: 6000,
+	  breakpoints: {
+        920: {
+          slidesPerView: 4,
+          spaceBetween: 90,
+        },
+	  },
     });
   }
 
   clientSliderSecond() {
     this.clientSldierSecond = new Swiper(".client-slider-bottom", {
       modules: [Autoplay],
-      slidesPerView: 4,
-      spaceBetween: 90,
+	  slidesPerView: 2,
+      spaceBetween: 30,
       autoplay: {
         delay: 0,
         disableOnInteraction: false,
@@ -186,6 +208,12 @@ export default class Home extends Page {
       },
       loop: true,
       speed: 6000,
+	  breakpoints: {
+        920: {
+          slidesPerView: 4,
+          spaceBetween: 90,
+        },
+	  },
     });
   }
 

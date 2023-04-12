@@ -13,21 +13,25 @@ export default class Page {
     this.selector = element;
     this.selectorChildren = {
       ...elements,
-      //   animationsTitles: '[data-animation="title"]',
-      //   animationTexts: '[data-animation="text"]',
     };
 
     gsap.registerPlugin(ScrollTrigger);
   }
 
   createSmoothScroll() {
-    this.lenis = new Lenis({
-      //   lerp: 0.6,
-      smooth: true,
-    });
-
-    this.lenis.stop();
-    this.lenis.on("scroll", () => ScrollTrigger.update());
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    if (!isMobile) {
+      this.lenis = new Lenis({
+        smooth: true,
+      });
+      this.lenis.stop();
+      this.lenis.on("scroll", () => ScrollTrigger.update());
+    } else {
+      // Do nothing or fallback to default scrolling behavior on mobile devices
+    }
   }
 
   create() {
@@ -113,14 +117,14 @@ export default class Page {
   show() {
     return new Promise((resolve) => {
       this.preloadInitAnimation();
-
-      console.log("show");
       // Scroll to top of page
       window.scrollTo(0, 0);
 
       // Re-enable Lenis
       setTimeout(() => {
-        this.lenis.start();
+        if (this.lenis) {
+          this.lenis.start();
+        }
       }, 1000);
 
       gsap.from(this.element, {
@@ -151,11 +155,15 @@ export default class Page {
   }
 
   update(time) {
-    this.lenis.raf(time * 1.3);
+    if (this.lenis) {
+      this.lenis.raf(time);
+    }
   }
 
   destroy() {
     // Disable Lenis
-    this.lenis.stop();
+    if (this.lenis) {
+      this.lenis.stop();
+    }
   }
 }
