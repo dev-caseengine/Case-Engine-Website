@@ -57,73 +57,73 @@ export default class About extends Page {
   }
 
   videoModal() {
-	const modalBtn = document.querySelector(".about-video__btn");
-	const closeModalBtn = document.querySelector(".close-modal");
-	const modal = document.querySelector(".about-video__modal");
-	const videoIframe = document.querySelector(".vimeo-video");
-	let player = null;
-	let videoId = null;
-  
-	const loadVimeoPlayerAPI = () => {
-	  const script = document.createElement("script");
-	  script.src = "https://player.vimeo.com/api/player.js";
-	  script.onload = createVimeoPlayerInstance;
-	  document.body.appendChild(script);
-	};
-  
-	const createVimeoPlayerInstance = () => {
-	  player = new Vimeo.Player(videoIframe);
-	  player.getVideoId().then((id) => {
-		videoId = id;
-		player.play();
-	  });
-	};
-  
-	modalBtn.addEventListener("click", () => {
-	  document.body.style.overflow = "hidden";
-	  if (this.lenis) {
-		this.lenis.stop();
-	  }
-  
-	  modal.style.display = "flex";
-	  gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.3 });
-  
-	  if (player === null) {
-		loadVimeoPlayerAPI();
-	  } else {
-		player.loadVideo(videoId).catch((error) => {
-		  console.error(error);
-		});
-		player.play().catch((error) => {
-		  console.error(error);
-		});
-	  }
-	});
-  
-	closeModalBtn.addEventListener("click", () => {
-	  gsap.fromTo(
-		modal,
-		{ opacity: 1 },
-		{
-		  opacity: 0,
-		  duration: 0.3,
-		  onComplete: () => {
-			modal.classList.remove("about-video__modal-active");
-			document.body.style.overflow = "auto";
-			if (this.lenis) {
-			  this.lenis.start();
-			}
-			if (player !== null) {
-			  player.pause();
-			  player.unload();
-			  player = null;
-			  videoId = null;
-			}
-			modal.style.display = "none"; // set display to none after animating opacity
-		  },
-		}
-	  );
-	});
+    const modalBtn = document.querySelector(".about-video__btn");
+    const closeModalBtn = document.querySelector(".close-modal");
+    const modal = document.querySelector(".about-video__modal");
+    const videoIframe = document.querySelector(".vimeo-video");
+    let player = null;
+    let videoId = null;
+
+    const loadVimeoPlayerAPI = () => {
+      const script = document.createElement("script");
+      script.src = "https://player.vimeo.com/api/player.js";
+      script.onload = createVimeoPlayerInstance;
+      document.body.appendChild(script);
+    };
+
+    const createVimeoPlayerInstance = () => {
+      player = new Vimeo.Player(videoIframe);
+      player.getVideoId().then((id) => {
+        videoId = id;
+        player.play();
+      });
+    };
+
+    modalBtn.addEventListener("click", () => {
+      document.body.style.overflow = "hidden";
+      if (this.lenis) {
+        this.lenis.stop();
+      }
+
+      modal.style.display = "flex";
+      gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+
+      if (player === null) {
+        loadVimeoPlayerAPI();
+      } else {
+        player.loadVideo(videoId).catch((error) => {
+          console.error(error);
+        });
+        player.play().catch((error) => {
+          console.error(error);
+        });
+      }
+    });
+
+    closeModalBtn.addEventListener("click", () => {
+      gsap.fromTo(
+        modal,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            modal.classList.remove("about-video__modal-active");
+            document.body.style.overflow = "auto";
+            if (this.lenis) {
+              this.lenis.start();
+            }
+            if (player !== null) {
+              player.pause();
+              player.unload();
+              player = null;
+              videoId = null;
+            }
+            modal.style.display = "none"; // set display to none after animating opacity
+          },
+        }
+      );
+    });
   }
 
   aboutGallery() {
@@ -163,7 +163,6 @@ export default class About extends Page {
   teamSlide() {
     this.teamSlider = new Swiper(".about-team__slider", {
       modules: [Navigation],
-      allowTouchMove: true,
       slidesPerView: 1.25,
       spaceBetween: 30,
       grabCursor: true,
@@ -171,9 +170,6 @@ export default class About extends Page {
         nextEl: ".about-arrow-right",
         prevEl: ".about-arrow-left",
       },
-
-      allowSlidePrev: true,
-      allowSlideNext: true,
 
       breakpoints: {
         920: {
