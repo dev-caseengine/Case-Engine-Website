@@ -7,8 +7,10 @@ import Preloader from "./js/components/Preloader";
 
 import About from "./js/Pages/About";
 import Home from "./js/Pages/Home";
+import Contact from "./js/Pages/Contact";
 import Resources from "./js/utils/Resources";
 import "./styles/main.scss";
+
 
 
 class App {
@@ -40,9 +42,8 @@ class App {
   }
 
   createNavigation() {
-    this.navigation = new Navigation({
-      template: this.template,
-    });
+    this.navigation = new Navigation();
+	this.navigation.create();
   }
 
   createCanvas() {
@@ -67,6 +68,7 @@ class App {
     this.pages = {
       home: new Home(),
       about: new About(),
+	  contact: new Contact(),
     };
 
     this.page = this.pages[this.template];
@@ -93,6 +95,7 @@ onPreloaded() {
 	this.canvas.onChangeStart(this.template, url);
 
     await this.page.hide(); // hide current page
+	this.navigation.destroy();
 
     const request = await window.fetch(url); // fetch requested page
 
@@ -110,7 +113,7 @@ onPreloaded() {
 
       this.template = divContent.getAttribute("data-template"); // update template value
 
-      this.navigation.onChange(this.template);
+    //   this.navigation.onChange(this.template);
       this.canvas.onChangeEnd(this.template);
       this.footer.onChange(this.template);
       this.content.setAttribute("data-template", this.template);
@@ -118,6 +121,7 @@ onPreloaded() {
 
       this.page = this.pages[this.template];
       this.page.create();
+	  this.navigation.create();
 
       this.onResize();
 

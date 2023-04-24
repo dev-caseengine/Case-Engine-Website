@@ -14,10 +14,37 @@
   opacity: 0;
   will-change: transform opacity;
 
+  @media (max-width: 600px) {
+    padding: 6rem 3rem;
+  }
+
+
+  &.--active {
+
+	.logo-text {
+		fill: $black;
+		transition: all .5s ease-out;
+	}
+
+	.close-btn {
+
+		span {
+			background: #000 !important;
+		}
+	}
+
+  }
+
+
   &__logo {
-	width: 20.9rem;
+    width: 20.9rem;
     display: flex;
     align-items: center;
+	z-index: 2;
+
+    @media (max-width: 600px) {
+      width: 27rem;
+    }
 
     .symbol {
       height: 3.9rem;
@@ -50,39 +77,170 @@
   &__nav {
     display: flex;
     align-items: center;
+	z-index: 2;
   }
 
-  .nav {
-	margin-right: 3rem;
-	a {
-		@extend %description-14;
-		color: $white;
-	}
+  .border-btn {
+    margin-right: 4.5rem;
+
+    @media (max-width: 600px) {
+      margin-right: 0;
+      display: none;
+    }
+  }
+
+  &__menu {
+    &.--active {
+      display: block;
+    }
+
+    display: none;
+    background: $light;
+    position: absolute;
+    right: 6rem;
+    top: 9rem;
+    border-radius: 9px;
+    will-change: opacity, transform;
+    transform-origin: top right;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+	@media (max-width: 920px) {
+        right: 0;
+		top: 0;
+		width: 100%;
+      }
+
+
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      padding: 9rem 12rem 6rem 6rem;
+
+      @media (max-width: 920px) {
+        padding: 14rem 6rem 4rem 4rem;
+      }
+    }
+
+    &__links {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 9rem;
+
+      a,
+      div {
+        overflow: hidden;
+        margin-bottom: 3rem;
+        height: 6rem;
+
+        @media (max-width: 920px) {
+          height: 4rem;
+        }
+
+		@media (max-width: 600px) {
+			margin-bottom: 6rem;
+		  }
+
+        p,
+        span {
+          display: block;
+          @extend %heading-47;
+          font-weight: 300;
+          color: $black;
+          text-transform: capitalize;
+          will-change: transform;
+          transition: transform 0.3s ease-out;
+        }
+
+        &:hover {
+          p,
+          span {
+            transform: translateY(-100%) !important;
+          }
+        }
+      }
+    }
+
+    &__social {
+      display: flex;
+      align-items: center;
+      p {
+        @extend %description-14-normal;
+        margin-right: 3rem;
+        opacity: 0.6 !important;
+      }
+
+      a {
+        @extend %description-14-normal;
+        margin-right: 1.5rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
   }
 }
 
 .burger-btn {
-	display: none;
-
   flex-direction: column;
   align-items: flex-end;
   cursor: pointer;
-  margin-left: 4.5rem;
 
   span {
     display: block;
-    width: 3.5rem;
+    width: 3rem;
     height: 1px;
     background: $light;
     margin-bottom: 1rem;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease-out;
 
-    &:nth-child(2) {
-      width: 3rem;
+    @media (max-width: 600px) {
+      width: 4rem;
+      margin-bottom: 1.5rem;
     }
 
     &:last-child {
       margin-bottom: 0;
     }
   }
+}
+
+.close-btn {
+  display: none;
+  width: 3rem;
+  height: 3rem;
+  position: relative;
+  cursor: pointer;
+
+  @media (max-width: 600px) {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  span {
+    display: block;
+    width: 90%;
+    height: 1.1px;
+    background: $white;
+    position: absolute;
+
+    &:first-child {
+      top: 50%;
+      left: 0;
+    }
+
+    &:last-child {
+      //   transform: rotate(-45deg);
+      top: 50%;
+      left: 0;
+    }
+  }
+}
+
+.disabled {
+  cursor: none;
+  pointer-events: none;
+  backface-visibility: hidden;
+  opacity: 0.3;
 }

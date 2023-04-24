@@ -26,6 +26,11 @@ export default class Page {
     if (!isMobile) {
       this.lenis = new Lenis({
         smooth: true,
+        duration: 0.6,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        mouseMultiplier: 1,
+        smoothTouch: true,
+        touchMultiplier: 3,
       });
       this.lenis.stop();
       this.lenis.on("scroll", () => ScrollTrigger.update());
@@ -34,32 +39,7 @@ export default class Page {
     }
   }
 
-  create() {
-    this.element = document.querySelector(this.selector);
-    this.elements = {};
 
-    each(this.selectorChildren, (value, key) => {
-      if (
-        value instanceof window.HTMLElement ||
-        value instanceof window.NodeList ||
-        Array.isArray(value)
-      ) {
-        // if value is already an actual element or array of any type, save it as is
-        this.elements[key] = value;
-      } else {
-        // if value is a selector, get the element and save that
-        this.elements[key] = document.querySelectorAll(value);
-
-        if (this.elements[key].length === 0) {
-          this.elements[key] = null;
-        } else if (this.elements[key].length === 1) {
-          this.elements[key] = document.querySelector(value);
-        }
-      }
-    });
-    this.createAnimations();
-    this.createSmoothScroll();
-  }
   createAnimations() {
     this.fadeText = new Text();
   }
@@ -112,6 +92,35 @@ export default class Page {
       { autoAlpha: 1, duration: 1, ease: "power2.out" },
       1.2
     );
+  }
+
+
+
+  create() {
+    this.element = document.querySelector(this.selector);
+    this.elements = {};
+
+    each(this.selectorChildren, (value, key) => {
+      if (
+        value instanceof window.HTMLElement ||
+        value instanceof window.NodeList ||
+        Array.isArray(value)
+      ) {
+        // if value is already an actual element or array of any type, save it as is
+        this.elements[key] = value;
+      } else {
+        // if value is a selector, get the element and save that
+        this.elements[key] = document.querySelectorAll(value);
+
+        if (this.elements[key].length === 0) {
+          this.elements[key] = null;
+        } else if (this.elements[key].length === 1) {
+          this.elements[key] = document.querySelector(value);
+        }
+      }
+    });
+    this.createAnimations();
+    this.createSmoothScroll();
   }
 
   show() {

@@ -21,7 +21,7 @@ export default class Home extends Page {
         results_headings: ".results__problem h2",
         results_text: ".results__problem p",
         results_result: ".results__result p",
-		results_label_problem: ".results__label-problem p",
+        results_label_problem: ".results__label-problem p",
         results_label: ".results__label p",
         results_border: ".results__border",
         results_cursor: ".results__follow",
@@ -35,12 +35,11 @@ export default class Home extends Page {
     super.create();
     this.initResults();
     this.pinSection();
-    this.blueSection();
+    this.whiteSection();
     this.clientSliderFirst();
     this.clientSliderSecond();
     // this.drawSvg();
   }
-
 
   initResults() {
     const initTl = gsap.timeline({ paused: true });
@@ -58,12 +57,12 @@ export default class Home extends Page {
       0.2
     );
 
-	initTl.fromTo(
-		this.elements.results_label_problem,
-		{ autoAlpha: "0", y: "100%" },
-		{ autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
-		0.8
-	  );
+    initTl.fromTo(
+      this.elements.results_label_problem,
+      { autoAlpha: "0", y: "100%" },
+      { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+      0.8
+    );
 
     initTl.fromTo(
       this.elements.results_result[0],
@@ -105,24 +104,6 @@ export default class Home extends Page {
     });
   }
 
-
-  //   drawSvg() {
-  //     const myPath = document.querySelector(".svg-path");
-  //     // Get the length of the path
-  //     const pathLength = myPath.getTotalLength();
-
-  //     // Set the initial values for the stroke-dasharray and stroke-dashoffset properties
-  //     myPath.style.strokeDasharray = pathLength;
-  //     myPath.style.strokeDashoffset = pathLength;
-
-  //     // Animate the stroke-dashoffset property from pathLength to 0
-  //     gsap.to(myPath, {
-  //       strokeDashoffset: 0,
-  //       duration: 2,
-  //       ease: "Power1.easeOut",
-  //     });
-  //   }
-
   modelAnimation() {
     this.scrollTl = gsap.timeline({ paused: true });
     this.scrollTl.to(this.handModel.rotation, { y: -Math.PI * 2 }, 0);
@@ -143,11 +124,9 @@ export default class Home extends Page {
     const pinTl = gsap.timeline({ paused: true });
     pinTl.to(".results__overlay", { opacity: 1, delay: 0.15 });
 
-	ScrollTrigger.config({
-		// Define your media query here
-		// This example applies the ScrollTrigger only on screens wider than 768px
-		matchMedia: "(min-width: 768px)"
-	  });
+    ScrollTrigger.config({
+      matchMedia: "(min-width: 768px)",
+    });
 
     ScrollTrigger.create({
       trigger: ".results",
@@ -162,18 +141,57 @@ export default class Home extends Page {
     });
   }
 
-  blueSection() {
-    gsap.to(".logo-symbol", {
-      fill: "#fff",
-      duration: 0.3,
-      scrollTrigger: {
-        trigger: this.elements.blueSection,
+  whiteSection() {
+    this.whiteSections = document.querySelectorAll(".white-bg");
+    this.whiteSections.forEach((section) => {
+      this.whiteTl = gsap.timeline({ paused: true });
+      this.whiteTl.to(".burger-btn *, .close-btn *", {
+        background: "#000",
+        duration: 0.3,
+      });
+
+      this.whiteTl.to(
+        ".border-btn",
+        {
+          borderColor: "rgba(0,0,0,0.1)",
+          color: "#000",
+        },
+        0
+      );
+
+      ScrollTrigger.create({
+        trigger: section,
         start: "top top",
         end: "bottom top",
         toggleActions: "play reverse play reverse",
-        id: "blueSection",
-      },
+        animation: this.whiteTl,
+        id: "whiteSection",
+      });
+
+      //   gsap.to(".burger-btn *, .close-btn *", {
+      //     background: "#000",
+      //     duration: 0.3,
+      //     scrollTrigger: {
+      //       trigger: section,
+      //       start: "top top",
+      //       end: "bottom top",
+      //       toggleActions: "play reverse play reverse",
+      //       id: "blueSection",
+      //     },
+      //   });
     });
+
+    // gsap.to(".burger-btn *, .close-btn *", {
+    //   background: "#000",
+    //   duration: 0.3,
+    //   scrollTrigger: {
+    //     trigger: this.elements.blueSection,
+    //     start: "top top",
+    //     end: "bottom top",
+    //     toggleActions: "play reverse play reverse",
+    //     id: "blueSection",
+    //   },
+    // });
   }
 
   clientSliderFirst() {
@@ -187,19 +205,19 @@ export default class Home extends Page {
       },
       loop: true,
       speed: 6000,
-	  breakpoints: {
+      breakpoints: {
         920: {
           slidesPerView: 4,
           spaceBetween: 90,
         },
-	  },
+      },
     });
   }
 
   clientSliderSecond() {
     this.clientSldierSecond = new Swiper(".client-slider-bottom", {
       modules: [Autoplay],
-	  slidesPerView: 2,
+      slidesPerView: 2,
       spaceBetween: 30,
       autoplay: {
         delay: 0,
@@ -208,12 +226,12 @@ export default class Home extends Page {
       },
       loop: true,
       speed: 6000,
-	  breakpoints: {
+      breakpoints: {
         920: {
           slidesPerView: 4,
           spaceBetween: 90,
         },
-	  },
+      },
     });
   }
 
@@ -224,10 +242,8 @@ export default class Home extends Page {
 
     // Unpin the pinSection ScrollTrigger
     ScrollTrigger.getById("pinSection")?.disable();
-
     // Remove the blueSection ScrollTrigger
-    ScrollTrigger.getById("blueSection")?.kill();
-
+    ScrollTrigger.getById("whiteSection")?.kill();
     // Destroy the clientsSlider Swiper instance
     // Destroy the Swiper instance
     if (this.clientSldier) {
@@ -238,6 +254,10 @@ export default class Home extends Page {
     }
 
     // Reset the logo color to its default value
-    gsap.set(".logo-symbol", { fill: "#3573FF" });
+    gsap.set(".burger-btn *, .close-btn *", { background: "#fff" });
+    gsap.set(".border-btn, .close-btn *", {
+      borderColor: "rgba(255,255,255,0.1)",
+      color: "#fff",
+    });
   }
 }

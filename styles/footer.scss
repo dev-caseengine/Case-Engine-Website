@@ -4,6 +4,7 @@
   padding-bottom: 6rem;
   overflow: hidden;
   position: relative;
+  
 
   @media (max-width: 920px) {
 	padding-top: 12rem;
@@ -146,7 +147,7 @@
 }
 
 .dark-footer {
-  .footer {
+
     background: none;
 
     .label {
@@ -162,7 +163,7 @@
       color: $white;
     }
 
-    &__bg {
+    .footer__bg {
       opacity: 0.05;
     }
 
@@ -174,7 +175,7 @@
       color: $white;
     }
 
-    &__glow {
+    .footer__glow {
       display: block;
       position: absolute;
       top: -90%;
@@ -182,5 +183,5 @@
       z-index: -1;
       transform: translateX(-50%);
     }
-  }
+  
 }

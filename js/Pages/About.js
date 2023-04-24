@@ -181,7 +181,7 @@ export default class About extends Page {
   }
 
   blueSection() {
-    gsap.to(".logo-text", {
+    gsap.to(".logo-symbol", {
       fill: "#fff",
       duration: 0.3,
       scrollTrigger: {

@@ -160,7 +160,7 @@
 
     span {
       color: $white;
-      @extend %description-18;
+      @extend %description-14;
     }
   }
 
@@ -329,6 +329,7 @@
     position: absolute;
     left: 12vw;
     top: 24.5%;
+	z-index: -1;
 
     @media (max-width: 920px) {
       //   left: 50%;
@@ -351,7 +352,7 @@
     position: absolute;
     right: 19rem;
     top: 24.5%;
-    z-index: 1;
+    z-index: -1;
   
 
 	@media(max-width: 920px) {
