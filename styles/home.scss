@@ -133,7 +133,8 @@
   position: relative;
   z-index: 1;
   overflow: hidden;
-  margin-bottom: 20rem;
+margin-bottom: 50vh;
+//   margin-bottom: 20rem;
 
   .result {
     position: absolute;
@@ -300,6 +301,7 @@
     opacity: 0;
     pointer-events: none;
     backface-visibility: hidden;
+	z-index: 2;
   }
 
   &__trigger {

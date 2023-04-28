@@ -23,7 +23,6 @@ export default class Model {
     this.showModel();
 
     this.model = this.resource.scene;
-
     // this.loader.load(this.file, (response) => {
     this.pmremGenerator = new THREE.PMREMGenerator(this.renderer);
     this.pmremGenerator.compileEquirectangularShader();
@@ -487,7 +486,7 @@ export default class Model {
 		ScrollTrigger.create({
 			trigger: '.results',
 			start: "top top",
-			end: "bottom top",
+			end: "150%",
 			invalidateOnRefresh: true,
 			onEnter: () => {
 			  this.model.visible = true;

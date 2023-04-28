@@ -29,6 +29,7 @@ export default class Home extends Page {
     });
 
     gsap.registerPlugin(ScrollTrigger);
+
   }
 
   create() {
@@ -38,7 +39,6 @@ export default class Home extends Page {
     this.whiteSection();
     this.clientSliderFirst();
     this.clientSliderSecond();
-    // this.drawSvg();
   }
 
   initResults() {
@@ -121,19 +121,19 @@ export default class Home extends Page {
   }
 
   pinSection() {
-    const pinTl = gsap.timeline({ paused: true });
-    pinTl.to(".results__overlay", { opacity: 1, delay: 0.15 });
+    const pinTl = gsap.timeline({ paused: true});
+    pinTl.to(".results__overlay", { opacity: 1, delay: 1});
 
-    ScrollTrigger.config({
-      matchMedia: "(min-width: 768px)",
-    });
+    // ScrollTrigger.config({
+    //   matchMedia: "(min-width: 768px)",
+    // });
 
     ScrollTrigger.create({
       trigger: ".results",
       invalidateOnRefresh: true,
       pin: true,
       start: "top top",
-      end: "100%",
+      end: "150%",
       scrub: true,
       pinSpacing: false,
       animation: pinTl,

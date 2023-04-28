@@ -45,8 +45,8 @@ export default class Page {
   }
 
   //Create Initial animation after laoding
-  preloadInitAnimation() {
-    this.introAnim = gsap.timeline({ delay: 1 });
+  showAnimation(resolve) {
+    this.introAnim = gsap.timeline({ delay: 1, onComplete: resolve  });
     this.introAnim.to(
       ".overlay span",
       { scaleY: 0, duration: 1, ease: "power3.out" },
@@ -125,7 +125,7 @@ export default class Page {
 
   show() {
     return new Promise((resolve) => {
-      this.preloadInitAnimation();
+      this.showAnimation(resolve);
       // Scroll to top of page
       window.scrollTo(0, 0);
 
@@ -136,11 +136,14 @@ export default class Page {
         }
       }, 1000);
 
-      gsap.from(this.element, {
-        // autoAlpha: 0,
-        duration: 0.5,
-        onComplete: resolve,
-      });
+
+	  
+
+    //   gsap.from(this.element, {
+    //     // autoAlpha: 0,
+    //     duration: 0.5,
+    //     onComplete: resolve,
+    //   });
     });
   }
 
