@@ -87,7 +87,7 @@ export default class Plane {
 	
 
     // Set position and scale
-    this.mesh.position.set(0, 0, -5);
+    this.mesh.position.set(0, 0, -6);
     this.mesh.scale.set(width, height, 1);
 
 	this.mesh.userData.isBackground = true;
