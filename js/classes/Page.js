@@ -39,62 +39,100 @@ export default class Page {
     }
   }
 
-
   createAnimations() {
     this.fadeText = new Text();
   }
 
   //Create Initial animation after laoding
   showAnimation(resolve) {
-    this.introAnim = gsap.timeline({ delay: 1, onComplete: resolve  });
+    this.introAnim = gsap.timeline({ delay: 1, onComplete: resolve });
     this.introAnim.to(
       ".overlay span",
       { scaleY: 0, duration: 1, ease: "power3.out" },
       -0.2
     );
 
-    this.introAnim.to(
-      "h1 .line-heading div",
-      { y: 0, duration: 1, ease: "power2.out", stagger: 0.1 },
-      0.4
-    );
-    this.introAnim.fromTo(
-      ".hero-desc",
-      { autoAlpha: 0, yPercent: 50 },
-      { autoAlpha: 1, yPercent: 0, duration: 1, ease: "power2.out" },
-      0.8
-    );
+    if (document.querySelector("h1 .line-heading div") != null) {
+      this.introAnim.to(
+        "h1 .line-heading div",
+        {
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          stagger: 0.1,
+        },
+        0.4
+      );
+    }
 
-    this.introAnim.fromTo(
-      ".hero-btn",
-      { autoAlpha: 0, yPercent: 50 },
-      { autoAlpha: 1, yPercent: 0, duration: 1, ease: "power2.out" },
-      0.9
-    );
+    if (document.querySelector(".contact-hero__title h1 span") != null) {
+		this.introAnim.fromTo(
+		  ".contact-hero__title h1 span",
+		  { yPercent: 100 },
+		  { yPercent: 0, duration: 1, stagger: 0.1, ease: "power2.out" },
+		  0.4
+		);
+	  }
+
+
+
+    if (document.querySelector(".hero-desc") != null) {
+      this.introAnim.fromTo(
+        ".hero-desc",
+        { autoAlpha: 0, yPercent: 50 },
+        { autoAlpha: 1, yPercent: 0, duration: 1, ease: "power2.out" },
+        0.8
+      );
+    }
+
+    if (document.querySelector(".hero-btn") != null) {
+      this.introAnim.fromTo(
+        ".hero-btn",
+        { autoAlpha: 0, yPercent: 50 },
+        { autoAlpha: 1, yPercent: 0, duration: 1, ease: "power2.out" },
+        0.9
+      );
+    }
+
+    if (document.querySelector(".label") != null) {
+      this.introAnim.fromTo(
+        ".label",
+        { autoAlpha: 0, yPercent: 50 },
+        { autoAlpha: 1, yPercent: 0, duration: 1, ease: "power2.out" },
+        0.9
+      );
+    }
 
     this.introAnim.to(
       ".header",
       { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
       0.8
     );
-    this.introAnim.to(
-      ".scroll-down img",
-      { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
-      1
-    );
-    this.introAnim.to(
-      ".scroll-down p",
-      { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
-      1.2
-    );
-    this.introAnim.to(
-      ".scroll-down",
-      { autoAlpha: 1, duration: 1, ease: "power2.out" },
-      1.2
-    );
+
+    if (document.querySelector(".scroll-down img") != null) {
+      this.introAnim.to(
+        ".scroll-down img",
+        { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
+        1
+      );
+    }
+
+    if (document.querySelector(".scroll-down p") != null) {
+      this.introAnim.to(
+        ".scroll-down p",
+        { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
+        1.2
+      );
+    }
+
+    if (document.querySelector(".scroll-down") != null) {
+      this.introAnim.to(
+        ".scroll-down",
+        { autoAlpha: 1, duration: 1, ease: "power2.out" },
+        1.2
+      );
+    }
   }
-
-
 
   create() {
     this.element = document.querySelector(this.selector);
@@ -136,14 +174,11 @@ export default class Page {
         }
       }, 1000);
 
-
-	  
-
-    //   gsap.from(this.element, {
-    //     // autoAlpha: 0,
-    //     duration: 0.5,
-    //     onComplete: resolve,
-    //   });
+      //   gsap.from(this.element, {
+      //     // autoAlpha: 0,
+      //     duration: 0.5,
+      //     onComplete: resolve,
+      //   });
     });
   }
 

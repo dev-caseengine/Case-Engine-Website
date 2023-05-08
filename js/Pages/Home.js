@@ -29,16 +29,58 @@ export default class Home extends Page {
     });
 
     gsap.registerPlugin(ScrollTrigger);
-
   }
 
   create() {
     super.create();
     this.initResults();
     this.pinSection();
+    this.foundersSlider();
     this.whiteSection();
     this.clientSliderFirst();
     this.clientSliderSecond();
+  }
+
+  foundersSlider() {
+    // Get all the elements
+    const bullets = document.querySelectorAll(".who-we-are__bulets span");
+    const founders = document.querySelectorAll(".who-we-are__founders__inner");
+    const activeBulletClass = "active-bullet";
+
+
+    // Loop through the bullets and add click event listeners
+    bullets.forEach((bullet, index) => {
+
+		
+      bullet.addEventListener("click", () => {
+        // Remove the active class from all the bullets
+        bullets.forEach((bullet) => {
+          bullet.classList.remove(activeBulletClass);
+        });
+
+        // Add the active class to the selected bullet
+        bullet.classList.add(activeBulletClass);
+
+        // Remove the active class from all the founders
+        founders.forEach((founder) => {
+          founder.classList.remove("active-founder");
+        });
+
+        // Add the active class to the selected founder
+        founders[index].classList.add("active-founder");
+
+        // Use GSAP to add the fade transition
+        gsap.fromTo(
+          ".who-we-are__founders__inner",
+          { opacity: 0, duration: 0.5 },
+          { opacity: 1, duration: 0.5 }
+        );
+
+	
+
+
+      });
+    });
   }
 
   initResults() {
@@ -121,8 +163,8 @@ export default class Home extends Page {
   }
 
   pinSection() {
-    const pinTl = gsap.timeline({ paused: true});
-    pinTl.to(".results__overlay", { opacity: 1, delay: 1});
+    const pinTl = gsap.timeline({ paused: true });
+    pinTl.to(".results__overlay", { opacity: 1, delay: 1 });
 
     // ScrollTrigger.config({
     //   matchMedia: "(min-width: 768px)",

@@ -37,17 +37,45 @@
         </svg>
       </a>
       <div class="header__nav">
-        <nav class="nav">
-          <a href="#"><p>About</p></a>
-        </nav>
-
-        <a href="../pages/contact.html" class="border-btn">
+        <a href="./pages/contact.html" class="border-btn">
           <p class="small-cap">Let’s talk</p>
         </a>
         <div class="burger-btn">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span class="burger-btn__line1"></span>
+          <span class="burger-btn__line2"></span>
+        </div>
+        <div class="close-btn">
+          <span class="line-1"></span>
+          <span class="line-2"></span>
+        </div>
+      </div>
+
+      <div class="header__menu">
+        <div class="header__menu__inner">
+          <div class="header__menu__links">
+            <a href="./pages/about.html">
+              <p>Company</p>
+              <span>Company</span>
+            </a>
+            <div href="#">
+              <p>What we do</p>
+              <span class="disabled">Coming soon</span>
+            </div>
+            <div href="#">
+              <p>Our work</p>
+              <span class="disabled">Coming soon</span>
+            </div>
+            <a href="./pages/contact.html">
+              <p>Contact</p>
+              <span>Contact</span>
+            </a>
+          </div>
+          <div class="header__menu__social">
+            <p>Social</p>
+            <a href="#">Linkedin</a>
+            <a href="#">Twitter</a>
+            <a href="#">Instagram</a>
+          </div>
         </div>
       </div>
     </header>
@@ -77,8 +105,190 @@
     </div>
 
     <div id="content" class="content" data-template="contact">
-      <div class="contact">
-        <h1>Contact Us</h1>
+      <div class="contact-hero">
+        <div class="contact-hero__inner">
+          <div class="contact-hero__top">
+            <h5 class="label">contact us today</h5>
+          </div>
+
+          <div class="contact-hero__title">
+            <h1>
+              <div>
+                <span>Start Getting MVA</span>
+              </div>
+              <div>
+                <span>Live Transfer Cases</span>
+              </div>
+              <div>
+                <span>To Your Firm</span>
+              </div>
+            </h1>
+          </div>
+
+          <div class="contact-hero__steps">
+            <div class="step" data-step="1">
+              <div class="step__title">
+                <h2>How Many Years Have You Been A Lawyer? *</h2>
+              </div>
+              <div class="step__form">
+                <button class="step__btn">0 - 5</button>
+                <button class="step__btn">5 - 10</button>
+                <button class="step__btn">10 - 15</button>
+                <button class="step__btn">15 +</button>
+              </div>
+            </div>
+
+            <div class="step" data-step="2">
+              <div class="step__title">
+                <h2>
+                  Do You Have An Intake Team Or Support Staff To Help Handle
+                  More Leads & Cases?
+                </h2>
+              </div>
+              <div class="step__form">
+                <button class="step__btn">Yes</button>
+                <button class="step__btn">No</button>
+              </div>
+
+              <div class="step-back">
+                <img src="../assets/arrow-leftt-white.svg" alt="" />
+              </div>
+            </div>
+
+            <div class="step" data-step="3">
+              <div class="step__title">
+                <h2>What City Is Your Firm Located In?</h2>
+              </div>
+              <div class="step__form">
+                <div class="step__form__input">
+                  <p>City</p>
+                  <input type="text" placeholder="City" />
+                  <div class="step__form__continue">
+                    <p>Continue</p>
+                  </div>
+                </div>
+              </div>
+              <div class="step-back">
+                <img src="../assets/arrow-leftt-white.svg" alt="" />
+              </div>
+            </div>
+
+            <div class="step" data-step="4">
+              <div class="step__title">
+                <h2>Are You An Owner Or Partner Of Your Firm?</h2>
+              </div>
+              <div class="step__form">
+                <button class="step__btn">Yes</button>
+                <button class="step__btn">No</button>
+              </div>
+
+              <div class="step-back">
+                <img src="../assets/arrow-leftt-white.svg" alt="" />
+              </div>
+            </div>
+
+            <div class="step" data-step="5">
+              <div class="step__title">
+                <h2>
+                  How Many Additional Cases Can Your Firm Handle Within The Next
+                  30 Days?
+                </h2>
+              </div>
+              <div class="step__form">
+                <button class="step__btn">0 - 5</button>
+                <button class="step__btn">5 - 10</button>
+                <button class="step__btn">10 - 15</button>
+                <button class="step__btn">15 +</button>
+              </div>
+
+              <div class="step-back">
+                <img src="../assets/arrow-leftt-white.svg" alt="" />
+              </div>
+            </div>
+
+            <div class="step" data-step="6">
+              <div class="step__title">
+                <h2>
+                  What's Your Estimated Monthly Marketing Budget Range To Invest
+                  In Growing Your Firm?
+                </h2>
+              </div>
+              <div class="step__form">
+                <button class="step__btn">Less than 5k</button>
+                <button class="step__btn">5 - 20k</button>
+                <button class="step__btn">20 - 50k</button>
+                <button class="step__btn">50k +</button>
+              </div>
+
+              <div class="step-back">
+                <img src="../assets/arrow-leftt-white.svg" alt="" />
+              </div>
+            </div>
+
+            <div class="step" data-step="7">
+              <div class="step__title">
+                <h2>
+                  Are You Able To Attend A Free 10-Minute Call To Learn About
+                  How We Can Boost Your Case Files?
+                </h2>
+              </div>
+              <div class="step__form">
+                <button class="step__btn">Yes</button>
+                <button class="step__btn">No</button>
+              </div>
+
+              <div class="step-back">
+                <img src="../assets/arrow-leftt-white.svg" alt="" />
+              </div>
+            </div>
+
+            <div class="step contact-form" data-step="8">
+              <div class="step__title">
+                <h2>Your Contact Information:</h2>
+              </div>
+
+              <div class="step__form-contact">
+                <form class="step__form__inputs">
+                  <div>
+                    <p>Name</p>
+                    <input type="text" placeholder="Enter First Name Here" />
+                  </div>
+                  <div>
+                    <p>Business Email</p>
+                    <input
+                      type="email"
+                      placeholder="Enter Business Email Here"
+                    />
+                  </div>
+                  <div>
+                    <p>Phone Number</p>
+                    <input type="number" placeholder="Enter Number Here" />
+                  </div>
+                </form>
+                <a class="button btn-white" href="#">
+                  <p>Submit</p>
+                  <img src="../assets/arrow-right.svg" alt="#" />
+                </a>
+              </div>
+
+              <div class="step-back">
+                <img src="../assets/arrow-leftt-white.svg" alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-hero__bottom">
+            <p class="hero-desc">
+              Our Case Engine System is designed specifically for personal
+              injury firms looking to sign 5-25+ per month from the first month.
+            </p>
+          </div>
+        </div>
+        <img
+          class="contact-hero__bg"
+          src="../assets/backgrounds/contact-bg.svg"
+          alt=""
+        />
       </div>
     </div>
     <footer class="footer">

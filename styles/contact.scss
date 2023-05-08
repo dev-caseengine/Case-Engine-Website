@@ -1,0 +1,216 @@
+.contact-hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+
+  &__inner {
+    width: inherit;
+    min-height: inherit;
+    display: grid;
+    grid-template-rows: 0.2fr 1fr 0.2fr;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    .label {
+      margin-bottom: 0;
+    }
+  }
+
+  &__title {
+    h1 {
+      width: 140rem;
+      @extend %heading-123;
+      position: relative;
+      color: $white;
+      text-align: center;
+
+      div {
+        height: fit-content;
+        overflow: hidden;
+
+        span {
+          display: block;
+        }
+      }
+    }
+  }
+
+  &__steps {
+    display: none;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: center;
+    align-self: flex-start;
+
+    p {
+      width: 95rem;
+      color: $white;
+      @extend %description-22;
+      text-align: center;
+    }
+  }
+
+  &__bg {
+    position: absolute;
+    top: -30rem;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    pointer-events: none;
+    backface-visibility: hidden;
+  }
+}
+
+.step {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &__title {
+    margin-bottom: 13rem;
+    width: 115rem;
+    text-align: center;
+    height: fit-content;
+    overflow: hidden;
+
+    h2 {
+      @extend %heading-47;
+      color: $white;
+    }
+  }
+
+  &__form-contact {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+  }
+
+  &__form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+
+    &__input {
+      width: 85%;
+      display: flex;
+      flex-direction: column;
+
+      input {
+        width: 100%;
+        padding: 2rem 4rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        font-size: 16px;
+        color: $white;
+        margin-bottom: 3rem;
+      }
+
+      p {
+        @extend %description-22;
+        color: $white;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    &__continue {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      p {
+        @extend %description-22;
+        color: $white;
+        cursor: pointer;
+      }
+    }
+
+    &__inputs {
+		display: flex;
+		align-items: center;
+		width: 100%;
+
+      div {
+        width: 100%;
+
+		p {
+			@extend %description-22;
+			color: $white;
+			margin-bottom: 1.5rem;	
+		}
+
+        input {
+          width: 95%;
+          padding: 2rem 4rem;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 12px;
+          font-size: 16px;
+          color: $white;
+          margin-bottom: 6rem;
+        }
+      }
+    }
+  }
+
+  &__btn {
+    margin-right: 2rem;
+    cursor: pointer;
+    color: $white;
+    padding: 2.4rem 4rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    @extend %description-22;
+    transition: background 0.2s ease-in-out;
+
+    &:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.active-step {
+  display: flex;
+}
+
+.step-back {
+  position: absolute;
+  left: 6rem;
+  width: 9rem;
+  height: 9rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  img {
+    width: 2.8rem;
+  }
+
+}

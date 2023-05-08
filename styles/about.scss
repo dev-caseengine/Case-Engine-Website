@@ -11,7 +11,7 @@
   }
 
   &__heading {
-    width: 112rem;
+    width: 125rem;
 
     @media (max-width: 920px) {
       width: 100%;
@@ -20,7 +20,6 @@
     h1 {
       width: inherit;
       @extend %heading-123;
-      display: inline-block;
 
       .line-heading {
         display: inline-block;
@@ -31,7 +30,7 @@
           transform: translateY(100%);
         }
 
-        &:nth-child(2) {
+        &:nth-child(1) {
           margin-left: 13rem;
 
           @media (max-width: 920px) {
@@ -45,7 +44,7 @@
       @extend %description-29;
       margin-top: 6rem;
       color: $white;
-      width: 73rem;
+      width: 100rem;
       opacity: 0;
       transform: translateY("-50px");
       will-change: transform, opacity;
@@ -305,7 +304,7 @@
     position: relative;
 
     h2 {
-      width: 118rem;
+      width: 125rem;
       margin: 0 auto;
       @extend %heading-123;
       color: $white;
@@ -568,6 +567,20 @@
         object-fit: cover;
       }
     }
+  }
+
+  .swiper-slide__other {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+	h3 {
+		@extend %description-29;
+        color: $white;
+		margin-bottom: 3rem;
+	}
   }
 
   &__bg {
