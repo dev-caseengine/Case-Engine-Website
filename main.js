@@ -139,6 +139,12 @@ onPreloaded() {
 	  }
   }
 
+  onMouseMove(event) {
+	if (this.canvas && this.canvas.onMouseMove) {
+		this.canvas.onMouseMove(event)
+	  }
+  }
+
   update() {
     if (this.page && this.page.update) {
       this.page.update(this.frame);
@@ -154,6 +160,7 @@ onPreloaded() {
   addEventListeners() {
     window.addEventListener("popstate", this.onPopState.bind(this));
     window.addEventListener("resize", this.onResize.bind(this));
+	window.addEventListener("mousemove", this.onMouseMove.bind(this));
   }
 
   addLinkListeners() {

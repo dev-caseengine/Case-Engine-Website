@@ -72,12 +72,9 @@ export default class Home extends Page {
         // Use GSAP to add the fade transition
         gsap.fromTo(
           ".who-we-are__founders__inner",
-          { opacity: 0, duration: 0.5 },
-          { opacity: 1, duration: 0.5 }
+          { opacity: 0, duration: 1 },
+          { opacity: 1, duration: 1 }
         );
-
-	
-
 
       });
     });

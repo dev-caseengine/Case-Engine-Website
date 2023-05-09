@@ -55,9 +55,10 @@
     align-self: flex-start;
 
     p {
-      width: 95rem;
-      color: $white;
-      @extend %description-22;
+    //   width: 95rem;
+      color: rgba(255, 255, 255, 0.4);
+      @extend %description-18;
+	  font-weight: 300;
       text-align: center;
     }
   }
@@ -79,7 +80,7 @@
   align-items: center;
   justify-content: center;
   &__title {
-    margin-bottom: 13rem;
+    margin-bottom: 9rem;
     width: 115rem;
     text-align: center;
     height: fit-content;
@@ -96,28 +97,39 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	width: 100%;
+
   }
 
   &__form {
     display: flex;
     justify-content: center;
     width: 100%;
+	flex-wrap: wrap;
+	overflow: hidden;
 
 
     &__input {
-      width: 85%;
+      width: 33.333%;
       display: flex;
       flex-direction: column;
+	  overflow: hidden;
 
       input {
-        width: 100%;
-        padding: 2rem 4rem;
+        width: 95%;
+        padding: 2rem;
         background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: none;
         border-radius: 12px;
         font-size: 16px;
         color: $white;
         margin-bottom: 3rem;
+
+		&:focus {
+			outline: none;
+			background: rgba(255, 255, 255, 0.2);
+			border: none
+		}
       }
 
       p {
@@ -133,7 +145,7 @@
       justify-content: center;
 
       p {
-        @extend %description-22;
+        @extend %description-18;
         color: $white;
         cursor: pointer;
       }
@@ -175,7 +187,7 @@
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
-    @extend %description-22;
+    @extend %description-18;
     transition: background 0.2s ease-in-out;
 
     &:hover {
@@ -189,9 +201,9 @@
   }
 }
 
-.active-step {
-  display: flex;
-}
+// .active-step {
+//   display: flex;
+// }
 
 .step-back {
   position: absolute;
@@ -213,4 +225,35 @@
     width: 2.8rem;
   }
 
+}
+
+.input-fw {
+	width: 50%;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #fff;
+	opacity: .5; 
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #fff;
+	opacity: .5; /* Firefox */
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+	color: #fff;
+	opacity: .5; 
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

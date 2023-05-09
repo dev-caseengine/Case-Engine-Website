@@ -1,9 +1,7 @@
 import Lenis from "@studio-freight/lenis";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import gsap from "gsap";
 import each from "lodash/each";
-import map from "lodash/map";
 
 import Text from "./Animations/Text";
 
@@ -66,15 +64,13 @@ export default class Page {
     }
 
     if (document.querySelector(".contact-hero__title h1 span") != null) {
-		this.introAnim.fromTo(
-		  ".contact-hero__title h1 span",
-		  { yPercent: 100 },
-		  { yPercent: 0, duration: 1, stagger: 0.1, ease: "power2.out" },
-		  0.4
-		);
-	  }
-
-
+      this.introAnim.fromTo(
+        ".contact-hero__title h1 span",
+        { yPercent: 100 },
+        { yPercent: 0, duration: 1, stagger: 0.1, ease: "power2.out" },
+        0.4
+      );
+    }
 
     if (document.querySelector(".hero-desc") != null) {
       this.introAnim.fromTo(
@@ -134,6 +130,33 @@ export default class Page {
     }
   }
 
+  scrollDown() {
+    if (document.querySelector(".scroll-down") != null) {
+      this.scrollTl = gsap.timeline({ paused: true });
+      this.scrollTl.to(".scroll-down img", {
+        autoAlpha: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      });
+      this.scrollTl.to(
+        ".scroll-down p",
+        { autoAlpha: 0, duration: 0.5, ease: "power2.out" },
+        0.1
+      );
+      this.scrollTl.to(
+        ".scroll-down",
+        { scale: 0, duration: 0.7, ease: "power2.out" },
+        0.3
+      );
+
+      ScrollTrigger.create({
+        start: "80",
+        onEnter: () => this.scrollTl.play(),
+        onLeaveBack: () => this.scrollTl.reverse(),
+      });
+    }
+  }
+
   create() {
     this.element = document.querySelector(this.selector);
     this.elements = {};
@@ -159,6 +182,7 @@ export default class Page {
     });
     this.createAnimations();
     this.createSmoothScroll();
+    this.scrollDown();
   }
 
   show() {

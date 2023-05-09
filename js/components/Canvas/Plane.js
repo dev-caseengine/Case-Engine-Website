@@ -91,8 +91,10 @@ export default class Plane {
     this.mesh.scale.set(width, height, 1);
 
 	this.mesh.userData.isBackground = true;
+
     // Add the mesh to the scene
     this.scene.add(this.mesh);
+
 
 
   }
@@ -100,13 +102,7 @@ export default class Plane {
   // Update function
   update(time) {
     // Update the time uniform of the material
-    this.material.uniforms.time.value = time * 0.0006;
-
-
-
-
-
-
+    this.material.uniforms.time.value = time * 0.0008;
 
   }
 }

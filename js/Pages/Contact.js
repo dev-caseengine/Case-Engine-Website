@@ -21,6 +21,7 @@ export default class Contact extends Page {
   create() {
     super.create();
     this.titleAnim();
+    this.hideFormBtn();
   }
 
   titleAnim() {
@@ -47,15 +48,33 @@ export default class Contact extends Page {
     const buttons = document.querySelectorAll(".step__btn");
     const backButton = document.querySelectorAll(".step-back");
 
-    // add the 'active' class to the first step
-    steps[0].classList.add("active-step");
+    if (steps[0] != null) {
+      steps[0].style.display = "flex";
 
-    // initialize the timeline
-    const timeline = gsap.timeline();
+      // initialize the timeline
+      gsap.fromTo(
+        ".step__title h2",
+        { yPercent: 100 },
+        { yPercent: 0, duration: 1, ease: "power2.out" }
+      );
+
+      gsap.fromTo(
+        ".step__btn",
+        { yPercent: 100 },
+        {
+          yPercent: 0,
+          duration: 1,
+          stagger: 0.03,
+          ease: "power2.out",
+          delay: 0.5,
+        }
+      );
+    }
 
     // loop through each button
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
+        const tlNext = gsap.timeline();
         // get the current step and the next step
         const currentStep = button.closest(".step");
         const nextStep = currentStep.nextElementSibling;
@@ -63,66 +82,225 @@ export default class Contact extends Page {
         // add animations to hide the current step and show the next step
 
         const titleCurrent = currentStep.querySelector(".step__title h2");
+        const buttonsCurrent = currentStep.querySelectorAll(".step__form *");
+
         const titleNext = nextStep.querySelector(".step__title h2");
+        const buttonsNext = nextStep.querySelectorAll(".step__form * ");
 
-        const buttonsCurrent = currentStep.querySelectorAll(".step__form ");
-        const buttonsNext = nextStep.querySelectorAll(".step__form ");
+        tlNext.to(titleCurrent, {
+          yPercent: -100,
+          duration: 1,
+          ease: "power2.out",
+        });
+        tlNext.to(
+          buttonsCurrent,
+          {
+            autoAlpha: 0,
+            duration: 1,
+            stagger: 0.03,
+            ease: "power2.out",
+          },
+          0
+        );
 
-        timeline.to(currentStep, { display: "none" });
-        timeline.to(nextStep, { display: "flex" });
+        tlNext.set(currentStep, { display: "none" });
+        tlNext.set(nextStep, { display: "flex" });
+
+        tlNext.fromTo(
+          titleNext,
+          { yPercent: 100 },
+          { yPercent: 0, duration: 1, ease: "power2.out" }
+        );
+
+        tlNext.fromTo(
+          buttonsNext,
+          {
+            autoAlpha: 0,
+          },
+          {
+            yPercent: 0,
+            autoAlpha: 1,
+            duration: 1,
+            stagger: 0.03,
+            ease: "power2.out",
+          },
+          1.5
+        );
       });
     });
 
     // add event listener to the back button
     backButton.forEach((button) => {
       button.addEventListener("click", () => {
+        const tlBack = gsap.timeline();
         // get the current step and the previous step
         const currentStep = button.closest(".step");
         const previousStep = currentStep.previousElementSibling;
 
         const titleCurrent = currentStep.querySelector(".step__title h2");
-        const buttonsCurrent = currentStep.querySelectorAll(".step__form ");
+        const buttonsCurrent = currentStep.querySelectorAll(".step__form *");
 
         const titlePrevious = previousStep.querySelector(".step__title h2");
-        const buttonsPrevious = previousStep.querySelectorAll(".step__form ");
+        const buttonsPrevious = previousStep.querySelectorAll(".step__form *");
 
         // add animations to hide the current step and show the previous step
 
-        timeline.to(currentStep, { display: "none" });
-        timeline.to(previousStep, { display: "flex" });
+        tlBack.to(titleCurrent, {
+          yPercent: 100,
+          duration: 1,
+          ease: "power2.out",
+        });
+
+        tlBack.to(
+          buttonsCurrent,
+          {
+            autoAlpha: 0,
+            stagger: 0.03,
+            duration: 1,
+            ease: "power2.out",
+          },
+          0
+        );
+
+        tlBack.set(currentStep, { display: "none" });
+        tlBack.set(previousStep, { display: "flex" });
+
+        tlBack.to(titlePrevious, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power2.out",
+        });
+
+        tlBack.to(
+          buttonsPrevious,
+          {
+            autoAlpha: 1,
+            duration: 1,
+            stagger: 0.03,
+            ease: "power2.out",
+          },
+          1.5
+        );
       });
     });
 
     // add event listener to the continue button
-    const inputField = document.querySelector(".step__form__input input");
+    const inputField = document.querySelector('.step[data-step="3"] input');
     const continueButton = document.querySelector(
-      '.step[data-step="3"] .step__form__continue'
+      '.step[data-step="3"] .step__form__continue p'
     );
 
     // Hide the continue button by default
-    continueButton.style.display = "none";
+    if (continueButton != null) {
+      continueButton.style.display = "none";
+    }
 
+	if(inputField != null) {
     // Add an event listener to the input field
     inputField.addEventListener("input", () => {
-      // Check if the input field is empty
-      if (inputField.value.trim() === "") {
-        // If it is empty, hide the continue button
-        continueButton.style.display = "none";
+		// Check if the input field is empty
+		if (inputField.value.trim() === "") {
+		  // If it is empty, hide the continue button
+		  continueButton.style.display = "none";
+		} else {
+		  // Otherwise, show the continue button
+		  continueButton.style.display = "flex";
+		}
+	  });
+	}
+
+
+
+	if(continueButton != null) {
+		continueButton.addEventListener("click", () => {
+			const currentStep = continueButton.closest(".step");
+			const nextStep = currentStep.nextElementSibling;
+			const titleCurrent = currentStep.querySelector(".step__title h2");
+	  
+			const buttonsCurrent = currentStep.querySelectorAll(".step__form *");
+	  
+			const titleNext = nextStep.querySelector(".step__title h2");
+	  
+			const buttonsNext = nextStep.querySelectorAll(".step__form *");
+	  
+			const continueTl = gsap.timeline();
+	  
+			// only proceed to next step if the continue button was clicked in step 3
+			if (currentStep.dataset.step === "3") {
+			  continueTl.to(titleCurrent, {
+				yPercent: -100,
+				duration: 1,
+				ease: "power2.out",
+			  });
+	  
+			  continueTl.to(
+				buttonsCurrent,
+				{
+				  autoAlpha: 0,
+				  duration: 1,
+				  stagger: 0.03,
+				  ease: "power2.out",
+				},
+				0
+			  );
+	  
+			  continueTl.set(currentStep, { display: "none" });
+			  continueTl.set(nextStep, { display: "flex" });
+	  
+			  continueTl.fromTo(
+				titleNext,
+				{ yPercent: 100 },
+				{ yPercent: 0, duration: 1, ease: "power2.out" }
+			  );
+	  
+			  continueTl.fromTo(
+				buttonsNext,
+				{
+				  autoAlpha: 0,
+				},
+				{
+				  yPercent: 0,
+				  autoAlpha: 1,
+				  duration: 1,
+				  stagger: 0.03,
+				  ease: "power2.out",
+				},
+				1.5
+			  );
+			}
+		  });
+	}
+
+    
+  }
+
+  hideFormBtn() {
+    const firstNameInput = document.querySelector(
+      '.step[data-step="8"] input[type="text"]'
+    );
+    const emailInput = document.querySelector(
+      '.step[data-step="8"] input[type="email"]'
+    );
+    const phoneInput = document.querySelector(
+      '.step[data-step="8"] input[type="number"]'
+    );
+    const submitButton = document.querySelector('.step[data-step="8"] .button');
+
+    // hide submit button initially
+    submitButton.style.display = "none";
+
+    // function to show submit button if all fields are filled
+    const showSubmitButton = () => {
+      if (firstNameInput.value && emailInput.value && phoneInput.value) {
+        submitButton.style.display = "flex";
       } else {
-        // Otherwise, show the continue button
-        continueButton.style.display = "flex";
+        submitButton.style.display = "none";
       }
-    });
+    };
 
-    continueButton.addEventListener("click", () => {
-      const currentStep = continueButton.closest(".step");
-      const nextStep = currentStep.nextElementSibling;
-
-      // only proceed to next step if the continue button was clicked in step 3
-      if (currentStep.dataset.step === "3") {
-        timeline.to(currentStep, { display: "none" });
-        timeline.to(nextStep, { display: "flex" });
-      }
-    });
+    // add event listeners to input fields
+    firstNameInput.addEventListener("input", showSubmitButton);
+    emailInput.addEventListener("input", showSubmitButton);
+    phoneInput.addEventListener("input", showSubmitButton);
   }
 }

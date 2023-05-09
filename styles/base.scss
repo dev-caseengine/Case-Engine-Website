@@ -275,15 +275,10 @@ canvas {
 
   img {
     margin-bottom: 3rem;
-
-    transform: translateY("20px");
-    opacity: 0;
     will-change: opacity transform;
   }
 
   p {
-    transform: translateY("20px");
-    opacity: 0;
     will-change: opacity transform;
     font-size: 14px;
     color: #fff;

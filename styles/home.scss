@@ -52,7 +52,7 @@
           transform: translateY(100%);
         }
 
-        &:last-child {
+        &:first-child {
           margin-left: 14rem;
 
           @media (max-width: 920px) {

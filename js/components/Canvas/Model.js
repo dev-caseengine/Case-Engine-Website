@@ -132,6 +132,8 @@ export default class Model {
       this.m.userData.shader = shader;
     };
 
+	//look at camera
+
     this.scene.add(this.model);
   }
 
@@ -640,8 +642,19 @@ export default class Model {
     });
   }
 
-  //Hide Model
 
+ // Model Mouse Move
+onMouseMove(e) {
+	// const x = e.clientX;
+	// const y = e.clientY;
+
+	// gsap.to(this.scene.rotation, {
+	//   y: gsap.utils.mapRange(0, window.innerWidth, 0.2, -0.2, x),
+	//   x: gsap.utils.mapRange(0, window.innerHeight, 0.2, -0.2, y),
+	// });
+  }
+
+  //Hide Model
   hide() {
     if (!this.model) return;
     this.model.visible = false;
@@ -708,7 +721,6 @@ export default class Model {
     this.model.visible = true;
 
     this.showTl = gsap.timeline({ delay: 1.3 });
-    let mm = gsap.matchMedia();
 
     if (this.name === "phone") {
       this.showTl.fromTo(
