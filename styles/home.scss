@@ -445,9 +445,9 @@
 
     svg {
       width: 125%;
-      transform: rotate(45deg);
+    //   transform: rotate(45deg);
       height: 120%;
-
+	
       @media (max-width: 920px) {
         margin-top: 6rem;
         width: 100%;
@@ -455,10 +455,11 @@
       }
 
       path {
+		right: 0;
         stroke: $black;
       }
 
-      circle {
+      ellipse {
         fill: $blue;
       }
     }
@@ -871,6 +872,7 @@
     grid-template-columns: 1fr 1fr;
     z-index: 1;
     position: relative;
+	align-items: center;
 
     @media (max-width: 920px) {
       grid-template-columns: 1fr;
@@ -898,6 +900,7 @@
     h2 {
       @extend %heading-76;
       color: $white;
+	  letter-spacing: -0.026em;
     }
   }
 
@@ -961,6 +964,17 @@
       width: 464%;
     }
   }
+
+  &__bg-b {
+    position: absolute;
+    bottom: 0;
+    left: -30%;
+    z-index: -1;
+    pointer-events: none;
+    backface-visibility: hidden;
+    width: 90%;
+  }
+
 }
 
 .active-founder {

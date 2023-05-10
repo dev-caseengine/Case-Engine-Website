@@ -26,6 +26,7 @@ export default class About extends Page {
     this.teamSlide();
     this.blueSection();
     this.moveImages();
+
   }
 
   moveImages() {
@@ -110,6 +111,7 @@ export default class About extends Page {
           onComplete: () => {
             modal.classList.remove("about-video__modal-active");
             document.body.style.overflow = "auto";
+			document.body.style.overflowY = "overlay";
             if (this.lenis) {
               this.lenis.start();
             }
@@ -194,6 +196,7 @@ export default class About extends Page {
     });
   }
 
+  
   destroy() {
     super.destroy();
 
