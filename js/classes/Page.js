@@ -140,16 +140,16 @@ export default class Page {
       this.scrollTl.to(
         ".scroll-down p",
         { autoAlpha: 0, duration: 0.5, ease: "power2.out" },
-        0.1
+        0
       );
       this.scrollTl.to(
         ".scroll-down",
-        { scale: 0, duration: 0.7, ease: "power2.out" },
-        0.3
+        { scale: 0, duration: 0.5, ease: "power2.out" },
+        0
       );
 
       ScrollTrigger.create({
-        start: "80",
+        start: "top top",
         onEnter: () => this.scrollTl.play(),
         onLeaveBack: () => this.scrollTl.reverse(),
       });

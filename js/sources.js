@@ -19,13 +19,13 @@ export default [
   {
     name: "notificationVideo",
     type: "video",
-    path: "../assets/notification.webm",
+    path: "../assets/videos/notification.mp4",
   },
 
   {
     name: "problemOne",
     type: "video",
-    path: "../assets/problem-1.webm",
+    path: "../assets/videos/problem-1.mp4",
   },
 
   {

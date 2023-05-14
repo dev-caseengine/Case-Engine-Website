@@ -36,46 +36,158 @@ export default class Home extends Page {
     this.initResults();
     this.eyeAnimation();
     this.pinSection();
-    this.foundersSlider();
+    this.founders();
+    // this.foundersSlider();
     this.whiteSection();
     this.clientSliderFirst();
     this.clientSliderSecond();
   }
 
-  foundersSlider() {
-    // Get all the elements
-    const bullets = document.querySelectorAll(".who-we-are__bulets span");
-    const founders = document.querySelectorAll(".who-we-are__founders__inner");
-    const activeBulletClass = "active-bullet";
+  founders() {
+    const wrapper = document.querySelector(".who-we-are__founders");
+    const imageWrapper = document.querySelectorAll(
+      ".who-we-are__founders__inner"
+    );
+    const foundersImgs = document.querySelectorAll(
+      ".who-we-are__founders__img img"
+    );
+    const foundersText = document.querySelectorAll(
+      ".who-we-are__founders__text h3"
+    );
+    const img = document.querySelector(".who-we-are__founders__img");
+    const cursor = document.querySelector(".founders-cursor");
 
-    // Loop through the bullets and add click event listeners
-    bullets.forEach((bullet, index) => {
-      bullet.addEventListener("click", () => {
-        // Remove the active class from all the bullets
-        bullets.forEach((bullet) => {
-          bullet.classList.remove(activeBulletClass);
-        });
+    const founderTl = gsap.timeline({ paused: true });
 
-        // Add the active class to the selected bullet
-        bullet.classList.add(activeBulletClass);
+    founderTl.fromTo(
+      img,
+      { yPercent: 20, width: "50%" },
+      { yPercent: 0, width: "100%", ease: "none" }
+    );
+    gsap.fromTo(
+      [".who-we-are__founders__text h3", ".who-we-are__founders__text p"],
+      { autoAlpha: 0, y: 20 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.03,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrapper,
+          start: "30% 50%",
+        },
+      }
+    );
 
-        // Remove the active class from all the founders
-        founders.forEach((founder) => {
-          founder.classList.remove("active-founder");
-        });
-
-        // Add the active class to the selected founder
-        founders[index].classList.add("active-founder");
-
-        // Use GSAP to add the fade transition
-        gsap.fromTo(
-          ".who-we-are__founders__inner",
-          { opacity: 0, duration: 1 },
-          { opacity: 1, duration: 1 }
-        );
-      });
+    ScrollTrigger.create({
+      trigger: wrapper,
+      start: "top 90%",
+      end: "90% bottom",
+      animation: founderTl,
+      scrub: true,
+      once: true,
     });
+
+    //Founders Slider
+
+    let isImageUp = false;
+
+    cursor.addEventListener("click", () => {
+      imageWrapper.forEach((imageWrapper) => {
+        if (isImageUp) {
+          gsap.to(imageWrapper, {
+            x: 0,
+            duration: 1,
+            ease: "Power3.out",
+          });
+          foundersImgs.forEach((foundersImg) => {
+            gsap.to(foundersImg, {
+              x: 0,
+              duration: 2,
+              ease: "Power2.out",
+            });
+          });
+        } else {
+          gsap.to(imageWrapper, {
+            x: "-100%",
+            duration: 1,
+            ease: "Power3.out",
+          });
+          foundersImgs.forEach((foundersImg) => {
+            gsap.to(foundersImg, {
+              x: "-5%",
+              duration: 2,
+              ease: "Power2.out",
+            });
+          });
+        }
+      });
+      isImageUp = !isImageUp; // toggle the state
+    });
+
+    //curosr follow
+
+
+	// const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+	// const mouse = { x: pos.x, y: pos.y };
+	// const speed = 0.2;
+
+	// const xSet = gsap.quickSetter(cursor, "x", "px");
+	// const ySet = gsap.quickSetter(cursor, "y", "px");
+
+    // wrapper.addEventListener("mousemove", (e) => {
+	// 	mouse.x = e.x;
+	// 	mouse.y = e.y;  
+    // });
+
+	// gsap.ticker.add(() => {
+  
+	// 	// adjust speed for higher refresh monitors
+	// 	const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio()); 
+		
+	// 	pos.x += (mouse.x - pos.x) * dt;
+	// 	pos.y += (mouse.y - pos.y) * dt;
+	// 	xSet(pos.x);
+	// 	ySet(pos.y);
+	//   });
+
   }
+
+  //   foundersSlider() {
+  //     // Get all the elements
+  //     const bullets = document.querySelectorAll(".who-we-are__bulets span");
+  //     const founders = document.querySelectorAll(".who-we-are__founders__inner");
+  //     const activeBulletClass = "active-bullet";
+
+  //     // Loop through the bullets and add click event listeners
+  //     bullets.forEach((bullet, index) => {
+  //       bullet.addEventListener("click", () => {
+  //         // Remove the active class from all the bullets
+  //         bullets.forEach((bullet) => {
+  //           bullet.classList.remove(activeBulletClass);
+  //         });
+
+  //         // Add the active class to the selected bullet
+  //         bullet.classList.add(activeBulletClass);
+
+  //         // Remove the active class from all the founders
+  //         founders.forEach((founder) => {
+  //           founder.classList.remove("active-founder");
+  //         });
+
+  //         // Add the active class to the selected founder
+  //         founders[index].classList.add("active-founder");
+
+  //         // Use GSAP to add the fade transition
+  //         gsap.fromTo(
+  //           ".who-we-are__founders__inner",
+  //           { opacity: 0, duration: 1 },
+  //           { opacity: 1, duration: 1 }
+  //         );
+  //       });
+  //     });
+  //   }
 
   initResults() {
     const initTl = gsap.timeline({ paused: true });
@@ -310,8 +422,6 @@ export default class Home extends Page {
       once: true,
     });
   }
-
-  
 
   destroy() {
     super.destroy();

@@ -68,7 +68,7 @@ export default class Model {
   setAboutModel() {
     this.model.scale.set(0.9, 0.9, 0.9);
 
-	this.x = window.innerWidth < 920 ? 0.2 : 1;
+    this.x = window.innerWidth < 920 ? 0.2 : 1;
 
     this.model.position.set(this.x, 0, 0);
     this.model.rotation.set(0, 0, 0);
@@ -132,7 +132,7 @@ export default class Model {
       this.m.userData.shader = shader;
     };
 
-	//look at camera
+    //look at camera
 
     this.scene.add(this.model);
   }
@@ -242,20 +242,29 @@ export default class Model {
             //   const videoTexture = new THREE.VideoTexture(this.resources.items.notificationVideo);
             this.videoTexture = {};
             this.video = this.resources.items.notificationVideo;
-            this.video.crossOrigin = "anonymous";
-            this.video.muted = "muted";
-            this.video.muted = true;
-            this.video.preload = "auto";
-            this.video.autoplay = "autoplay";
-            this.video.loop = "loop";
-			this.video.playsinline = true;
-            this.videoTexture.minFilter = THREE.LinearFilter;
-            this.videoTexture.magFilter = THREE.LinearFilter;
+            // this.video.crossOrigin = "anonymous";
+            // this.video.muted = "muted";
+            // this.video.muted = true;
+            // // this.video.preload = "auto";
+            // this.video.autoplay = "autoplay";
+            // this.video.autoplay = true;
+            // this.video.loop = "loop";
+            // this.video.loop = true;
+            // this.video.playsinline = true;
+            // this.video.setAttribute("playsinline", "");
 
+            this.video.muted = true;
+            this.video.loop = true;
+            this.video.controls = true;
+            this.video.playsInline = true;
+            this.video.autoplay = true;
             this.video.play();
 
             this.videoTexture = new THREE.VideoTexture(this.video);
             this.videoTexture.flipY = false;
+            this.videoTexture.encoding = THREE.SRGBColorSpace;
+            this.videoTexture.minFilter = THREE.LinearFilter;
+            this.videoTexture.magFilter = THREE.LinearFilter;
 
             phoneScreenMesh.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture,
@@ -303,20 +312,30 @@ export default class Model {
 
             this.videoTexture2 = {};
             this.video2 = this.resources.items.problemOne;
-            this.video2.crossOrigin = "anonymous";
-            this.video2.muted = "muted";
-            this.video2.muted = true;
-            this.video2.preload = "auto";
-            this.video2.autoplay = "autoplay";
-            this.video2.loop = "loop";
-			this.video2.playsinline = true;
-            this.videoTexture2.minFilter = THREE.LinearFilter;
-            this.videoTexture2.magFilter = THREE.LinearFilter;
+            // this.video2.crossOrigin = "anonymous";
+            // this.video2.muted = "muted";
+            // this.video2.muted = true;
+            // this.video2.preload = "auto";
+            // this.video2.autoplay = "autoplay";
+            // this.video2.autoplay = true;
+            // this.video2.loop = "loop";
+            // this.video2.loop = true;
+            // this.video2.playsinline = true;
+            // this.video2.setAttribute("playsinline", "");
+
+			this.video2.muted = true;
+            this.video2.loop = true;
+            this.video2.controls = true;
+            this.video2.playsInline = true;
+            this.video2.autoplay = true;
 
             this.video2.play();
 
             this.videoTexture2 = new THREE.VideoTexture(this.video2);
             this.videoTexture2.flipY = true;
+            this.videoTexture.encoding = THREE.SRGBColorSpace;
+            this.videoTexture2.minFilter = THREE.LinearFilter;
+            this.videoTexture2.magFilter = THREE.LinearFilter;
 
             this.clone1.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture2,
@@ -325,67 +344,67 @@ export default class Model {
               side: THREE.DoubleSide,
             });
 
-            // Create a glow material with the same video texture
-            var glowMaterial = new THREE.MeshBasicMaterial({
-              map: this.videoTexture2,
-              transparent: true,
-              opacity: 0.5,
-              side: THREE.BackSide,
-            });
+            // // Create a glow material with the same video texture
+            // var glowMaterial = new THREE.MeshBasicMaterial({
+            //   map: this.videoTexture2,
+            //   transparent: true,
+            //   opacity: 0.5,
+            //   side: THREE.BackSide,
+            // });
 
-            // Create a mesh to hold the glow material
-            var glowMesh = new THREE.Mesh(
-              phoneScreenMesh.geometry,
-              glowMaterial
-            );
-            glowMesh.scale.set(1.1, 1.1, 1.1); // adjust the size of the glow
+            // // Create a mesh to hold the glow material
+            // var glowMesh = new THREE.Mesh(
+            //   phoneScreenMesh.geometry,
+            //   glowMaterial
+            // );
+            // glowMesh.scale.set(1.1, 1.1, 1.1); // adjust the size of the glow
 
-            // Add the glow mesh as a child of the original phone screen mesh
-            phoneScreenMesh.add(glowMesh);
+            // // Add the glow mesh as a child of the original phone screen mesh
+            // phoneScreenMesh.add(glowMesh);
 
-            // Set the position and rotation of the glow mesh to match the original
-            glowMesh.position.z = 0.0722;
-            glowMesh.rotation.y = Math.PI;
-            glowMesh.rotation.z = Math.PI;
-            glowMesh.scale.set(0.45, 0.45, 0.46);
+            // // Set the position and rotation of the glow mesh to match the original
+            // glowMesh.position.z = 0.0722;
+            // glowMesh.rotation.y = Math.PI;
+            // glowMesh.rotation.z = Math.PI;
+            // glowMesh.scale.set(0.45, 0.45, 0.46);
 
-            // Make the glow mesh invisible to start with
-            glowMesh.visible = false;
+            // // Make the glow mesh invisible to start with
+            // glowMesh.visible = false;
 
-            // Add a custom shader to the glow material to make it glow
-            glowMaterial.onBeforeCompile = function (shader) {
-              shader.uniforms.viewVector = {
-                value: new THREE.Vector3(0, 0, 1),
-              };
-              shader.vertexShader =
-                "uniform vec3 viewVector;\n" + shader.vertexShader;
-              shader.vertexShader = shader.vertexShader.replace(
-                "#include <begin_vertex>",
-                [
-                  "vec3 transformedNormal = normal;",
-                  "vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
-                  "gl_Position = projectionMatrix * mvPosition;",
-                  "vec3 vNormal = normalize( transformedNormal );",
-                  "vec3 vNormel = normalize( normalMatrix * viewVector );",
-                  "float dotProduct = dot( vNormal, vNormel );",
-                  "vec3 color = vec3( 0.0, 1.0, 0.0 );",
-                  "gl_FrontColor = vec4( color * dotProduct, 1.0 );",
-                ].join("\n")
-              );
-              shader.fragmentShader =
-                "varying vec4 vColor;\n" + shader.fragmentShader;
-              shader.fragmentShader = shader.fragmentShader.replace(
-                "void main() {",
-                [
-                  "void main() {",
-                  "vec4 sum = vec4( 0.0 );",
-                  "for ( int i = 0; i < 10; i ++ ) {",
-                  "sum += texture2D( map, vUv + float( i ) * uOffset ) * glowColor * glowPower * ( 10.0 / ( float( i ) + 10.0 ) );",
-                  "}",
-                  "gl_FragColor = sum;",
-                ].join("\n")
-              );
-            };
+            // // Add a custom shader to the glow material to make it glow
+            // glowMaterial.onBeforeCompile = function (shader) {
+            //   shader.uniforms.viewVector = {
+            //     value: new THREE.Vector3(0, 0, 1),
+            //   };
+            //   shader.vertexShader =
+            //     "uniform vec3 viewVector;\n" + shader.vertexShader;
+            //   shader.vertexShader = shader.vertexShader.replace(
+            //     "#include <begin_vertex>",
+            //     [
+            //       "vec3 transformedNormal = normal;",
+            //       "vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
+            //       "gl_Position = projectionMatrix * mvPosition;",
+            //       "vec3 vNormal = normalize( transformedNormal );",
+            //       "vec3 vNormel = normalize( normalMatrix * viewVector );",
+            //       "float dotProduct = dot( vNormal, vNormel );",
+            //       "vec3 color = vec3( 0.0, 1.0, 0.0 );",
+            //       "gl_FrontColor = vec4( color * dotProduct, 1.0 );",
+            //     ].join("\n")
+            //   );
+            //   shader.fragmentShader =
+            //     "varying vec4 vColor;\n" + shader.fragmentShader;
+            //   shader.fragmentShader = shader.fragmentShader.replace(
+            //     "void main() {",
+            //     [
+            //       "void main() {",
+            //       "vec4 sum = vec4( 0.0 );",
+            //       "for ( int i = 0; i < 10; i ++ ) {",
+            //       "sum += texture2D( map, vUv + float( i ) * uOffset ) * glowColor * glowPower * ( 10.0 / ( float( i ) + 10.0 ) );",
+            //       "}",
+            //       "gl_FragColor = sum;",
+            //     ].join("\n")
+            //   );
+            // };
 
             this.clone2.material = new THREE.MeshBasicMaterial({
               color: "blue",
@@ -485,21 +504,21 @@ export default class Model {
     });
 
     //hide model when entering the blue section
-		ScrollTrigger.create({
-			trigger: '.results',
-			start: "top top",
-			end: "150%",
-			invalidateOnRefresh: true,
-			onEnter: () => {
-			  this.model.visible = true;
-			},
-			onLeave: () => {
-			  this.model.visible = false;
-			},
-			onEnterBack: () => {
-			  this.model.visible = true;
-			},
-		  });
+    ScrollTrigger.create({
+      trigger: ".results",
+      start: "top top",
+      end: "150%",
+      invalidateOnRefresh: true,
+      onEnter: () => {
+        this.model.visible = true;
+      },
+      onLeave: () => {
+        this.model.visible = false;
+      },
+      onEnterBack: () => {
+        this.model.visible = true;
+      },
+    });
 
     const tl = gsap.timeline({ paused: true });
 
@@ -642,16 +661,14 @@ export default class Model {
     });
   }
 
-
- // Model Mouse Move
-onMouseMove(e) {
-	// const x = e.clientX;
-	// const y = e.clientY;
-
-	// gsap.to(this.scene.rotation, {
-	//   y: gsap.utils.mapRange(0, window.innerWidth, 0.2, -0.2, x),
-	//   x: gsap.utils.mapRange(0, window.innerHeight, 0.2, -0.2, y),
-	// });
+  // Model Mouse Move
+  onMouseMove(e) {
+    // const x = e.clientX;
+    // const y = e.clientY;
+    // gsap.to(this.scene.rotation, {
+    //   y: gsap.utils.mapRange(0, window.innerWidth, 0.2, -0.2, x),
+    //   x: gsap.utils.mapRange(0, window.innerHeight, 0.2, -0.2, y),
+    // });
   }
 
   //Hide Model
@@ -754,5 +771,4 @@ onMouseMove(e) {
       this.m.userData.shader.uniforms.uTime.value = time;
     }
   }
-
 }
