@@ -33,13 +33,6 @@ export default class Contact extends Page {
 	  event.preventDefault();
 	});
 	
-	const radioButtons = document.querySelectorAll('input[type="radio"]');
-	
-	// radioButtons.forEach((button) => {
-	//   button.addEventListener('click', (event) => {
-	// 	event.preventDefault();
-	//   });
-	// });
   }
 
 
