@@ -43,7 +43,7 @@ export default [
   {
     name: "aboutVideo",
     type: "video",
-    path: "../assets/video-about.webm",
+    path: "../assets/video-about.mp4",
   },
 
 
