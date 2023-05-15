@@ -20,9 +20,28 @@ export default class Contact extends Page {
 
   create() {
     super.create();
+	this.form();
     this.titleAnim();
     this.hideFormBtn();
   }
+
+
+  form() {
+	const form = document.querySelector('form');
+
+	form.addEventListener('submit', (event) => {
+	  event.preventDefault();
+	});
+	
+	const radioButtons = document.querySelectorAll('input[type="radio"]');
+	
+	// radioButtons.forEach((button) => {
+	//   button.addEventListener('click', (event) => {
+	// 	event.preventDefault();
+	//   });
+	// });
+  }
+
 
   titleAnim() {
     this.titleTl = gsap.timeline({
@@ -47,13 +66,9 @@ export default class Contact extends Page {
     const steps = document.querySelectorAll(".step");
     const buttons = document.querySelectorAll(".step__btn");
     const backButton = document.querySelectorAll(".step-back");
-	const progress = document.querySelector(".contact-progress span");
+    const progress = document.querySelector(".contact-progress span");
 
-
-
-	// gsap.to(progress, {scaleX: 1 / 8, duration: 1, ease: "power2.out"});
-
-
+    // gsap.to(progress, {scaleX: 1 / 8, duration: 1, ease: "power2.out"});
 
     if (steps[0] != null) {
       steps[0].style.display = "flex";
@@ -81,15 +96,11 @@ export default class Contact extends Page {
     // loop through each button
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
-
-
-        
-		const tlNext = gsap.timeline();
+        const tlNext = gsap.timeline();
         // get the current step and the next step
         const currentStep = button.closest(".step");
         const nextStep = currentStep.nextElementSibling;
 
-	
         // add animations to hide the current step and show the next step
 
         const titleCurrent = currentStep.querySelector(".step__title h2");
@@ -98,14 +109,15 @@ export default class Contact extends Page {
         const titleNext = nextStep.querySelector(".step__title h2");
         const buttonsNext = nextStep.querySelectorAll(".step__form * ");
 
-		const totalSteps = document.querySelectorAll('.step').length;
-		const progressPercentage = 1 / (totalSteps - 1) * (currentStep.dataset.step);
+        const totalSteps = document.querySelectorAll(".step").length;
+        const progressPercentage =
+          (1 / (totalSteps - 1)) * currentStep.dataset.step;
 
-	
-	   gsap.to(progress, { scaleX: progressPercentage, duration: 1, ease: "power2.out" });
-
-
-
+        gsap.to(progress, {
+          scaleX: progressPercentage,
+          duration: 1,
+          ease: "power2.out",
+        });
 
         tlNext.to(titleCurrent, {
           yPercent: -100,
@@ -163,17 +175,16 @@ export default class Contact extends Page {
         const titlePrevious = previousStep.querySelector(".step__title h2");
         const buttonsPrevious = previousStep.querySelectorAll(".step__form *");
 
+        const totalSteps = document.querySelectorAll(".step").length;
 
+        const progressPercentage =
+          (1 / (totalSteps - 1)) * (previousStep.dataset.step - 1);
 
-		const totalSteps = document.querySelectorAll('.step').length;
-
-
-		const progressPercentage = 1 / (totalSteps - 1) * (previousStep.dataset.step - 1) ;
-
-
-
-	   gsap.to(progress, { scaleX: progressPercentage, duration: 1, ease: "power2.out" });
-
+        gsap.to(progress, {
+          scaleX: progressPercentage,
+          duration: 1,
+          ease: "power2.out",
+        });
 
         // add animations to hide the current step and show the previous step
 
@@ -227,91 +238,89 @@ export default class Contact extends Page {
       continueButton.style.display = "none";
     }
 
-	if(inputField != null) {
-    // Add an event listener to the input field
-    inputField.addEventListener("input", () => {
-		// Check if the input field is empty
-		if (inputField.value.trim() === "") {
-		  // If it is empty, hide the continue button
-		  continueButton.style.display = "none";
-		} else {
-		  // Otherwise, show the continue button
-		  continueButton.style.display = "flex";
-		}
-	  });
-	}
+    if (inputField != null) {
+      // Add an event listener to the input field
+      inputField.addEventListener("input", () => {
+        // Check if the input field is empty
+        if (inputField.value.trim() === "") {
+          // If it is empty, hide the continue button
+          continueButton.style.display = "none";
+        } else {
+          // Otherwise, show the continue button
+          continueButton.style.display = "flex";
+        }
+      });
+    }
 
+    if (continueButton != null) {
+      continueButton.addEventListener("click", () => {
+        const currentStep = continueButton.closest(".step");
+        const nextStep = currentStep.nextElementSibling;
+        const titleCurrent = currentStep.querySelector(".step__title h2");
 
+        const buttonsCurrent = currentStep.querySelectorAll(".step__form *");
 
-	if(continueButton != null) {
-		continueButton.addEventListener("click", () => {
-			const currentStep = continueButton.closest(".step");
-			const nextStep = currentStep.nextElementSibling;
-			const titleCurrent = currentStep.querySelector(".step__title h2");
-	  
-			const buttonsCurrent = currentStep.querySelectorAll(".step__form *");
-	  
-			const titleNext = nextStep.querySelector(".step__title h2");
-	  
-			const buttonsNext = nextStep.querySelectorAll(".step__form *");
-	  
-			const continueTl = gsap.timeline();
+        const titleNext = nextStep.querySelector(".step__title h2");
 
+        const buttonsNext = nextStep.querySelectorAll(".step__form *");
 
-			const totalSteps = document.querySelectorAll('.step').length;
-			const progressPercentage = 1 / (totalSteps - 1) * (currentStep.dataset.step);
-	
-	
-		   gsap.to(progress, { scaleX: progressPercentage, duration: 1, ease: "power2.out" });
+        const continueTl = gsap.timeline();
 
-	  
-			// only proceed to next step if the continue button was clicked in step 3
-			if (currentStep.dataset.step === "3") {
-			  continueTl.to(titleCurrent, {
-				yPercent: -100,
-				duration: 1,
-				ease: "power2.out",
-			  });
-	  
-			  continueTl.to(
-				buttonsCurrent,
-				{
-				  autoAlpha: 0,
-				  duration: 1,
-				  stagger: 0.03,
-				  ease: "power2.out",
-				},
-				0
-			  );
-	  
-			  continueTl.set(currentStep, { display: "none" });
-			  continueTl.set(nextStep, { display: "flex" });
-	  
-			  continueTl.fromTo(
-				titleNext,
-				{ yPercent: 100 },
-				{ yPercent: 0, duration: 1, ease: "power2.out" }
-			  );
-	  
-			  continueTl.fromTo(
-				buttonsNext,
-				{
-				  autoAlpha: 0,
-				},
-				{
-				  yPercent: 0,
-				  autoAlpha: 1,
-				  duration: 1,
-				  stagger: 0.03,
-				  ease: "power2.out",
-				},
-				1.5
-			  );
-			}
-		  });
-	}
+        const totalSteps = document.querySelectorAll(".step").length;
+        const progressPercentage =
+          (1 / (totalSteps - 1)) * currentStep.dataset.step;
 
-    
+        gsap.to(progress, {
+          scaleX: progressPercentage,
+          duration: 1,
+          ease: "power2.out",
+        });
+
+        // only proceed to next step if the continue button was clicked in step 3
+        if (currentStep.dataset.step === "3") {
+          continueTl.to(titleCurrent, {
+            yPercent: -100,
+            duration: 1,
+            ease: "power2.out",
+          });
+
+          continueTl.to(
+            buttonsCurrent,
+            {
+              autoAlpha: 0,
+              duration: 1,
+              stagger: 0.03,
+              ease: "power2.out",
+            },
+            0
+          );
+
+          continueTl.set(currentStep, { display: "none" });
+          continueTl.set(nextStep, { display: "flex" });
+
+          continueTl.fromTo(
+            titleNext,
+            { yPercent: 100 },
+            { yPercent: 0, duration: 1, ease: "power2.out" }
+          );
+
+          continueTl.fromTo(
+            buttonsNext,
+            {
+              autoAlpha: 0,
+            },
+            {
+              yPercent: 0,
+              autoAlpha: 1,
+              duration: 1,
+              stagger: 0.03,
+              ease: "power2.out",
+            },
+            1.5
+          );
+        }
+      });
+    }
   }
 
   hideFormBtn() {

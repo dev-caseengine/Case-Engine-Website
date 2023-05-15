@@ -122,7 +122,11 @@
     width: 100%;
     flex-wrap: wrap;
     overflow: hidden;
-	gap: 1rem;
+
+
+	@media(max-width: 920px) {
+		gap: 1rem;
+	  }
 
     &__input {
       width: 33.333%;
@@ -199,10 +203,11 @@
   }
 
   &__btn {
+	overflow: hidden;
     margin-right: 2rem;
     cursor: pointer;
     color: $white;
-    padding: 2.4rem 4rem;
+    padding: 0;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
@@ -217,6 +222,31 @@
     &:last-child {
       margin-right: 0;
     }
+
+	input[type="radio"] {
+		opacity: 0;
+		z-index: 100;
+		display: none;
+		// display: none;
+	  }
+
+	  input[type="radio"]:checked + label {
+		background: $white;
+		border-radius: 4px;
+		color: $black;
+		border-radius: 12px;
+	
+	  }
+
+	  label {
+		cursor: pointer;
+		z-index: 90;
+		padding: 2.4rem 4rem;
+		border-radius: 12px;
+		display: block;
+	  }
+
+
   }
 }
 
