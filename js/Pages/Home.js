@@ -124,12 +124,21 @@ export default class Home extends Page {
       isImageUp = !isImageUp; // toggle the state
     });
 
-
-
-
     //curor mouse ente
-	
-	gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+
+    wrapper.addEventListener("mousemove", (event) => {
+      const rect = wrapper.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      gsap.to(cursor, {
+        duration: 0.3,
+        x,
+        y,
+        ease: "power2.out",
+        delay: 0.1, // add a delay of 0.1 seconds
+      });
+    });
 
     wrapper.addEventListener("mouseenter", () => {
       gsap.to(cursor, {
@@ -142,7 +151,6 @@ export default class Home extends Page {
 
     wrapper.addEventListener("mouseleave", () => {
       gsap.to(cursor, {
-
         autoAlpha: 0,
         scale: 0,
         duration: 0.3,
@@ -151,32 +159,6 @@ export default class Home extends Page {
     });
 
     //Mouse Follow
-    this.pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    this.mouse = { x: this.pos.x, y: this.pos.y };
-    this.speed = 0.2;
-
-	this.xSet = gsap.quickSetter(cursor, "left", "px");
-	this.ySet = gsap.quickSetter(cursor, "top", "px");
-
-
-
-
-    wrapper.addEventListener("mousemove", (e) => {
-      this.mouse.x = e.x;
-      this.mouse.y = e.y;
-
-	  this.xSet(this.mouse.x);
-	  this.ySet(this.mouse.y);
-
-    });
-
-    gsap.ticker.add(() => {
-      this.pos.x += (this.mouse.x - this.pos.x) * this.speed;
-      this.pos.y += (this.mouse.y - this.pos.y) * this.speed;
-
-      this.xSet(this.pos.x);
-      this.ySet(this.pos.y);
-    });
   }
 
   //   foundersSlider() {

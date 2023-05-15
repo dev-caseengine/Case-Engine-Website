@@ -27,6 +27,10 @@
       color: $white;
       text-align: center;
 
+	  @media (max-width: 920px) {
+		width: 100%;
+	  }
+
       div {
         height: fit-content;
         overflow: hidden;
@@ -94,6 +98,10 @@
     height: fit-content;
     overflow: hidden;
 
+	@media (max-width: 920px) {
+		width: 100%;
+	  }
+
     h2 {
       @extend %heading-47;
       color: $white;
@@ -114,12 +122,17 @@
     width: 100%;
     flex-wrap: wrap;
     overflow: hidden;
+	gap: 1rem;
 
     &__input {
       width: 33.333%;
       display: flex;
       flex-direction: column;
       overflow: hidden;
+
+	  @media(max-width: 920px) {
+		width: 90%;
+	  }
 
       input {
         width: 95%;
@@ -223,6 +236,12 @@
   justify-content: center;
   cursor: pointer;
 
+  @media(max-width: 920px) {
+	top: 22rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   &:hover {
     background: rgba(255, 255, 255, 0.1);
   }
@@ -251,6 +270,10 @@
 
 .input-fw {
   width: 50%;
+
+  @media (max-width: 920px) {
+	width: 100%;
+  }
 }
 
 ::placeholder {

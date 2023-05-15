@@ -25,7 +25,19 @@ export default [
   {
     name: "problemOne",
     type: "video",
-    path: "../assets/videos/problem-1.mp4",
+    path: "../assets/videos/problem-1-final.mp4",
+  },
+
+  {
+    name: "problemTwo",
+    type: "video",
+    path: "../assets/videos/problem-2.mp4",
+  },
+
+  {
+    name: "problemThree",
+    type: "video",
+    path: "../assets/videos/problem-3.mp4",
   },
 
   {

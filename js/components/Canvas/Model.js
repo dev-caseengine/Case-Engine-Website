@@ -407,7 +407,7 @@ export default class Model {
             // };
 
             this.videoTexture3 = {};
-            this.video3 = this.resources.items.problemOne;
+            this.video3 = this.resources.items.problemTwo;
             this.video3.muted = true;
             this.video3.loop = true;
             this.video3.controls = true;
@@ -429,8 +429,27 @@ export default class Model {
               side: THREE.DoubleSide,
             });
 
+
+			this.videoTexture4 = {};
+            this.video4 = this.resources.items.problemThree;
+            this.video4.muted = true;
+            this.video4.loop = true;
+            this.video4.controls = true;
+            this.video4.playsInline = true;
+            this.video4.autoplay = true;
+
+            this.video4.play();
+
+            this.videoTexture4 = new THREE.VideoTexture(this.video4);
+            this.videoTexture4.flipY = true;
+            this.videoTexture4.encoding = THREE.SRGBColorSpace;
+            this.videoTexture4.minFilter = THREE.LinearFilter;
+            this.videoTexture4.magFilter = THREE.LinearFilter;
+
+
+
             this.clone3.material = new THREE.MeshBasicMaterial({
-              color: "green",
+			  map: this.videoTexture4,
               transparent: true,
               opacity: 0,
               side: THREE.DoubleSide,
