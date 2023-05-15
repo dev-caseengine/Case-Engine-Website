@@ -263,8 +263,10 @@ export default class Model {
             this.videoTexture = new THREE.VideoTexture(this.video);
             this.videoTexture.flipY = false;
             this.videoTexture.encoding = THREE.SRGBColorSpace;
-            this.videoTexture.minFilter = THREE.LinearFilter;
-            this.videoTexture.magFilter = THREE.LinearFilter;
+
+			this.videoTexture.needsUpdate = true;
+            // this.videoTexture.minFilter = THREE.LinearFilter;
+            // this.videoTexture.magFilter = THREE.LinearFilter;
 
             phoneScreenMesh.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture,
@@ -334,8 +336,9 @@ export default class Model {
             this.videoTexture2 = new THREE.VideoTexture(this.video2);
             this.videoTexture2.flipY = true;
             this.videoTexture2.encoding = THREE.SRGBColorSpace;
-            this.videoTexture2.minFilter = THREE.LinearFilter;
-            this.videoTexture2.magFilter = THREE.LinearFilter;
+			this.videoTexture2.needsUpdate = true;
+            // this.videoTexture2.minFilter = THREE.LinearFilter;
+            // this.videoTexture2.magFilter = THREE.LinearFilter;
 
             this.clone1.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture2,
@@ -414,13 +417,15 @@ export default class Model {
             this.video3.playsInline = true;
             this.video3.autoplay = true;
 
-            this.video3.play();
+            // this.video3.play();
 
             this.videoTexture3 = new THREE.VideoTexture(this.video3);
             this.videoTexture3.flipY = true;
             this.videoTexture3.encoding = THREE.SRGBColorSpace;
-            this.videoTexture3.minFilter = THREE.LinearFilter;
-            this.videoTexture3.magFilter = THREE.LinearFilter;
+			this.videoTexture3.needsUpdate = true;
+            // this.videoTexture3.minFilter = THREE.LinearFilter;
+            // this.videoTexture3.magFilter = THREE.LinearFilter;
+
 
             this.clone2.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture3,
@@ -438,7 +443,7 @@ export default class Model {
             this.video4.playsInline = true;
             this.video4.autoplay = true;
 
-            this.video4.play();
+            // this.video4.play();
 
             this.videoTexture4 = new THREE.VideoTexture(this.video4);
             this.videoTexture4.flipY = true;
@@ -618,12 +623,15 @@ export default class Model {
           this.model.children.find((child) => child.name === "red").material,
           { opacity: 0 },
           "<"
+
         );
+		this.video2.pause();
         tl.to(
           this.model.children.find((child) => child.name === "blue").material,
           { opacity: 1 },
           "<"
         );
+		this.video3.play();
       }
 
       if (currentActiveIndex === 1) {
@@ -634,11 +642,13 @@ export default class Model {
           { opacity: 0 },
           "<"
         );
+		this.video3.pause();
         tl.to(
           this.model.children.find((child) => child.name === "green").material,
           { opacity: 1 },
           "<"
         );
+		this.video4.play();
       }
 
       if (currentActiveIndex === 2) {
@@ -649,11 +659,13 @@ export default class Model {
           { opacity: 0 },
           "<"
         );
+		this.video4.pause();
         tl.to(
           this.model.children.find((child) => child.name === "red").material,
           { opacity: 1 },
           "<"
         );
+		this.video2.play();
       }
 
       //animate ball

@@ -9,7 +9,7 @@ export default class Canvas {
     this.template = template;
     this.sizes = new Sizes();
     this.createRenderer();
-    this.time = new Time();
+    // this.time = new Time();
     this.resources = resources;
     this.createScene();
     this.createCamera();

@@ -234,17 +234,18 @@ export default class Page {
   }
 
   show() {
+
     return new Promise((resolve) => {
       this.showAnimation(resolve);
       // Scroll to top of page
       window.scrollTo(0, 0);
 
-      // Re-enable Lenis
+    //   Re-enable Lenis
       setTimeout(() => {
         if (this.lenis) {
           this.lenis.start();
         }
-      }, 1000);
+      }, 2000);
 
       //   gsap.from(this.element, {
       //     // autoAlpha: 0,
