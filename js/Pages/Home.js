@@ -51,9 +51,7 @@ export default class Home extends Page {
     const foundersImgs = document.querySelectorAll(
       ".who-we-are__founders__img img"
     );
-    const foundersText = document.querySelectorAll(
-      ".who-we-are__founders__text h3"
-    );
+
     const img = document.querySelector(".who-we-are__founders__img");
     const cursor = document.querySelector(".founders-cursor");
 
@@ -126,32 +124,59 @@ export default class Home extends Page {
       isImageUp = !isImageUp; // toggle the state
     });
 
-    //curosr follow
 
 
-	// const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-	// const mouse = { x: pos.x, y: pos.y };
-	// const speed = 0.2;
 
-	// const xSet = gsap.quickSetter(cursor, "x", "px");
-	// const ySet = gsap.quickSetter(cursor, "y", "px");
+    //curor mouse ente
+	
+	gsap.set(cursor, { xPercent: -50, yPercent: -50 });
 
-    // wrapper.addEventListener("mousemove", (e) => {
-	// 	mouse.x = e.x;
-	// 	mouse.y = e.y;  
-    // });
+    wrapper.addEventListener("mouseenter", () => {
+      gsap.to(cursor, {
+        autoAlpha: 1,
+        scale: 1,
+        duration: 0.3,
+        ease: "power3.out",
+      });
+    });
 
-	// gsap.ticker.add(() => {
-  
-	// 	// adjust speed for higher refresh monitors
-	// 	const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio()); 
-		
-	// 	pos.x += (mouse.x - pos.x) * dt;
-	// 	pos.y += (mouse.y - pos.y) * dt;
-	// 	xSet(pos.x);
-	// 	ySet(pos.y);
-	//   });
+    wrapper.addEventListener("mouseleave", () => {
+      gsap.to(cursor, {
 
+        autoAlpha: 0,
+        scale: 0,
+        duration: 0.3,
+        ease: "power3.out",
+      });
+    });
+
+    //Mouse Follow
+    this.pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    this.mouse = { x: this.pos.x, y: this.pos.y };
+    this.speed = 0.2;
+
+	this.xSet = gsap.quickSetter(cursor, "left", "px");
+	this.ySet = gsap.quickSetter(cursor, "top", "px");
+
+
+
+
+    wrapper.addEventListener("mousemove", (e) => {
+      this.mouse.x = e.x;
+      this.mouse.y = e.y;
+
+	  this.xSet(this.mouse.x);
+	  this.ySet(this.mouse.y);
+
+    });
+
+    gsap.ticker.add(() => {
+      this.pos.x += (this.mouse.x - this.pos.x) * this.speed;
+      this.pos.y += (this.mouse.y - this.pos.y) * this.speed;
+
+      this.xSet(this.pos.x);
+      this.ySet(this.pos.y);
+    });
   }
 
   //   foundersSlider() {
@@ -205,12 +230,12 @@ export default class Home extends Page {
       0.2
     );
 
-    initTl.fromTo(
-      this.elements.results_label_problem,
-      { autoAlpha: "0", y: "100%" },
-      { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
-      0.8
-    );
+    // initTl.fromTo(
+    //   this.elements.results_label_problem,
+    //   { autoAlpha: "0", y: "100%" },
+    //   { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+    //   0.8
+    // );
 
     initTl.fromTo(
       this.elements.results_result[0],
@@ -219,12 +244,12 @@ export default class Home extends Page {
       1
     );
 
-    initTl.fromTo(
-      this.elements.results_label,
-      { autoAlpha: "0", y: "100%" },
-      { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
-      1
-    );
+    // initTl.fromTo(
+    //   this.elements.results_label,
+    //   { autoAlpha: "0", y: "100%" },
+    //   { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+    //   1
+    // );
     initTl.fromTo(
       this.elements.results_nav,
       { autoAlpha: "0", y: 40 },

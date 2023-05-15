@@ -164,7 +164,7 @@ onPreloaded() {
   }
 
   addLinkListeners() {
-    const links = document.querySelectorAll("a");
+	const links = document.querySelectorAll('a:not(.blank-link)');
 
     each(links, (link) => {
       link.onclick = (event) => {

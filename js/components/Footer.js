@@ -17,7 +17,6 @@ export default class Footer {
 	}
 
     if (template === "about") {
-      console.log("about");
 
       this.footer.classList.add("dark-footer");
     } else {

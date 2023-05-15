@@ -323,7 +323,7 @@ export default class Model {
             // this.video2.playsinline = true;
             // this.video2.setAttribute("playsinline", "");
 
-			this.video2.muted = true;
+            this.video2.muted = true;
             this.video2.loop = true;
             this.video2.controls = true;
             this.video2.playsInline = true;
@@ -333,7 +333,7 @@ export default class Model {
 
             this.videoTexture2 = new THREE.VideoTexture(this.video2);
             this.videoTexture2.flipY = true;
-            this.videoTexture.encoding = THREE.SRGBColorSpace;
+            this.videoTexture2.encoding = THREE.SRGBColorSpace;
             this.videoTexture2.minFilter = THREE.LinearFilter;
             this.videoTexture2.magFilter = THREE.LinearFilter;
 
@@ -406,12 +406,29 @@ export default class Model {
             //   );
             // };
 
+            this.videoTexture3 = {};
+            this.video3 = this.resources.items.problemOne;
+            this.video3.muted = true;
+            this.video3.loop = true;
+            this.video3.controls = true;
+            this.video3.playsInline = true;
+            this.video3.autoplay = true;
+
+            this.video3.play();
+
+            this.videoTexture3 = new THREE.VideoTexture(this.video3);
+            this.videoTexture3.flipY = true;
+            this.videoTexture3.encoding = THREE.SRGBColorSpace;
+            this.videoTexture3.minFilter = THREE.LinearFilter;
+            this.videoTexture3.magFilter = THREE.LinearFilter;
+
             this.clone2.material = new THREE.MeshBasicMaterial({
-              color: "blue",
+              map: this.videoTexture3,
               transparent: true,
               opacity: 0,
               side: THREE.DoubleSide,
             });
+
             this.clone3.material = new THREE.MeshBasicMaterial({
               color: "green",
               transparent: true,
@@ -467,7 +484,7 @@ export default class Model {
     //Mouse Follow
     this.pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     this.mouse = { x: this.pos.x, y: this.pos.y };
-    this.speed = 0.15;
+    this.speed = 0.2;
 
     this.xSet = gsap.quickSetter(this.ball, "x", "px");
     this.ySet = gsap.quickSetter(this.ball, "y", "px");

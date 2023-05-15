@@ -347,6 +347,7 @@
     position: absolute;
     bottom: 0;
     overflow: hidden;
+    border-radius: 12px;
 
     @media (max-width: 920px) {
       margin: 0 3rem;
@@ -371,7 +372,7 @@
     transform: translateY(0);
     will-change: transform;
     overflow: hidden;
-
+    border-radius: 12px;
     img {
       width: 100%;
       height: 100%;
@@ -570,17 +571,17 @@
   }
 
   .swiper-slide__other {
-	display: flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
 
-	h3 {
-		@extend %description-29;
-        color: $white;
-		margin-bottom: 3rem;
-	}
+    h3 {
+      @extend %description-29;
+      color: $white;
+      margin-bottom: 3rem;
+    }
   }
 
   &__bg {
