@@ -7,7 +7,7 @@ export default [
   {
     name: "handModel",
     type: "gltfModel",
-    path: "../assets/phone-hand-final.glb",
+    path: "../assets/hand-model.glb",
   },
 
   {
