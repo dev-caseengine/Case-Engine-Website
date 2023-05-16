@@ -21,6 +21,8 @@ export default class Preloader extends Component {
     //animate the progress
     this.resources.on("progress", (loaded, toLoad) => {
 
+		console.log('proggress');
+
       this.percentage = Math.round((loaded / toLoad) * 100);
 
       this.elements.percentage.firstChild.nodeValue = this.percentage;
