@@ -26,79 +26,83 @@ export default class Resources extends EventEmitter {
     this.loaders.textureLoader = new THREE.TextureLoader();
     this.loaders.cubeTextureLoader = new THREE.CubeTextureLoader();
 
-    this.loaders.dracoLoader.setDecoderPath(
-      "https://www.gstatic.com/draco/versioned/decoders/1.5.6/"
-    );
+    // this.loaders.dracoLoader.setDecoderPath(
+    //   "https://www.gstatic.com/draco/versioned/decoders/1.5.6/"
+    // );
+    this.loaders.dracoLoader.setDecoderPath("../../assets/draco/");
     this.loaders.dracoLoader.setDecoderConfig({ type: "js" });
     this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
   }
 
   startLoading() {
-	//load each source
-	for (const source of this.sources) {
-	  if (source.type === "gltfModel") {
-		this.loaders.gltfLoader.load(source.path,
-		  (file) => {
-			this.sourceLoaded(source, file);
-		  },
-		  undefined,
-		  (error) => {
-			this.sourceError(source, error);
-		  }
-		);
-	  } else if (source.type === "texture") {
-		this.loaders.textureLoader.load(source.path,
-		  (file) => {
-			this.sourceLoaded(source, file);
-		  },
-		  undefined,
-		  (error) => {
-			this.sourceError(source, error);
-		  }
-		);
-	  } else if (source.type === "cubeTexture") {
-		this.loaders.cubeTextureLoader.load(source.path,
-		  (file) => {
-			this.sourceLoaded(source, file);
-		  },
-		  undefined,
-		  (error) => {
-			this.sourceError(source, error);
-		  }
-		);
-	  } else if (source.type === "video") {
-		const video = document.createElement("video");
-		video.src = source.path;
-		video.addEventListener("loadeddata", () => {
-		  this.sourceLoaded(source, video);
-		});
-		video.addEventListener("error", (error) => {
-		  this.sourceError(source, error);
-		});
-	  } else if (source.type === "image") {
-		const image = new Image();
-		image.src = source.path;
-		image.addEventListener("load", () => {
-		  this.sourceLoaded(source, image);
-		});
-		image.addEventListener("error", (error) => {
-		  this.sourceError(source, error);
-		});
-	  }
-	}
+    //load each source
+    for (const source of this.sources) {
+      if (source.type === "gltfModel") {
+        this.loaders.gltfLoader.load(
+          source.path,
+          (file) => {
+            this.sourceLoaded(source, file);
+          },
+          undefined,
+          (error) => {
+            this.sourceError(source, error);
+          }
+        );
+      } else if (source.type === "texture") {
+        this.loaders.textureLoader.load(
+          source.path,
+          (file) => {
+            this.sourceLoaded(source, file);
+          },
+          undefined,
+          (error) => {
+            this.sourceError(source, error);
+          }
+        );
+      } else if (source.type === "cubeTexture") {
+        this.loaders.cubeTextureLoader.load(
+          source.path,
+          (file) => {
+            this.sourceLoaded(source, file);
+          },
+          undefined,
+          (error) => {
+            this.sourceError(source, error);
+          }
+        );
+      } else if (source.type === "video") {
+        const video = document.createElement("video");
+        video.src = source.path;
+        video.addEventListener("loadeddata", () => {
+          this.sourceLoaded(source, video);
+        });
+        video.addEventListener("error", (error) => {
+          this.sourceError(source, error);
+        });
+      } else if (source.type === "image") {
+        const image = new Image();
+        image.src = source.path;
+        image.addEventListener("load", () => {
+          this.sourceLoaded(source, image);
+        });
+        image.addEventListener("error", (error) => {
+          this.sourceError(source, error);
+        });
+      }
+    }
   }
   sourceLoaded(source, file) {
     this.items[source.name] = file;
     this.loaded++;
 
-	console.log(source.name, this.loaded / this.toLoad * 100);
+    console.log(source.name, (this.loaded / this.toLoad) * 100);
 
-	// console.log(source.name, this.loaded / this.toLoad * 100);
+    // console.log(source.name, this.loaded / this.toLoad * 100);
 
-	this.trigger("progress", [this.loaded, this.toLoad]);
+    this.trigger("progress", [this.loaded, this.toLoad]);
   }
 
   sourceError(source, error) {
-	console.error(`Error loading asset: ${source.name}`, error);
+    console.error(`Error loading asset: ${source.name}`, error);
   }
 }
