@@ -1,9 +1,9 @@
 export default [
-  {
-    name: "environmentMapTexture",
-    type: "texture",
-    path: "../assets/environment-map.jpg",
-  },
+//   {
+//     name: "environmentMapTexture",
+//     type: "texture",
+//     path: "../assets/environment-map.jpg",
+//   },
 //   {
 //     name: "handModel",
 //     type: "gltfModel",
