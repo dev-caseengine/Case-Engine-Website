@@ -37,11 +37,10 @@ export default class Preloader extends Component {
       //   gsap.set('.bg-anim', {autoAlpha: 0})
       //   gsap.to('.bg-anim', {autoAlpha: this.percentage / 100, ease: "linear",})
 
-    //   if (loaded === toLoad) {
-    //     this.onLoaded();
-    //   }
+      if (loaded === toLoad) {
+        this.onLoaded();
+      }
 
-    this.onLoaded();
 
     });
   }
