@@ -1,7 +1,7 @@
 import Page from "../classes/Page";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import jQuery from "jquery";
 export default class Contact extends Page {
   constructor() {
     super({
@@ -20,20 +20,30 @@ export default class Contact extends Page {
 
   create() {
     super.create();
-	  //this.form();
+	  this.form();
     this.titleAnim();
     this.hideFormBtn();
   }
 
 
-//   form() {
-// 	const form = document.querySelector('form');
+  form() {
+    jQuery(".contact-hero__steps").on("submit", function (e) {
+      var form = jQuery(this).serialize();
 
-// 	form.addEventListener('submit', (event) => {
-// 	  event.preventDefault();
-// 	});
+      e.preventDefault();
+      jQuery.ajax({
+        url: "/sendMail.php",
+        data: form,
+        type: "POST",
+        success: function (data) {
+          var res = JSON.parse(JSON.stringify(data));
+          jQuery(".button-send-mail").hide();
+          jQuery(".mail-response").html(res.message).show();
+        },
+      });
+    });
 	
-//   }
+  }
 
 
   titleAnim() {

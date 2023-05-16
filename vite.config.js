@@ -34,6 +34,10 @@ export default defineConfig({
           src: "assets/*",
           dest: "../dist/assets/",
         },
+        {
+          src: "sendMail.php",
+          dest: "../dist/"
+        }
       ],
     }),
   ],
