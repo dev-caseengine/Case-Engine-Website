@@ -71,6 +71,14 @@ export default class Resources extends EventEmitter {
         );
       } else if (source.type === "video") {
         const video = document.createElement("video");
+        video.id = source.name;
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+          video.autoplay = true;
+          video.muted = true;
+          video.loop = true;
+          video.playsinline = true;
+        }
+
         video.src = source.path;
         video.addEventListener("loadeddata", () => {
           this.sourceLoaded(source, video);
@@ -96,11 +104,9 @@ export default class Resources extends EventEmitter {
 
     console.log(source.name, (this.loaded / this.toLoad) * 100);
 
-
     // console.log(source.name, this.loaded / this.toLoad * 100);
 
     this.trigger("progress", [this.loaded, this.toLoad]);
-
   }
 
   sourceError(source, error) {
