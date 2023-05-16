@@ -76,7 +76,7 @@ export default class Resources extends EventEmitter {
           video.autoplay = true;
           video.muted = true;
           video.loop = true;
-          video.playsinline = true;d
+          video.playsinline = true;
         }
 
         video.src = source.path;
