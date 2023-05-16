@@ -36,6 +36,7 @@ class App {
 		resources: this.resources,
 	});
     this.preloader.on("loaded", () => {
+		console.log("loaded");
       this.onPreloaded();
     });
   }

@@ -13,6 +13,7 @@ export default class Preloader extends Component {
     });
 
     this.resources = resources;
+    console.log(this.resources);
 
     this.createLoader();
   }
@@ -20,9 +21,6 @@ export default class Preloader extends Component {
   createLoader() {
     //animate the progress
     this.resources.on("progress", (loaded, toLoad) => {
-
-		console.log('proggress');
-
       this.percentage = Math.round((loaded / toLoad) * 100);
 
       this.elements.percentage.firstChild.nodeValue = this.percentage;
@@ -39,9 +37,12 @@ export default class Preloader extends Component {
       //   gsap.set('.bg-anim', {autoAlpha: 0})
       //   gsap.to('.bg-anim', {autoAlpha: this.percentage / 100, ease: "linear",})
 
-      if (loaded === toLoad) {
-        this.onLoaded();
-      }
+    //   if (loaded === toLoad) {
+    //     this.onLoaded();
+    //   }
+
+    this.onLoaded();
+
     });
   }
 
@@ -72,13 +73,12 @@ export default class Preloader extends Component {
     this.animateOut.to(this.elements.bar, { autoAlpha: 0, duration: 0.3 }, 0);
 
     this.animateOut.call(() => {
+      this.trigger("loaded");
       this.destroy();
     });
-
-    this.trigger("loaded");
   }
 
   destroy() {
-    this.element.parentNode.removeChild(this.element);
+    this.element.parentNode && this.element.parentNode.removeChild(this.element);
   }
 }

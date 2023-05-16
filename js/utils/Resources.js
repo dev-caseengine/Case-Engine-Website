@@ -96,11 +96,11 @@ export default class Resources extends EventEmitter {
 
     console.log(source.name, (this.loaded / this.toLoad) * 100);
 
-	console.log(source)
 
     // console.log(source.name, this.loaded / this.toLoad * 100);
 
     this.trigger("progress", [this.loaded, this.toLoad]);
+
   }
 
   sourceError(source, error) {
