@@ -22,16 +22,29 @@
 // import glsl from "vite-plugin-glsl";
 import { resolve } from "path";
 import { defineConfig } from "vite";
+import { viteStaticCopy } from "vite-plugin-static-copy";
+
 
 export default defineConfig({
-//   plugins: [glsl()],
+  plugins: [
+
+    viteStaticCopy({
+      targets: [
+        {
+          src: "assets/*",
+          dest: "../dist/assets/",
+        },
+      ],
+    }),
+  ],
+
   build: {
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
-		about: resolve(__dirname, "about.html"),
+        about: resolve(__dirname, "about.html"),
         // about: resolve(__dirname, "pages/about.html"),
-		contact: resolve(__dirname, "contact.html"),
+        contact: resolve(__dirname, "contact.html"),
       },
     },
   },

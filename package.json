@@ -19,9 +19,10 @@
     "lodash": "^4.17.21",
     "sass": "^1.58.2",
     "splitting": "^1.0.6",
-	"swiper": "^8.3.2",
+    "swiper": "^8.3.2",
     "three": "^0.149.0",
     "troika-three-text": "^0.47.1",
+    "vite-plugin-static-copy": "^0.15.0",
     "yarn": "^1.22.19"
   }
 }

@@ -386,8 +386,9 @@
     width: 10rem;
     height: 10rem;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+	background: $blue;
+    // background: rgba(255, 255, 255, 0.02);
+    // border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
@@ -995,7 +996,7 @@
       left: 0;
       width: 10rem;
       height: 10rem;
-      background: white;
+      background: $blue;
       z-index: 2;
       border-radius: 50%;
       display: flex;
@@ -1013,6 +1014,7 @@
 	  }
 
       p {
+		color: $white;
         font-size: 12px;
       }
     }

@@ -7,13 +7,13 @@ export default [
   {
     name: "handModel",
     type: "gltfModel",
-    path: "../assets/hand-model.glb",
+    path: "../assets/hand-mobile-v1.glb",
   },
 
   {
     name: "logoModel",
     type: "gltfModel",
-    path: "../assets/Logo-web.glb",
+    path: "../assets/logo-model-v1.glb",
   },
 
   {

@@ -256,7 +256,7 @@ export default class Model {
             this.video.muted = true;
             this.video.loop = true;
             this.video.controls = true;
-            this.video.playsInline = true;
+			this.video.setAttribute('playsinline', true)
             this.video.autoplay = true;
             this.video.play();
 
@@ -328,7 +328,8 @@ export default class Model {
             this.video2.muted = true;
             this.video2.loop = true;
             this.video2.controls = true;
-            this.video2.playsInline = true;
+         
+			this.video2.setAttribute('playsinline', true)
             this.video2.autoplay = true;
 
             this.video2.play();
@@ -414,7 +415,8 @@ export default class Model {
             this.video3.muted = true;
             this.video3.loop = true;
             this.video3.controls = true;
-            this.video3.playsInline = true;
+       
+			this.video3.setAttribute('playsinline', true)
             this.video3.autoplay = true;
 
             // this.video3.play();
@@ -440,7 +442,8 @@ export default class Model {
             this.video4.muted = true;
             this.video4.loop = true;
             this.video4.controls = true;
-            this.video4.playsInline = true;
+        
+			this.video4.setAttribute('playsinline', true)
             this.video4.autoplay = true;
 
             // this.video4.play();
