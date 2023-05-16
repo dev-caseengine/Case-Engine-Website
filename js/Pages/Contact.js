@@ -20,7 +20,7 @@ export default class Contact extends Page {
 
   create() {
     super.create();
-	this.form();
+	  //this.form();
     this.titleAnim();
     this.hideFormBtn();
   }

@@ -3,13 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
 
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
     />
-
+    <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
     <title>Case Engine</title>
   </head>
   <body class="body">
@@ -441,5 +444,13 @@
       <img class="footer__glow" src="./assets/footer-glow.svg" alt="" />
     </footer>
     <script type="module" src="./main.js"></script>
+    <script>
+      $(".contact-hero__steps").on("submit", function (e) {
+        var form = $(this).serialize();
+
+        alert(form);
+        e.preventDefault();
+      });
+    </script>
   </body>
 </html>
