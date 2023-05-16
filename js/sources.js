@@ -1,20 +1,20 @@
 export default [
-//   {
-//     name: "environmentMapTexture",
-//     type: "texture",
-//     path: "../assets/environment-map.jpg",
-//   },
-//   {
-//     name: "handModel",
-//     type: "gltfModel",
-//     path: "../assets/hand-mobile-v1.glb",
-//   },
+  {
+    name: "environmentMapTexture",
+    type: "texture",
+    path: "../assets/environment-map.jpg",
+  },
+  {
+    name: "handModel",
+    type: "gltfModel",
+    path: "../assets/hand-mobile-v1.glb",
+  },
 
-//   {
-//     name: "logoModel",
-//     type: "gltfModel",
-//     path: "../assets/logo-model-v1.glb",
-//   },
+  {
+    name: "logoModel",
+    type: "gltfModel",
+    path: "../assets/logo-model-v1.glb",
+  },
 
   {
     name: "notificationVideo",
@@ -45,6 +45,4 @@ export default [
     type: "video",
     path: "../assets/video-about.mp4",
   },
-
-
 ];

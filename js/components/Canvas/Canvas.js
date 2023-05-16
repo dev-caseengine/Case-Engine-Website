@@ -78,39 +78,39 @@ export default class Canvas {
     });
   }
 
-//   createHome() {
-//     this.home = new Model({
-//       name: "phone",
-//       file: this.resources.items.handModel,
-//       scene: this.scene,
-//       renderer: this.renderer,
-//       camera: this.camera,
-//       resources: this.resources,
-//     });
-//   }
+  createHome() {
+    this.home = new Model({
+      name: "phone",
+      file: this.resources.items.handModel,
+      scene: this.scene,
+      renderer: this.renderer,
+      camera: this.camera,
+      resources: this.resources,
+    });
+  }
 
-//   destroyHome() {
-//     if (!this.home) return;
-//     this.home.destroy();
-//     this.home = null;
-//   }
+  destroyHome() {
+    if (!this.home) return;
+    this.home.destroy();
+    this.home = null;
+  }
 
-//   createAbout() {
-//     this.about = new Model({
-//       name: "logo",
-//       file: this.resources.items.logoModel,
-//       //   file: this.resources.sources[2].path,
-//       scene: this.scene,
-//       renderer: this.renderer,
-//       camera: this.camera,
-//       resources: this.resources,
-//     });
-//   }
-//   destroyAbout() {
-//     if (!this.about) return;
-//     this.about.destroy();
-//     this.about = null;
-//   }
+  createAbout() {
+    this.about = new Model({
+      name: "logo",
+      file: this.resources.items.logoModel,
+      //   file: this.resources.sources[2].path,
+      scene: this.scene,
+      renderer: this.renderer,
+      camera: this.camera,
+      resources: this.resources,
+    });
+  }
+  destroyAbout() {
+    if (!this.about) return;
+    this.about.destroy();
+    this.about = null;
+  }
 
   // Events
   onPreloaded() {
@@ -118,25 +118,25 @@ export default class Canvas {
   }
 
   onChangeStart(template, url) {
-    // if (template === "home" && this.home) {
-    //   this.home.hide();
-    // }
-    // if (template === "about" && this.about) {
-    //   this.about.hide();
-    // }
+    if (template === "home" && this.home) {
+      this.home.hide();
+    }
+    if (template === "about" && this.about) {
+      this.about.hide();
+    }
   }
 
   onChangeEnd(template) {
-    // if (template === "home") {
-    //   this.createHome();
-    // } else {
-    //   this.destroyHome();
-    // }
-    // if (template === "about") {
-    //   this.createAbout();
-    // } else if (this.about) {
-    //   this.destroyAbout();
-    // }
+    if (template === "home") {
+      this.createHome();
+    } else {
+      this.destroyHome();
+    }
+    if (template === "about") {
+      this.createAbout();
+    } else if (this.about) {
+      this.destroyAbout();
+    }
   }
 
   //   onChange(template) {
@@ -162,8 +162,8 @@ export default class Canvas {
   }
 
   onMouseMove(event) {
-	// if (this.home) this.home.onMouseMove(event);
-	// if (this.about) this.about.onMouseMove(event);
+	if (this.home) this.home.onMouseMove(event);
+	if (this.about) this.about.onMouseMove(event);
   }
 
   update(time) {
@@ -171,8 +171,8 @@ export default class Canvas {
 
     // this.parallaxCamera.update();
 
-    // if (this.home) this.home.update(time);
-    // if (this.about) this.about.update(time);
+    if (this.home) this.home.update(time);
+    if (this.about) this.about.update(time);
     if (this.plane) this.plane.update(time);
   }
 }

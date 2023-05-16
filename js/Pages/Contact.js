@@ -20,20 +20,20 @@ export default class Contact extends Page {
 
   create() {
     super.create();
-	this.form();
+	// this.form();
     this.titleAnim();
     this.hideFormBtn();
   }
 
 
-  form() {
-	const form = document.querySelector('form');
+//   form() {
+// 	const form = document.querySelector('form');
 
-	form.addEventListener('submit', (event) => {
-	  event.preventDefault();
-	});
+// 	form.addEventListener('submit', (event) => {
+// 	  event.preventDefault();
+// 	});
 	
-  }
+//   }
 
 
   titleAnim() {
