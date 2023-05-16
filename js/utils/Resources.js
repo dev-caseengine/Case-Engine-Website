@@ -7,8 +7,6 @@ import sources from "../sources";
 export default class Resources extends EventEmitter {
   constructor() {
     super();
-
-	
     //Options
     this.sources = sources;
     //Setup

@@ -45,6 +45,4 @@ export default [
     type: "video",
     path: "../assets/video-about.mp4",
   },
-
-
 ];
