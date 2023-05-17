@@ -40,8 +40,6 @@ export default class Preloader extends Component {
       if (loaded === toLoad) {
         this.onLoaded();
       }
-
-
     });
   }
 
@@ -78,6 +76,7 @@ export default class Preloader extends Component {
   }
 
   destroy() {
-    this.element.parentNode && this.element.parentNode.removeChild(this.element);
+    this.element.parentNode &&
+      this.element.parentNode.removeChild(this.element);
   }
 }

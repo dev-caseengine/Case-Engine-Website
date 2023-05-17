@@ -237,19 +237,9 @@ export default class Model {
 
           // Add the video texture to the "phoneScreen" mesh
           if (phoneScreenMesh) {
-            //   const videoTexture = new THREE.VideoTexture(this.resources.items.notificationVideo);
             this.videoTexture = {};
             this.video = this.resources.items.notificationVideo;
-            // this.video.crossOrigin = "anonymous";
-            // this.video.muted = "muted";
-            // this.video.muted = true;
-            // // this.video.preload = "auto";
-            // this.video.autoplay = "autoplay";
-            // this.video.autoplay = true;
-            // this.video.loop = "loop";
-            // this.video.loop = true;
-            // this.video.playsinline = true;
-            // this.video.setAttribute("playsinline", "");
+
 
             this.video.muted = true;
             this.video.loop = true;
@@ -263,8 +253,7 @@ export default class Model {
             this.videoTexture.encoding = THREE.SRGBColorSpace;
 
 			this.videoTexture.needsUpdate = true;
-            // this.videoTexture.minFilter = THREE.LinearFilter;
-            // this.videoTexture.magFilter = THREE.LinearFilter;
+
 
             phoneScreenMesh.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture,
@@ -312,17 +301,6 @@ export default class Model {
 
             this.videoTexture2 = {};
             this.video2 = this.resources.items.problemOne;
-            // this.video2.crossOrigin = "anonymous";
-            // this.video2.muted = "muted";
-            // this.video2.muted = true;
-            // this.video2.preload = "auto";
-            // this.video2.autoplay = "autoplay";
-            // this.video2.autoplay = true;
-            // this.video2.loop = "loop";
-            // this.video2.loop = true;
-            // this.video2.playsinline = true;
-            // this.video2.setAttribute("playsinline", "");
-
             this.video2.muted = true;
             this.video2.loop = true;
             this.video2.controls = true;
@@ -336,8 +314,6 @@ export default class Model {
             this.videoTexture2.flipY = true;
             this.videoTexture2.encoding = THREE.SRGBColorSpace;
 			this.videoTexture2.needsUpdate = true;
-            // this.videoTexture2.minFilter = THREE.LinearFilter;
-            // this.videoTexture2.magFilter = THREE.LinearFilter;
 
             this.clone1.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture2,
@@ -362,9 +338,6 @@ export default class Model {
             this.videoTexture3.flipY = true;
             this.videoTexture3.encoding = THREE.SRGBColorSpace;
 			this.videoTexture3.needsUpdate = true;
-            // this.videoTexture3.minFilter = THREE.LinearFilter;
-            // this.videoTexture3.magFilter = THREE.LinearFilter;
-
 
             this.clone2.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture3,
@@ -390,7 +363,6 @@ export default class Model {
             this.videoTexture4.encoding = THREE.SRGBColorSpace;
             this.videoTexture4.minFilter = THREE.LinearFilter;
             this.videoTexture4.magFilter = THREE.LinearFilter;
-
 
 
             this.clone3.material = new THREE.MeshBasicMaterial({
@@ -725,7 +697,7 @@ export default class Model {
     await this.destroy();
     this.model.visible = true;
 
-    this.showTl = gsap.timeline({ delay: 1.3 });
+    this.showTl = gsap.timeline({ delay: 1 });
 
     if (this.name === "phone") {
       this.showTl.fromTo(

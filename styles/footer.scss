@@ -7,7 +7,7 @@
   
 
   @media (max-width: 920px) {
-	padding-top: 12rem;
+	padding-top: 22rem;
   }
 
   &__overlay {
@@ -38,6 +38,7 @@
 
     @media (max-width: 920px) {
       grid-template-columns: 1fr;
+	  padding-bottom: 12rem;
     }
 
     div {
@@ -61,7 +62,7 @@
       width: 75%;
 
       @media (max-width: 920px) {
-        width: 100%;
+        width: 80%;
       }
     }
   }

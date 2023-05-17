@@ -20,11 +20,15 @@ export default class Contact extends Page {
 
   create() {
     super.create();
-	  this.form();
-    this.titleAnim();
+    this.form();
+
     this.hideFormBtn();
   }
 
+  show() {
+    super.show();
+    this.titleAnim();
+  }
 
   form() {
     jQuery(".contact-hero__steps").on("submit", function (e) {
@@ -42,13 +46,10 @@ export default class Contact extends Page {
         },
       });
     });
-	
   }
-
 
   titleAnim() {
     this.titleTl = gsap.timeline({
-      delay: 4.5,
       onComplete: () => {
         gsap.set(this.elements.title, { display: "none" });
         this.setupSteps();
@@ -57,9 +58,17 @@ export default class Contact extends Page {
 
     this.titleTl.fromTo(
       this.elements.text,
-      { yPercent: 0 },
-      { yPercent: -100, duration: 1, stagger: 0.1, ease: "power2.out" }
+      { yPercent: 100 },
+      { yPercent: 0, duration: 1, stagger: 0.1, ease: "power2.out", delay: 1 }
     );
+
+    this.titleTl.to(this.elements.text, {
+      yPercent: -100,
+      duration: 1,
+      stagger: 0.1,
+      ease: "power2.out",
+      delay: 1.5,
+    });
   }
 
   setupSteps() {

@@ -61,15 +61,25 @@
     display: block;
     overflow: hidden;
     position: absolute;
-    bottom: 6rem;
-    right: 6rem;
-    height: 3rem;
 
+    bottom: 8rem;
+    height: 3rem;
+    left: 21rem;
+
+    // bottom: 6rem;
+    // right: 6rem;
+    // height: 3rem;
+
+
+	@media (max-width: 920px) {
+		left: 5rem;
+	}
 
 	@media (max-width: 640px) {
 		bottom: auto;
 		top: 6rem;
 		height: 4rem;
+		left: 3rem;
 	}
 
 

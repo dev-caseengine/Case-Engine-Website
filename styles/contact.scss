@@ -1,15 +1,23 @@
 .contact-hero {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100dvh;
+
+  //   @media (max-width: 640px) {
+  //     height: 100vh;
+  //   }
 
   &__inner {
     width: inherit;
-    min-height: inherit;
+    height: inherit;
     display: grid;
     grid-template-rows: 0.2fr 1fr 0.2fr;
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 640px) {
+      grid-template-rows: 1fr 0.11fr;
+    }
   }
 
   &__top {
@@ -17,6 +25,10 @@
     align-items: center;
     justify-content: center;
     align-self: flex-end;
+
+    @media (max-width: 640px) {
+      display: none;
+    }
   }
 
   &__title {
@@ -27,15 +39,16 @@
       color: $white;
       text-align: center;
 
-	  @media (max-width: 920px) {
-		width: 100%;
-	  }
+      @media (max-width: 920px) {
+        width: 100%;
+      }
 
       div {
         height: fit-content;
         overflow: hidden;
 
         span {
+          will-change: transform;
           display: block;
         }
       }
@@ -72,6 +85,18 @@
     z-index: -1;
     pointer-events: none;
     backface-visibility: hidden;
+
+    @media (max-width: 920px) {
+      top: -70%;
+      left: -45%;
+      width: 200%;
+    }
+
+    @media (max-width: 640px) {
+      top: -35%;
+      left: -70%;
+      width: 250%;
+    }
   }
 
   .label-contact {
@@ -91,6 +116,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   &__title {
     margin-bottom: 9rem;
     width: 115rem;
@@ -98,13 +124,19 @@
     height: fit-content;
     overflow: hidden;
 
-	@media (max-width: 920px) {
-		width: 100%;
-	  }
+    @media (max-width: 920px) {
+      width: 90%;
+      margin-bottom: 12rem;
+    }
 
     h2 {
       @extend %heading-47;
       color: $white;
+
+      @media (max-width: 920px) {
+        font-size: 24px;
+        text-align: center;
+      }
     }
   }
 
@@ -123,10 +155,9 @@
     flex-wrap: wrap;
     overflow: hidden;
 
-
-	@media(max-width: 920px) {
-		gap: 1rem;
-	  }
+    @media (max-width: 920px) {
+      gap: 1rem;
+    }
 
     &__input {
       width: 33.333%;
@@ -134,9 +165,9 @@
       flex-direction: column;
       overflow: hidden;
 
-	  @media(max-width: 920px) {
-		width: 90%;
-	  }
+      @media (max-width: 920px) {
+        width: 90%;
+      }
 
       input {
         width: 95%;
@@ -147,6 +178,7 @@
         font-size: 16px;
         color: $white;
         margin-bottom: 3rem;
+        height: 48px;
 
         &:focus {
           outline: none;
@@ -159,6 +191,9 @@
         @extend %description-22;
         color: $white;
         margin-bottom: 1.5rem;
+        @media (max-width: 920px) {
+          font-size: 16px;
+        }
       }
     }
 
@@ -197,13 +232,14 @@
           font-size: 16px;
           color: $white;
           margin-bottom: 6rem;
+          height: 48px;
         }
       }
     }
   }
 
   &__btn {
-	overflow: hidden;
+    overflow: hidden;
     margin-right: 2rem;
     cursor: pointer;
     color: $white;
@@ -214,6 +250,10 @@
     @extend %description-18;
     transition: background 0.2s ease-in-out;
 
+    @media (max-width: 640px) {
+      margin-right: 1rem;
+    }
+
     &:hover {
       background: #fff;
       color: #000;
@@ -223,30 +263,30 @@
       margin-right: 0;
     }
 
-	input[type="radio"] {
-		opacity: 0;
-		z-index: 100;
-		display: none;
-		// display: none;
-	  }
+    input[type="radio"] {
+      opacity: 0;
+      z-index: 100;
+      display: none;
+      // display: none;
+    }
 
-	  input[type="radio"]:checked + label {
-		background: $white;
-		border-radius: 4px;
-		color: $black;
-		border-radius: 12px;
-	
-	  }
+    input[type="radio"]:checked + label {
+      background: $white;
+      border-radius: 4px;
+      color: $black;
+      border-radius: 12px;
+    }
 
-	  label {
-		cursor: pointer;
-		z-index: 90;
-		padding: 2.4rem 4rem;
-		border-radius: 12px;
-		display: block;
-	  }
+    label {
+      cursor: pointer;
+      z-index: 90;
+      padding: 2.4rem 4rem;
+      border-radius: 12px;
+      display: block;
 
-
+      @media (max-width: 640px) {
+      }
+    }
   }
 }
 
@@ -266,8 +306,8 @@
   justify-content: center;
   cursor: pointer;
 
-  @media(max-width: 920px) {
-	top: 22rem;
+  @media (max-width: 920px) {
+    top: 12rem;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -282,27 +322,37 @@
 }
 
 .contact-progress {
-	width: 100%;
-	height: 4px;
-	position: absolute;
-    bottom: 0;
-    left: 0;
+  width: 100%;
+  height: 4px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 
-	span {
-		display: block;
-		width: 100%;
-		transform: scaleX(0);
-		transform-origin: top left;
-		height: 100%;
-		background: $white;
-	}
+  span {
+    display: block;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: top left;
+    height: 100%;
+    background: $white;
+  }
 }
 
 .input-fw {
   width: 50%;
 
+  p {
+    align-self: flex-start;
+  }
+
+  input {
+    width: 100%;
+  }
+
   @media (max-width: 920px) {
-	width: 100%;
+    width: 90%;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -337,16 +387,28 @@ input[type="number"] {
 }
 
 p.mail-response {
-    font-size: 14px;
-    color: #fff;
-    margin-top: 2rem;
-    letter-spacing: .02em;
-	display: none;
+  font-size: 14px;
+  color: #fff;
+  margin-top: 2rem;
+  letter-spacing: 0.02em;
+  display: none;
 }
 
 .send-mail {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-form {
+  @media (max-width: 640px) {
+    margin-top: 6rem;
+  }
+
+  .step__title {
+    @media (max-width: 640px) {
+      margin-bottom: 3rem;
+    }
+  }
 }

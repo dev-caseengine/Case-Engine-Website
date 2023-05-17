@@ -74,6 +74,10 @@
       img {
         width: 2.4rem;
       }
+
+      @media (max-width: 640px) {
+        display: none;
+      }
     }
 
     h2 {
@@ -93,6 +97,11 @@
         color: #ffffff;
         width: 60%;
         margin-left: 21rem;
+      }
+
+      @media (max-width: 640px) {
+        margin-left: 0rem;
+        width: 90%;
       }
     }
   }
@@ -317,11 +326,20 @@
         &:nth-child(2) {
           display: block;
           text-align: center;
+
+		  @media (max-width: 920px) {
+			text-align: left;
+		  }
+
         }
 
         &:last-child {
           display: block;
           text-align: center;
+
+		  @media (max-width: 920px) {
+			text-align: left;
+		  }
         }
       }
     }

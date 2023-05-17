@@ -8,25 +8,22 @@ export default class Footer {
   }
 
   onChange(template) {
-
-
-	if(template === "home"){
-		this.footer.classList.add("white-bg");
-	} else {
-		this.footer.classList.remove("white-bg");
-	}
+    if (template === "home") {
+      this.footer && this.footer.classList.add("white-bg");
+    } else {
+      this.footer && this.footer.classList.remove("white-bg");
+    }
 
     if (template === "about") {
-
-      this.footer.classList.add("dark-footer");
+      this.footer && this.footer.classList.add("dark-footer");
     } else {
-      this.footer.classList.remove("dark-footer");
+      this.footer && this.footer.classList.remove("dark-footer");
     }
 
     if (template === "contact") {
-      this.footer.style.display = "none";
+      this.footer && (this.footer.style.display = "none");
     } else {
-      this.footer.style.display = "block";
+      this.footer && (this.footer.style.display = "block");
     }
   }
 }
