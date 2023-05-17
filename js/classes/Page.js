@@ -16,22 +16,23 @@ export default class Page {
   }
 
   createSmoothScroll() {
+    const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
     // const isMobile =
     //   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     //     navigator.userAgent
     //   );
 
-      this.lenis = new Lenis({
-        smooth: true,
-        duration: 0.4,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        mouseMultiplier: 1,
-        smoothTouch: true,
-        touchMultiplier: 3,
-      });
-      this.lenis.stop();
-      this.lenis.on("scroll", () => ScrollTrigger.update());
-    
+    this.lenis = new Lenis({
+      smooth: true,
+      duration: 0.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      mouseMultiplier: 1,
+      smoothTouch: true,
+      touchMultiplier: 3,
+    });
+
+    this.lenis.stop();
+    this.lenis.on("scroll", () => ScrollTrigger.update());
   }
 
   createAnimations() {

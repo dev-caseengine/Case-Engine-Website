@@ -13,7 +13,7 @@ export default class Preloader extends Component {
     });
 
     this.resources = resources;
-    console.log(this.resources);
+
 
     this.createLoader();
   }
