@@ -21,7 +21,6 @@ export default class Contact extends Page {
   create() {
     super.create();
     this.form();
-
     this.hideFormBtn();
   }
 
@@ -250,19 +249,21 @@ export default class Contact extends Page {
       continueButton.style.display = "none";
     }
 
-    if (inputField != null) {
-      // Add an event listener to the input field
-      inputField.addEventListener("input", () => {
-        // Check if the input field is empty
-        if (inputField.value.trim() === "") {
-          // If it is empty, hide the continue button
-          continueButton.style.display = "none";
-        } else {
-          // Otherwise, show the continue button
-          continueButton.style.display = "flex";
-        }
-      });
-    }
+	if (inputField != null) {
+		// Add an event listener to the input field
+		inputField.addEventListener("input", () => {
+		  // Get the input value and remove leading/trailing whitespace
+		  const inputValue = inputField.value.trim();
+		  // Check if the input field has more than 3 characters and contains only letters
+		  if (inputValue.length >= 3 && /^[A-Za-z]+$/.test(inputValue)) {
+			// If it meets the conditions, show the continue button
+			continueButton.style.display = "flex";
+		  } else {
+			// Otherwise, hide the continue button
+			continueButton.style.display = "none";
+		  }
+		});
+	  }
 
     if (continueButton != null) {
       continueButton.addEventListener("click", () => {
@@ -351,13 +352,19 @@ export default class Contact extends Page {
     submitButton.style.display = "none";
 
     // function to show submit button if all fields are filled
-    const showSubmitButton = () => {
-      if (firstNameInput.value && emailInput.value && phoneInput.value) {
-        submitButton.style.display = "flex";
-      } else {
-        submitButton.style.display = "none";
-      }
-    };
+	const showSubmitButton = () => {
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	  
+		if (
+		  firstNameInput.value &&
+		  emailPattern.test(emailInput.value) &&
+		  phoneInput.value
+		) {
+		  submitButton.style.display = "flex";
+		} else {
+		  submitButton.style.display = "none";
+		}
+	  };
 
     // add event listeners to input fields
     firstNameInput.addEventListener("input", showSubmitButton);

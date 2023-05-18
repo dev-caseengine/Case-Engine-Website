@@ -102,7 +102,7 @@ export default class Plane {
   // Update function
   update(time) {
     // Update the time uniform of the material
-    this.material.uniforms.time.value = time * 0.0008;
+    this.material.uniforms.time.value = time * 0.001;
 
   }
 }

@@ -15,6 +15,7 @@ export default class Home extends Page {
       id: "home",
       element: ".home",
       elements: {
+        hero: ".hero",
         results: ".results",
         blueSection: ".who-we-are",
         results_nav: ".results__nav span",
@@ -25,6 +26,7 @@ export default class Home extends Page {
         results_label: ".results__label p",
         results_border: ".results__border",
         results_cursor: ".results__follow",
+        heroBtn: ".hero-btn",
       },
     });
 
@@ -33,14 +35,28 @@ export default class Home extends Page {
 
   create() {
     super.create();
+    this.hideBtnOnScroll();
     this.initResults();
     this.eyeAnimation();
     this.pinSection();
     this.founders();
-    // this.foundersSlider();
     this.whiteSection();
     this.clientSliderFirst();
     this.clientSliderSecond();
+  }
+
+  hideBtnOnScroll() {
+    if (window.innerWidth <= 920) {
+      gsap.to(this.elements.heroBtn, {
+        autoAlpha: 0,
+        scrollTrigger: {
+          trigger: this.elements.hero,
+          start: "top top",
+          end: "bottom center",
+          scrub: true,
+        },
+      });
+    }
   }
 
   founders() {
@@ -160,41 +176,6 @@ export default class Home extends Page {
 
     //Mouse Follow
   }
-
-  //   foundersSlider() {
-  //     // Get all the elements
-  //     const bullets = document.querySelectorAll(".who-we-are__bulets span");
-  //     const founders = document.querySelectorAll(".who-we-are__founders__inner");
-  //     const activeBulletClass = "active-bullet";
-
-  //     // Loop through the bullets and add click event listeners
-  //     bullets.forEach((bullet, index) => {
-  //       bullet.addEventListener("click", () => {
-  //         // Remove the active class from all the bullets
-  //         bullets.forEach((bullet) => {
-  //           bullet.classList.remove(activeBulletClass);
-  //         });
-
-  //         // Add the active class to the selected bullet
-  //         bullet.classList.add(activeBulletClass);
-
-  //         // Remove the active class from all the founders
-  //         founders.forEach((founder) => {
-  //           founder.classList.remove("active-founder");
-  //         });
-
-  //         // Add the active class to the selected founder
-  //         founders[index].classList.add("active-founder");
-
-  //         // Use GSAP to add the fade transition
-  //         gsap.fromTo(
-  //           ".who-we-are__founders__inner",
-  //           { opacity: 0, duration: 1 },
-  //           { opacity: 1, duration: 1 }
-  //         );
-  //       });
-  //     });
-  //   }
 
   initResults() {
     const initTl = gsap.timeline({ paused: true });
