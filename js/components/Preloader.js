@@ -14,7 +14,6 @@ export default class Preloader extends Component {
 
     this.resources = resources;
 
-
     this.createLoader();
   }
 
@@ -60,10 +59,14 @@ export default class Preloader extends Component {
 
     this.animateOut.to(
       this.elements.percentage,
-      { yPercent: 100, duration: 1 },
+      { yPercent: 100, duration: 0.5 },
       0
     );
-    this.animateOut.to(this.elements.title, { yPercent: 100, duration: 1 }, 0);
+    this.animateOut.to(
+      this.elements.title,
+      { yPercent: 100, duration: 0.5 },
+      0
+    );
 
     this.animateOut.to(this.elements.bars, { autoAlpha: 0, duration: 0.3 }, 0);
 

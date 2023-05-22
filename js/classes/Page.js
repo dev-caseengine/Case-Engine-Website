@@ -41,7 +41,7 @@ export default class Page {
 
   //Create Initial animation after laoding
   showAnimation(resolve) {
-    this.introAnim = gsap.timeline({ delay: 0.5, onComplete: resolve });
+    this.introAnim = gsap.timeline({ delay: 0.3, onComplete: resolve });
     this.introAnim.to(
       ".overlay span",
       { scaleY: 0, duration: 1, ease: "power3.out" },

@@ -22,27 +22,27 @@ export default [
     path: "../assets/videos/notification.mp4",
   },
 
-  {
-    name: "problemOne",
-    type: "video",
-    path: "../assets/videos/problem-1-final.mp4",
-  },
+//   {
+//     name: "problemOne",
+//     type: "video",
+//     path: "../assets/videos/problem-1-final.mp4",
+//   },
 
-  {
-    name: "problemTwo",
-    type: "video",
-    path: "../assets/videos/problem-2.mp4",
-  },
+//   {
+//     name: "problemTwo",
+//     type: "video",
+//     path: "../assets/videos/problem-2.mp4",
+//   },
 
-  {
-    name: "problemThree",
-    type: "video",
-    path: "../assets/videos/problem-3.mp4",
-  },
+//   {
+//     name: "problemThree",
+//     type: "video",
+//     path: "../assets/videos/problem-3.mp4",
+//   },
 
-  {
-    name: "aboutVideo",
-    type: "video",
-    path: "../assets/video-about.mp4",
-  },
+//   {
+//     name: "aboutVideo",
+//     type: "video",
+//     path: "../assets/video-about.mp4",
+//   },
 ];

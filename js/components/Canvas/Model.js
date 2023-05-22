@@ -300,7 +300,9 @@ export default class Model {
             // For example, you could create new materials with the other images and assign them to the clones' meshes
 
             this.videoTexture2 = {};
-            this.video2 = this.resources.items.problemOne;
+			// this.video2 = this.resources.items.problemOne;
+			this.video2 = document.createElement('video');
+            this.video2.src = '../../../assets/videos/problem-1-final.mp4'
             this.video2.muted = true;
             this.video2.loop = true;
             this.video2.controls = true;
@@ -324,7 +326,11 @@ export default class Model {
 
     
             this.videoTexture3 = {};
-            this.video3 = this.resources.items.problemTwo;
+			// this.video3 = this.resources.items.problemTwo;
+			this.video3 = document.createElement('video');
+            this.video3.src = '../../../assets/videos/problem-2.mp4'
+
+
             this.video3.muted = true;
             this.video3.loop = true;
             this.video3.controls = true;
@@ -348,7 +354,11 @@ export default class Model {
 
 
 			this.videoTexture4 = {};
-            this.video4 = this.resources.items.problemThree;
+            // this.video4 = this.resources.items.problemThree;
+			this.video4 = document.createElement('video');
+            this.video4.src = '../../../assets/videos/problem-3.mp4'
+
+
             this.video4.muted = true;
             this.video4.loop = true;
             this.video4.controls = true;
