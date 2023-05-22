@@ -5,7 +5,6 @@ $yellow: #ffca0c;
 $light: #f1f5fe;
 $white: #ffffff;
 
-
 *,
 *:before,
 *:after {
@@ -35,22 +34,22 @@ body {
   overflow-y: overlay;
   //   overflow: hidden;
 
-//   &:before {
-// 	content: "";
-// 	position: absolute;
-// 	left: 0;
-// 	top: 0;
-// 	width: 100%;
-// 	height: 100%;
-// 	z-index: 0;
-// 	pointer-events: none;
-// 	background-position: 50%;
-// 	background-image: url("../assets/grain-new.gif");
-// 	pointer-events: none;
-// 	mix-blend-mode: soft-light;
-//     opacity: .1;
+  //   &:before {
+  // 	content: "";
+  // 	position: absolute;
+  // 	left: 0;
+  // 	top: 0;
+  // 	width: 100%;
+  // 	height: 100%;
+  // 	z-index: 0;
+  // 	pointer-events: none;
+  // 	background-position: 50%;
+  // 	background-image: url("../assets/grain-new.gif");
+  // 	pointer-events: none;
+  // 	mix-blend-mode: soft-light;
+  //     opacity: .1;
 
-//   }
+  //   }
 
   //   &::before {
   //     top: -10rem;
@@ -86,14 +85,13 @@ canvas {
 }
 
 .globe-svg {
-	transform: rotate(45deg);
-  }
+  transform: rotate(45deg);
+}
 
 .content {
   width: 100%;
   position: relative;
   overflow: hidden;
-
 }
 
 .wrapper {
@@ -134,11 +132,8 @@ canvas {
   width: fit-content;
   border-radius: 45px;
 
-
-
   @media (max-width: 640px) {
     padding: 15px 30px;
-	
   }
 
   p {
@@ -162,7 +157,7 @@ canvas {
   background: #fff;
   color: black;
   border: none;
-    cursor: pointer;
+  cursor: pointer;
 
   p {
     color: #000;
@@ -218,7 +213,7 @@ canvas {
 }
 
 .blue-section {
-	z-index: 2;
+  z-index: 2;
   position: relative;
   background: $blue;
   margin: 0 3rem;

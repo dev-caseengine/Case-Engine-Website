@@ -1,5 +1,5 @@
 .preloader {
-//   background: $black;
+  //   background: $black;
   width: 100%;
   position: fixed;
   height: 100vh;
@@ -13,11 +13,9 @@
     align-items: center;
     justify-content: flex-end;
 
-
-	@media (max-width: 640px) {
-		height: 90vh;
-	}
-
+    @media (max-width: 640px) {
+      height: 90vh;
+    }
   }
   &__percentage {
     overflow: hidden;
@@ -35,10 +33,9 @@
       position: relative;
       display: flex;
 
-		@media (max-width: 640px) {
-		    font-size: 80px;
-		}
-
+      @media (max-width: 640px) {
+        font-size: 80px;
+      }
 
       span {
         margin-top: -9rem;
@@ -47,12 +44,11 @@
         font-size: 24px;
         color: $white;
 
-		@media (max-width: 640px) {
-			margin-top: -6%;
-			margin-left: 1rem;
-			font-size: 16px;
-		}
-
+        @media (max-width: 640px) {
+          margin-top: -6%;
+          margin-left: 1rem;
+          font-size: 16px;
+        }
       }
     }
   }
@@ -70,18 +66,16 @@
     // right: 6rem;
     // height: 3rem;
 
+    @media (max-width: 920px) {
+      left: 5rem;
+    }
 
-	@media (max-width: 920px) {
-		left: 5rem;
-	}
-
-	@media (max-width: 640px) {
-		bottom: auto;
-		top: 6rem;
-		height: 4rem;
-		left: 3rem;
-	}
-
+    @media (max-width: 640px) {
+      bottom: auto;
+      top: 6rem;
+      height: 4rem;
+      left: 3rem;
+    }
 
     p {
       @extend %description-22;

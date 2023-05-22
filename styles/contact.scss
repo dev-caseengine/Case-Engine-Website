@@ -203,8 +203,6 @@
       justify-content: center;
       height: 2.5rem;
 
-
-
       @media (max-width: 640px) {
         height: 3.5rem;
       }
@@ -213,7 +211,7 @@
         @extend %description-18;
         color: $white;
         cursor: pointer;
-		margin-bottom: 0;
+        margin-bottom: 0;
       }
     }
 
@@ -410,11 +408,9 @@ p.mail-response {
   min-height: 13rem;
   width: 100%;
 
-
-  @media(max-width: 920px) {
-	min-height: 10rem;
+  @media (max-width: 920px) {
+    min-height: 10rem;
   }
-
 }
 
 .contact-form {
