@@ -1,7 +1,7 @@
 import Page from "../classes/Page";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import jQuery from "jquery";
+// import jQuery from "jquery";
 export default class Contact extends Page {
   constructor() {
     super({
@@ -30,21 +30,41 @@ export default class Contact extends Page {
   }
 
   form() {
-    jQuery(".contact-hero__steps").on("submit", function (e) {
-      var form = jQuery(this).serialize();
 
-      e.preventDefault();
-      jQuery.ajax({
-        url: "/sendMail.php",
-        data: form,
-        type: "POST",
-        success: function (data) {
-          var res = JSON.parse(JSON.stringify(data));
-          jQuery(".button-send-mail").hide();
-          jQuery(".mail-response").html(res.message).show();
-        },
-      });
-    });
+	document.querySelector(".contact-hero__steps").addEventListener("submit", function(e) {
+		e.preventDefault();
+		
+		const form = new FormData(this);
+		const xhr = new XMLHttpRequest();
+		xhr.open("POST", "/sendMail.php", true);
+		
+		xhr.onload = function() {
+		  if (xhr.status === 200) {
+			var res = JSON.parse(xhr.responseText);
+			document.querySelector(".button-send-mail").style.display = "none";
+			document.querySelector(".mail-response").innerHTML = res.message;
+			document.querySelector(".mail-response").style.display = "block";
+		  }
+		};
+		
+		xhr.send(form);
+	  });
+
+    // jQuery(".contact-hero__steps").on("submit", function (e) {
+    //   var form = jQuery(this).serialize();
+
+    //   e.preventDefault();
+    //   jQuery.ajax({
+    //     url: "/sendMail.php",
+    //     data: form,
+    //     type: "POST",
+    //     success: function (data) {
+    //       var res = JSON.parse(JSON.stringify(data));
+    //       jQuery(".button-send-mail").hide();
+    //       jQuery(".mail-response").html(res.message).show();
+    //     },
+    //   });
+    // });
   }
 
   titleAnim() {
