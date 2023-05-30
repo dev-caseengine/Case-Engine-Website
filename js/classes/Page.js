@@ -16,7 +16,7 @@ export default class Page {
   }
 
   createSmoothScroll() {
-    const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+    // const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
     // const isMobile =
     //   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     //     navigator.userAgent
@@ -28,7 +28,7 @@ export default class Page {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       mouseMultiplier: 1,
       smoothTouch: true,
-      touchMultiplier: 5,
+      touchMultiplier: 3,
     });
 
     this.lenis.stop();
@@ -209,11 +209,11 @@ export default class Page {
     if (backToTopBtn == null) return;
 
     backToTopBtn.addEventListener("click", () => {
-		this.lenis.scrollTo(0, 0);
-    //   window.scrollTo({
-    //     top: 0,
-    //     behavior: "smooth",
-    //   });
+      this.lenis.scrollTo(0, 0);
+      //   window.scrollTo({
+      //     top: 0,
+      //     behavior: "smooth",
+      //   });
     });
   }
 
