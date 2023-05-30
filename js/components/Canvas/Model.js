@@ -230,7 +230,6 @@ export default class Model {
       if (child.isMesh) {
         child.material.side = THREE.DoubleSide;
 
-
         if (child.name === "phoneScreen" && !this.videoTextureAdded) {
           // Find the "phoneScreen" child mesh
           let phoneScreenMesh = child;
@@ -240,11 +239,10 @@ export default class Model {
             this.videoTexture = {};
             this.video = this.resources.items.notificationVideo;
 
-
             this.video.muted = true;
             this.video.loop = true;
             this.video.controls = true;
-			this.video.setAttribute('playsinline', true)
+            this.video.setAttribute("playsinline", true);
             this.video.autoplay = true;
             this.video.play();
 
@@ -252,8 +250,7 @@ export default class Model {
             this.videoTexture.flipY = false;
             this.videoTexture.encoding = THREE.SRGBColorSpace;
 
-			this.videoTexture.needsUpdate = true;
-
+            this.videoTexture.needsUpdate = true;
 
             phoneScreenMesh.material = new THREE.MeshBasicMaterial({
               map: this.videoTexture,
@@ -300,86 +297,108 @@ export default class Model {
             // For example, you could create new materials with the other images and assign them to the clones' meshes
 
             this.videoTexture2 = {};
-			// this.video2 = this.resources.items.problemOne;
-			this.video2 = document.createElement('video');
-            this.video2.src = '../../../assets/videos/problem-1-final.mp4'
+            // this.video2 = this.resources.items.problemOne;
+            // this.video2 = document.createElement('video');
+            // this.video2.src = '../../../assets/videos/problem-1-final.mp4'
+            // this.video2.muted = true;
+            // this.video2.loop = true;
+            // this.video2.controls = true;
+
+            // this.video2.setAttribute('playsinline', true)
+            // this.video2.autoplay = true;
+
+            // this.video2.play();
+
+            // this.videoTexture2 = new THREE.VideoTexture(this.video2);
+            // this.videoTexture2.flipY = true;
+            // this.videoTexture2.encoding = THREE.SRGBColorSpace;
+            // this.videoTexture2.needsUpdate = true;
+
+            // this.clone1.material = new THREE.MeshBasicMaterial({
+            //   map: this.videoTexture2,
+            //   transparent: true,
+            //   opacity: 0,
+            //   side: THREE.DoubleSide,
+            // });
+
+            this.video2 = document.createElement("video");
+            this.video2.src = "../../../assets/videos/problem-1-final.mp4";
             this.video2.muted = true;
             this.video2.loop = true;
             this.video2.controls = true;
-         
-			this.video2.setAttribute('playsinline', true)
+            this.video2.setAttribute("playsinline", true);
             this.video2.autoplay = true;
 
-            this.video2.play();
+            // Listen to the 'loadeddata' event to ensure the video has loaded
+            this.video2.addEventListener("loadeddata", () => {
+              this.videoTexture2 = new THREE.VideoTexture(this.video2);
+              this.videoTexture2.flipY = true;
+              this.videoTexture2.encoding = THREE.SRGBColorSpace;
+              this.videoTexture2.needsUpdate = true;
 
-            this.videoTexture2 = new THREE.VideoTexture(this.video2);
-            this.videoTexture2.flipY = true;
-            this.videoTexture2.encoding = THREE.SRGBColorSpace;
-			this.videoTexture2.needsUpdate = true;
-
-            this.clone1.material = new THREE.MeshBasicMaterial({
-              map: this.videoTexture2,
-              transparent: true,
-              opacity: 0,
-              side: THREE.DoubleSide,
+              this.clone1.material = new THREE.MeshBasicMaterial({
+                map: this.videoTexture2,
+                transparent: true,
+                opacity: 0,
+                side: THREE.DoubleSide,
+              });
             });
 
-    
             this.videoTexture3 = {};
-			// this.video3 = this.resources.items.problemTwo;
-			this.video3 = document.createElement('video');
-            this.video3.src = '../../../assets/videos/problem-2.mp4'
-
+            // this.video3 = this.resources.items.problemTwo;
+            this.video3 = document.createElement("video");
+            this.video3.src = "../../../assets/videos/problem-2.mp4";
 
             this.video3.muted = true;
             this.video3.loop = true;
             this.video3.controls = true;
-       
-			this.video3.setAttribute('playsinline', true)
+
+            this.video3.setAttribute("playsinline", true);
             this.video3.autoplay = true;
+
+            this.video3.addEventListener("loadeddata", () => {
+              this.videoTexture3 = new THREE.VideoTexture(this.video3);
+              this.videoTexture3.flipY = true;
+              this.videoTexture3.encoding = THREE.SRGBColorSpace;
+              this.videoTexture3.needsUpdate = true;
+
+              this.clone2.material = new THREE.MeshBasicMaterial({
+                map: this.videoTexture3,
+                transparent: true,
+                opacity: 0,
+                side: THREE.DoubleSide,
+              });
+            });
 
             // this.video3.play();
 
-            this.videoTexture3 = new THREE.VideoTexture(this.video3);
-            this.videoTexture3.flipY = true;
-            this.videoTexture3.encoding = THREE.SRGBColorSpace;
-			this.videoTexture3.needsUpdate = true;
-
-            this.clone2.material = new THREE.MeshBasicMaterial({
-              map: this.videoTexture3,
-              transparent: true,
-              opacity: 0,
-              side: THREE.DoubleSide,
-            });
-
-
-			this.videoTexture4 = {};
+            this.videoTexture4 = {};
             // this.video4 = this.resources.items.problemThree;
-			this.video4 = document.createElement('video');
-            this.video4.src = '../../../assets/videos/problem-3.mp4'
-
+            this.video4 = document.createElement("video");
+            this.video4.src = "../../../assets/videos/problem-3.mp4";
 
             this.video4.muted = true;
             this.video4.loop = true;
             this.video4.controls = true;
-        
-			this.video4.setAttribute('playsinline', true)
+
+            this.video4.setAttribute("playsinline", true);
             this.video4.autoplay = true;
 
             // this.video4.play();
 
-            this.videoTexture4 = new THREE.VideoTexture(this.video4);
-            this.videoTexture4.flipY = true;
-            this.videoTexture4.encoding = THREE.SRGBColorSpace;
-            this.videoTexture4.minFilter = THREE.LinearFilter;
-            this.videoTexture4.magFilter = THREE.LinearFilter;
+            this.video4.addEventListener("loadeddata", () => {
+              this.videoTexture4 = new THREE.VideoTexture(this.video4);
+              this.videoTexture4.flipY = true;
+              this.videoTexture4.encoding = THREE.SRGBColorSpace;
+              this.videoTexture4.minFilter = THREE.LinearFilter;
+              this.videoTexture4.magFilter = THREE.LinearFilter;
 
-
-            this.clone3.material = new THREE.MeshBasicMaterial({
-			  map: this.videoTexture4,
-              transparent: true,
-              opacity: 0,
-              side: THREE.DoubleSide,
+              this.clone3.material = new THREE.MeshBasicMaterial({
+                map: this.videoTexture4,
+                transparent: true,
+                opacity: 0,
+                side: THREE.DoubleSide,
+              });
             });
 
             // Add the clones to the scene
@@ -463,6 +482,7 @@ export default class Model {
           { opacity: 1 },
           "<"
         );
+        this.video2.play();
       },
     });
 
@@ -545,15 +565,14 @@ export default class Model {
           this.model.children.find((child) => child.name === "red").material,
           { opacity: 0 },
           "<"
-
         );
-		this.video2.pause();
+        this.video2.pause();
         tl.to(
           this.model.children.find((child) => child.name === "blue").material,
           { opacity: 1 },
           "<"
         );
-		this.video3.play();
+        this.video3.play();
       }
 
       if (currentActiveIndex === 1) {
@@ -564,13 +583,13 @@ export default class Model {
           { opacity: 0 },
           "<"
         );
-		this.video3.pause();
+        this.video3.pause();
         tl.to(
           this.model.children.find((child) => child.name === "green").material,
           { opacity: 1 },
           "<"
         );
-		this.video4.play();
+        this.video4.play();
       }
 
       if (currentActiveIndex === 2) {
@@ -581,13 +600,13 @@ export default class Model {
           { opacity: 0 },
           "<"
         );
-		this.video4.pause();
+        this.video4.pause();
         tl.to(
           this.model.children.find((child) => child.name === "red").material,
           { opacity: 1 },
           "<"
         );
-		this.video2.play();
+        this.video2.play();
       }
 
       //animate ball

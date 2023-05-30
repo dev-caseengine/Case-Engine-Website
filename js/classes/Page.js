@@ -28,7 +28,7 @@ export default class Page {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       mouseMultiplier: 1,
       smoothTouch: true,
-      touchMultiplier: 3,
+      touchMultiplier: 5,
     });
 
     this.lenis.stop();
@@ -203,6 +203,20 @@ export default class Page {
     }
   }
 
+  backToTop() {
+    const backToTopBtn = document.querySelector(".scroll-top");
+
+    if (backToTopBtn == null) return;
+
+    backToTopBtn.addEventListener("click", () => {
+		this.lenis.scrollTo(0, 0);
+    //   window.scrollTo({
+    //     top: 0,
+    //     behavior: "smooth",
+    //   });
+    });
+  }
+
   create() {
     this.element = document.querySelector(this.selector);
     this.elements = {};
@@ -230,6 +244,7 @@ export default class Page {
     this.createSmoothScroll();
     this.scrollDown();
     this.globeAnimation();
+    this.backToTop();
   }
 
   show() {
