@@ -217,6 +217,12 @@ export default class Page {
     });
   }
 
+
+  footerYear() {
+	const currentYear = new Date().getFullYear();
+	document.getElementById('currentYear').textContent = currentYear ;
+  }
+
   create() {
     this.element = document.querySelector(this.selector);
     this.elements = {};
@@ -245,6 +251,7 @@ export default class Page {
     this.scrollDown();
     this.globeAnimation();
     this.backToTop();
+	this.footerYear();
   }
 
   show() {
