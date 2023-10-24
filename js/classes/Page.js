@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import each from "lodash/each";
 import Text from "./Animations/Text";
+import { set } from "lodash";
 
 export default class Page {
   constructor({ element, elements, id }) {
@@ -16,11 +17,9 @@ export default class Page {
   }
 
   createSmoothScroll() {
-    // const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
-    // const isMobile =
-    //   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    //     navigator.userAgent
-    //   );
+
+
+
 
     this.lenis = new Lenis({
       smooth: true,
@@ -33,6 +32,7 @@ export default class Page {
 
     this.lenis.stop();
     this.lenis.on("scroll", () => ScrollTrigger.update());
+
   }
 
   createAnimations() {
@@ -203,19 +203,19 @@ export default class Page {
     }
   }
 
-  backToTop() {
-    const backToTopBtn = document.querySelector(".scroll-top");
+//   backToTop() {
+//     const backToTopBtn = document.querySelector(".scroll-top");
 
-    if (backToTopBtn == null) return;
+//     if (backToTopBtn == null) return;
 
-    backToTopBtn.addEventListener("click", () => {
-      this.lenis.scrollTo(0, 0);
-      //   window.scrollTo({
-      //     top: 0,
-      //     behavior: "smooth",
-      //   });
-    });
-  }
+//     backToTopBtn.addEventListener("click", () => {
+//       this.lenis.scrollTo(0, 0);
+//       //   window.scrollTo({
+//       //     top: 0,
+//       //     behavior: "smooth",
+//       //   });
+//     });
+//   }
 
 
   footerYear() {
@@ -247,11 +247,15 @@ export default class Page {
       }
     });
     this.createAnimations();
-    this.createSmoothScroll();
+
     this.scrollDown();
     this.globeAnimation();
-    this.backToTop();
+    // this.backToTop();
 	this.footerYear();
+
+	if(this.id === "home" || this.id === "about") {
+		this.createSmoothScroll();
+	}
   }
 
   show() {
@@ -260,11 +264,16 @@ export default class Page {
       // Scroll to top of page
       window.scrollTo(0, 0);
 
-      //   Re-enable Lenis
-      setTimeout(() => {
-        if (this.lenis) {
-          this.lenis.start();
-        }
+     // Re-enable Lenis if not on results page
+	 setTimeout(() => {
+
+		if (this.id === "home" || this.id === "about") {
+			if (this.lenis) {
+				this.lenis.start();
+			}
+		}
+
+	
       }, 2000);
 
       //   gsap.from(this.element, {
@@ -295,15 +304,17 @@ export default class Page {
   }
 
   update(time) {
-    if (this.lenis) {
+	if(this.id === "home" || this.id === "about") {
       this.lenis.raf(time);
     }
   }
 
   destroy() {
     // Disable Lenis
-    if (this.lenis) {
-      this.lenis.stop();
-    }
+	if (this.id === "home" || this.id === "about") {
+		if (this.lenis) {
+			this.lenis.destroy();
+		}
+	}	
   }
 }

@@ -105,4 +105,18 @@ export default class Plane {
     this.material.uniforms.time.value = time * 0.001;
 
   }
+
+  destroy() {
+	// Remove the mesh from the scene
+	this.scene.remove(this.mesh);
+
+	// Dispose of the material, geometry, and any other resources
+	this.material.dispose();
+	this.geometry.dispose();
+
+	// Nullify the mesh, material, and geometry to release references
+	this.mesh = null;
+	this.material = null;
+	this.geometry = null;
+}
 }

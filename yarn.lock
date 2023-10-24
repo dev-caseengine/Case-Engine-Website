@@ -181,6 +181,11 @@ braces@^3.0.2, braces@~3.0.2:
   optionalDependencies:
     fsevents "~2.3.2"
 
+dat.gui@^0.7.9:
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/dat.gui/-/dat.gui-0.7.9.tgz#860cab06053b028e327820eabdf25a13cf07b17e"
+  integrity sha512-sCNc1OHobc+Erc1HqiswYgHdVNpSJUlk/Hz8vzOCsER7rl+oF/4+v8GXFUyCgtXpoCX6+bnmg07DedLvBLwYKQ==
+
 dom7@^4.0.4:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/dom7/-/dom7-4.0.6.tgz#091a51621d7a19ce0fb86045cafb3c10035e97ed"
@@ -458,10 +463,10 @@ swiper@^8.3.2:
     dom7 "^4.0.4"
     ssr-window "^4.0.2"
 
-three@^0.149.0:
-  version "0.149.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.149.0.tgz#a9cf78b17d02f063ffe6dfca1e300eff2eab2927"
-  integrity sha512-tohpUxPDht0qExRLDTM8sjRLc5d9STURNrdnK3w9A+V4pxaTBfKWWT/IqtiLfg23Vfc3Z+ImNfvRw1/0CtxrkQ==
+three@^0.156.1:
+  version "0.156.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.156.1.tgz#bab4fec121a5b3975eb4f4d227d9c912171eb399"
+  integrity sha512-kP7H0FK9d/k6t/XvQ9FO6i+QrePoDcNhwl0I02+wmUJRNSLCUIDMcfObnzQvxb37/0Uc9TDT0T1HgsRRrO6SYQ==
 
 tiny-emitter@^2.1.0:
   version "2.1.0"

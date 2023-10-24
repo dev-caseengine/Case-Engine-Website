@@ -16,16 +16,16 @@ class CameraParallax {
 	}
   
 	onMouseMove = (e) => {
-	  this.mousePos.x =
-		(e.clientX - window.innerWidth / 2) * this.params.intensity;
+	//   this.mousePos.x =
+	// 	(e.clientX - window.innerWidth / 2) * this.params.intensity;
 	  this.mousePos.y =
 		(e.clientY - window.innerHeight / 2) * this.params.intensity;
 	}
   
 	update() {
 	  if (!this.active) return;
-	  this.camera.position.x +=
-		(this.mousePos.x - this.camera.position.x) * this.params.ease;
+	//   this.camera.position.x +=
+	// 	(this.mousePos.x - this.camera.position.x) * this.params.ease;
 	  this.camera.position.y +=
 		(this.mousePos.y - this.camera.position.y) * this.params.ease;
 

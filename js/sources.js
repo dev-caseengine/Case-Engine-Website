@@ -2,7 +2,7 @@ export default [
   {
     name: "environmentMapTexture",
     type: "texture",
-    path: "../assets/environment-map.jpg",
+    path: "../assets/env-map.png",
   },
   {
     name: "handModel",
@@ -14,6 +14,12 @@ export default [
     name: "logoModel",
     type: "gltfModel",
     path: "../assets/logo-model-v1.glb",
+  },
+
+  {
+    name: "cityModel",
+    type: "gltfModel",
+    path: "../assets/city-test-2.glb",
   },
 
   {

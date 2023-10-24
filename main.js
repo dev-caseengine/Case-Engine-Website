@@ -8,6 +8,7 @@ import Preloader from "./js/components/Preloader";
 import About from "./js/Pages/About";
 import Home from "./js/Pages/Home";
 import Contact from "./js/Pages/Contact";
+import Results from "./js/Pages/Results";
 import Resources from "./js/utils/Resources";
 import "./styles/main.scss";
 
@@ -68,6 +69,7 @@ class App {
       home: new Home(),
       about: new About(),
 	  contact: new Contact(),
+	  resultsPage: new Results(),
     };
 
     this.page = this.pages[this.template];
@@ -91,6 +93,7 @@ onPreloaded() {
   }
 
   async onChange({ url, push = true }) {
+	
 	this.canvas.onChangeStart(this.template, url);
 
     await this.page.hide(); // hide current page

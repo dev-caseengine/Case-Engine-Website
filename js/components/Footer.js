@@ -20,10 +20,13 @@ export default class Footer {
       this.footer && this.footer.classList.remove("dark-footer");
     }
 
-    if (template === "contact") {
+    if (template === "contact" || template === "resultsPage") {
+		console.log("contact");
       this.footer && (this.footer.style.display = "none");
     } else {
       this.footer && (this.footer.style.display = "block");
     }
+
+
   }
 }
