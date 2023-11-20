@@ -17,17 +17,13 @@ export default class Page {
   }
 
   createSmoothScroll() {
-
-
-
-
     this.lenis = new Lenis({
       smooth: true,
       duration: 0.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       mouseMultiplier: 1,
       smoothTouch: true,
-      touchMultiplier: 3,
+      touchMultiplier: 4,
     });
 
     this.lenis.stop();
@@ -203,19 +199,19 @@ export default class Page {
     }
   }
 
-//   backToTop() {
-//     const backToTopBtn = document.querySelector(".scroll-top");
+  backToTop() {
+    const backToTopBtn = document.querySelector(".scroll-top");
 
-//     if (backToTopBtn == null) return;
+    if (backToTopBtn == null) return;
 
-//     backToTopBtn.addEventListener("click", () => {
-//       this.lenis.scrollTo(0, 0);
-//       //   window.scrollTo({
-//       //     top: 0,
-//       //     behavior: "smooth",
-//       //   });
-//     });
-//   }
+    backToTopBtn.addEventListener("click", () => {
+      this.lenis.scrollTo(0, 0);
+      //   window.scrollTo({
+      //     top: 0,
+      //     behavior: "smooth",
+      //   });
+    });
+  }
 
 
   footerYear() {
@@ -250,10 +246,10 @@ export default class Page {
 
     this.scrollDown();
     this.globeAnimation();
-    // this.backToTop();
+    this.backToTop();
 	this.footerYear();
 
-	if(this.id === "home" || this.id === "about") {
+	if(this.id === "home" || this.id === "about" ) {
 		this.createSmoothScroll();
 	}
   }
@@ -267,7 +263,7 @@ export default class Page {
      // Re-enable Lenis if not on results page
 	 setTimeout(() => {
 
-		if (this.id === "home" || this.id === "about") {
+		if (this.id === "home" || this.id === "about" ) {
 			if (this.lenis) {
 				this.lenis.start();
 			}
@@ -304,14 +300,17 @@ export default class Page {
   }
 
   update(time) {
-	if(this.id === "home" || this.id === "about") {
+	if(this.id === "home" || this.id === "about" ) {
       this.lenis.raf(time);
     }
   }
 
+  onResize() {
+  }
+
   destroy() {
     // Disable Lenis
-	if (this.id === "home" || this.id === "about") {
+	if (this.id === "home" || this.id === "about"  ) {
 		if (this.lenis) {
 			this.lenis.destroy();
 		}

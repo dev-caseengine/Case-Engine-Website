@@ -2,7 +2,7 @@ export default [
   {
     name: "environmentMapTexture",
     type: "texture",
-    path: "../assets/env-map.png",
+    path: "../assets/environment-map.jpg",
   },
   {
     name: "handModel",

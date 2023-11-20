@@ -297,7 +297,7 @@ canvas {
 
 ::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 24px;
+  width: 18px;
   background: rgba(0, 0, 0, 0);
 }
 
@@ -309,7 +309,7 @@ canvas {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 12px;
-  border: 8px solid rgba(255, 255, 255, 0);
+  border: 6px solid rgba(255, 255, 255, 0);
   background-clip: content-box;
   background-color: rgba(137, 134, 172, 0.3);
   transition: 0.3s ease;
@@ -317,7 +317,7 @@ canvas {
 
 ::-webkit-scrollbar-thumb:hover {
   border-radius: 12px;
-  border: 8px solid rgba(255, 255, 255, 0);
+  border: 6px solid rgba(255, 255, 255, 0);
   background-clip: content-box;
   background-color: rgba(137, 134, 172, 0.5);
 }

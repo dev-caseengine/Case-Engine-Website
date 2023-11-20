@@ -49,6 +49,7 @@ export default defineConfig({
         about: resolve(__dirname, "about.html"),
         // about: resolve(__dirname, "pages/about.html"),
         contact: resolve(__dirname, "contact.html"),
+		results: resolve(__dirname, "results.html"),
       },
     },
   },

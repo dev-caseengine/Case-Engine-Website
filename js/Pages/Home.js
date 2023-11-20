@@ -27,6 +27,7 @@ export default class Home extends Page {
         results_border: ".results__border",
         results_cursor: ".results__follow",
         heroBtn: ".hero-btn",
+		caseBtn: ".view-all-results",
       },
     });
 
@@ -43,6 +44,24 @@ export default class Home extends Page {
     this.whiteSection();
     this.clientSliderFirst();
     this.clientSliderSecond();
+    this.pinReviews();
+  }
+
+  onResize() {
+    super.onResize();
+    ScrollTrigger.refresh();
+  }
+
+  pinReviews() {
+    if (window.innerWidth >= 920) {
+      ScrollTrigger.create({
+        trigger: ".reviews-home",
+        start: "100px top",
+        end: "bottom bottom",
+        pin: ".reviews-home__title",
+        id: "reviewsScrollTrigger",
+      });
+    }
   }
 
   hideBtnOnScroll() {
@@ -219,17 +238,25 @@ export default class Home extends Page {
       { autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
       1
     );
+
+    initTl.fromTo(
+		this.elements.caseBtn,
+		{ autoAlpha: "0", y: 40 },
+		{ autoAlpha: "1", y: 0, duration: 1, ease: "Power2.out" },
+		1
+	  );
+
     initTl.fromTo(
       this.elements.results_border,
       { scaleX: 0, y: 40 },
       { scaleX: 1, y: 0, duration: 1, ease: "Power2.out" },
-      1
+      1.2
     );
     initTl.fromTo(
       this.elements.results_cursor,
       { autoAlpha: "0" },
       { autoAlpha: "1", duration: 1, ease: "Power2.out" },
-      1.2
+      1.4
     );
 
     ScrollTrigger.create({
@@ -415,6 +442,7 @@ export default class Home extends Page {
     super.destroy();
     // Kill the modelAnimation ScrollTrigger
     ScrollTrigger.getById("modelAnimation")?.kill();
+    ScrollTrigger.getById("	reviewsScrollTrigger")?.kill();
 
     // Unpin the pinSection ScrollTrigger
     ScrollTrigger.getById("pinSection")?.disable();

@@ -12,18 +12,15 @@ import Results from "./js/Pages/Results";
 import Resources from "./js/utils/Resources";
 import "./styles/main.scss";
 
-
-
 class App {
   constructor() {
-
-	this.resources = new Resources();
+    this.resources = new Resources();
 
     this.createContent();
     this.createNavigation();
     this.createFooter();
     this.createCanvas();
-	this.createPreloader();
+    this.createPreloader();
     this.createPages();
 
     this.addEventListeners();
@@ -34,8 +31,8 @@ class App {
 
   createPreloader() {
     this.preloader = new Preloader({
-		resources: this.resources,
-	});
+      resources: this.resources,
+    });
     this.preloader.on("loaded", () => {
       this.onPreloaded();
     });
@@ -43,13 +40,13 @@ class App {
 
   createNavigation() {
     this.navigation = new Navigation();
-	this.navigation.create();
+    this.navigation.create();
   }
 
   createCanvas() {
     this.canvas = new Canvas({
       template: this.template,
-	  resources: this.resources,
+      resources: this.resources,
     });
   }
 
@@ -68,21 +65,19 @@ class App {
     this.pages = {
       home: new Home(),
       about: new About(),
-	  contact: new Contact(),
-	  resultsPage: new Results(),
+      contact: new Contact(),
+      resultsPage: new Results(),
     };
 
     this.page = this.pages[this.template];
     this.page.create();
   }
 
-onPreloaded() {
-	this.onResize();
-	this.canvas.onPreloaded();
-	// this.page.preloadInitAnimation();
-	this.page.show();
-
-
+  onPreloaded() {
+    this.onResize();
+    this.canvas.onPreloaded();
+    // this.page.preloadInitAnimation();
+    this.page.show();
   }
 
   onPopState() {
@@ -93,11 +88,10 @@ onPreloaded() {
   }
 
   async onChange({ url, push = true }) {
-	
-	this.canvas.onChangeStart(this.template, url);
+    this.canvas.onChangeStart(this.template, url);
 
     await this.page.hide(); // hide current page
-	this.navigation.destroy();
+    this.navigation.destroy();
 
     const request = await window.fetch(url); // fetch requested page
 
@@ -111,26 +105,33 @@ onPreloaded() {
 
       div.innerHTML = html; // save html response to fake div
 
-      const divContent = div.querySelector(".content"); // select new content from fake div
+      // Change Page Title and meta
+      const title = div.querySelector("title")?.innerText;
+      if (title) {
+        document.title = title; // Update the document title
+      }
+
+      const divContent = div.querySelector(".content"); // select new content from fake
 
       this.template = divContent.getAttribute("data-template"); // update template value
 
-    //   this.navigation.onChange(this.template);
-      this.canvas.onChangeEnd(this.template);
+      //   this.navigation.onChange(this.template);
+
       this.footer.onChange(this.template);
       this.content.setAttribute("data-template", this.template);
       this.content.innerHTML = divContent.innerHTML; // apply fake div content to our page
 
+      this.canvas.onChangeEnd(this.template);
+
       this.page = this.pages[this.template];
       this.page.create();
-	  this.navigation.create();
+      this.navigation.create();
 
       this.onResize();
 
       this.page.show();
-	  
-	  this.addLinkListeners();
 
+      this.addLinkListeners();
     } else {
       console.log("error");
     }
@@ -138,14 +139,18 @@ onPreloaded() {
 
   onResize() {
     if (this.canvas && this.canvas.onResize) {
-		this.canvas.onResize()
-	  }
+      this.canvas.onResize();
+    }
+
+    if (this.page && this.page.onResize) {
+      this.page.onResize();
+    }
   }
 
   onMouseMove(event) {
-	if (this.canvas && this.canvas.onMouseMove) {
-		this.canvas.onMouseMove(event)
-	  }
+    if (this.canvas && this.canvas.onMouseMove) {
+      this.canvas.onMouseMove(event);
+    }
   }
 
   update() {
@@ -163,11 +168,11 @@ onPreloaded() {
   addEventListeners() {
     window.addEventListener("popstate", this.onPopState.bind(this));
     window.addEventListener("resize", this.onResize.bind(this));
-	window.addEventListener("mousemove", this.onMouseMove.bind(this));
+    window.addEventListener("mousemove", this.onMouseMove.bind(this));
   }
 
   addLinkListeners() {
-	const links = document.querySelectorAll('a:not(.blank-link)');
+    const links = document.querySelectorAll("a:not(.blank-link)");
 
     each(links, (link) => {
       link.onclick = (event) => {

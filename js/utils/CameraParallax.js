@@ -5,15 +5,35 @@ class CameraParallax {
 	  this.active = true;
 	  this.mousePos = { x: 0, y: 0 };
 	  this.params = {
-		intensity: 0.0008,
+		intensity: 0.0003,
 		ease: 0.08,
 	  };
 	  this.init();
 	}
   
 	init() {
-	  window.addEventListener("mousemove", this.onMouseMove);
-	}
+		if (this.isMobile()) {
+		  window.addEventListener("deviceorientation", this.onDeviceOrientation, true);
+		} else {
+		  window.addEventListener("mousemove", this.onMouseMove);
+		}
+	  }
+
+	  onDeviceOrientation = (event) => {
+		const beta = event.beta;
+		console.log(`Device orientation beta value: ${beta}`); // Debugging line
+		this.mousePos.y = this.mapBetaToCamera(beta);
+	  }
+
+	  mapBetaToCamera(beta) {
+		// Convert beta value to a value suitable for your camera position
+		// This conversion might involve scaling and adjusting the range
+		return (beta - 90) * this.params.intensity; // Example conversion
+	  }
+	
+	  isMobile() {
+		return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+	  }
   
 	onMouseMove = (e) => {
 	//   this.mousePos.x =

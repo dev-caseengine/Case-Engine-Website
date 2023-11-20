@@ -2,31 +2,33 @@ import * as THREE from "three";
 import Sizes from "../../utils/Sizes";
 import Time from "../../utils/Time";
 import CameraParallax from "../../utils/CameraParallax";
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
+import EventEmitter from "../../utils/EventEmitter";
 
 import Model from "./Model";
 import Plane from "./Plane";
 export default class Canvas {
   constructor({ template, resources }) {
     this.template = template;
-	this.resources = resources;
+    this.resources = resources;
     this.sizes = new Sizes();
+    this.eventEmitter = new EventEmitter();
 
     // this.time = new Time();
 
     this.createScene();
     this.createCamera();
-	this.createRenderer();
-	this.setupPostProcessing();
+    this.createRenderer();
+    this.setupPostProcessing();
 
+    // this.createControls();
 
-	
-	// this.createControls(); 
     // this.createParallaxCamera();
-	// this.createPlane();
+
+    // this.createPlane();
 
     this.onResize();
   }
@@ -41,17 +43,16 @@ export default class Canvas {
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 0.9;
 
-	this.renderer.physicallyBasedShading = true;
-	this.renderer.physicallyCorrectLights = true;
+    this.renderer.physicallyBasedShading = true;
+    this.renderer.physicallyCorrectLights = true;
 
-	// this.renderer.outputEncoding = THREE.sRGBEncoding;
+    // this.renderer.outputEncoding = THREE.sRGBEncoding;
 
-	this.renderer.colorSpace = THREE.sRGBColorSpace;
+    this.renderer.colorSpace = THREE.sRGBColorSpace;
     //apend render to body
     document.body.appendChild(this.renderer.domElement);
-	this.composer = new EffectComposer(this.renderer);
-	// Create the effect composer after initializing the renderer
-	
+    this.composer = new EffectComposer(this.renderer);
+    // Create the effect composer after initializing the renderer
   }
 
   setupPostProcessing() {
@@ -62,16 +63,16 @@ export default class Canvas {
 
     // Initialize the bloom pass (but don't add it to the composer just yet)
     this.bloomPass = new UnrealBloomPass(
-        new THREE.Vector2(this.sizes.width, this.sizes.height),
-        1.5, 0.1, 0.1
+      new THREE.Vector2(this.sizes.width, this.sizes.height),
+      1.5,
+      0.1,
+      0.1
     );
-}
-
+  }
 
   createScene() {
     this.scene = new THREE.Scene();
-	this.scene.background = new THREE.Color('#00000f'); // Black color
-
+    this.scene.background = new THREE.Color("#00000f"); // Black color
   }
 
   createCamera() {
@@ -98,20 +99,19 @@ export default class Canvas {
     handleMediaQuery();
     laptopQuery.addEventListener("change", handleMediaQuery);
     tabletQuery.addEventListener("change", handleMediaQuery);
-	
 
     this.scene.add(this.camera);
   }
 
-//   createControls() {
-// 	this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-//     this.controls.enableDamping = true;
-//     this.controls.dampingFactor = 0.05;
-//   }
+  //   createControls() {
+  // 	this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+  //     this.controls.enableDamping = true;
+  //     this.controls.dampingFactor = 0.05;
+  //   }
 
-//   createParallaxCamera() {
-//     this.parallaxCamera = new CameraParallax(this.camera);
-//   }
+  //   createParallaxCamera() {
+  //     this.parallaxCamera = new CameraParallax(this.camera);
+  //   }
 
   createPlane() {
     this.plane = new Plane({
@@ -125,9 +125,9 @@ export default class Canvas {
   destroyPlane() {
     if (!this.plane) return;
     // If there are additional cleanup actions specific to your Plane, add them here
-    this.plane.destroy(); 
+    this.plane.destroy();
     this.plane = null;
-}
+  }
 
   createHome() {
     this.home = new Model({
@@ -164,30 +164,29 @@ export default class Canvas {
   }
 
   createResults() {
-	this.results = new Model({
-	  name: "city",
-	  file: this.resources.items.cityModel,
-	  scene: this.scene,
-	  renderer: this.renderer,
-	  camera: this.camera,
-	  resources: this.resources,
-	});
+    this.results = new Model({
+      name: "city",
+      file: this.resources.items.cityModel,
+      scene: this.scene,
+      renderer: this.renderer,
+      camera: this.camera,
+      resources: this.resources,
+      eventEmitter: this.eventEmitter,
+    });
 
- // Initialize the parallax camera
-//  this.parallaxCamera = new CameraParallax(this.camera);
-
+    // Initialize the parallax
+    this.eventEmitter.on("animationComplete", () => {
+      this.parallaxCamera = new CameraParallax(this.camera);
+    });
   }
   destroyResults() {
-	if (!this.results) return;
+    if (!this.results) return;
     this.results.destroy();
     this.resutls = null;
 
     // Destroy the parallax camera
-    // this.parallaxCamera = null;
-
+    this.parallaxCamera = null;
   }
-
-  
 
   // Events
   onPreloaded() {
@@ -202,57 +201,54 @@ export default class Canvas {
       this.about.hide();
     }
 
-	if (template === "resultsPage" && this.results) {
-		console.log("results page leave");
-		this.results.hide();
-		document.querySelector("canvas").style.zIndex = "-1";
-
-	  }
+    if (template === "resultsPage" && this.results) {
+      this.results.hide();
+      this.parallaxCamera.mousePos = { x: 0, y: 0 };
+      document.querySelector("canvas").style.zIndex = "-1";
+    }
   }
 
   onChangeEnd(template) {
     if (template === "home") {
-        // this.createHome();
-        if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
+      this.createHome();
+      if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
     } else {
-        this.destroyHome();
+      this.destroyHome();
     }
     if (template === "about") {
-        this.createAbout();
-        if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
+      this.createAbout();
+      if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
     } else if (this.about) {
-        this.destroyAbout();
+      this.destroyAbout();
     }
 
-	if (template === "resultsPage") {
-        this.createResults();
-		document.querySelector("canvas").style.zIndex = "1";
-        if (this.plane) this.destroyPlane(); // Destroy the plane if it exists
-        
-        // Add bloom pass if it's not already added
-        if (!this.composer.passes.includes(this.bloomPass)) {
-            this.composer.addPass(this.bloomPass);
-        }
+    if (template === "resultsPage") {
+      this.createResults();
+      document.querySelector("canvas").style.zIndex = "1";
+      if (this.plane) this.destroyPlane(); // Destroy the plane if it exists
 
+      // Add bloom pass if it's not already added
+      if (!this.composer.passes.includes(this.bloomPass)) {
+        this.composer.addPass(this.bloomPass);
+      }
     } else {
-        if (this.results) {
-            this.destroyResults();
-        }
+      if (this.results) {
+        this.destroyResults();
+      }
 
-        // Remove bloom pass if it's present
-        const index = this.composer.passes.indexOf(this.bloomPass);
-        if (index !== -1) {
-            this.composer.passes.splice(index, 1);
-        }
+      // Remove bloom pass if it's present
+      const index = this.composer.passes.indexOf(this.bloomPass);
+      if (index !== -1) {
+        this.composer.passes.splice(index, 1);
+      }
     }
 
-	if (template === "contact") {      
-        if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
+    if (template === "contact") {
+      if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
     }
 
     // Add similar logic for the 'contact' page when it's added.
-}
-
+  }
 
   //   onChange(template) {
   //     if (template === "home") {
@@ -273,29 +269,27 @@ export default class Canvas {
     this.renderer.setPixelRatio(this.sizes.pixelRatio);
     this.camera.aspect = this.sizes.width / this.sizes.height;
     this.camera.updateProjectionMatrix();
-
   }
 
   onMouseMove(event) {
-	if (this.home) this.home.onMouseMove(event);
-	if (this.about) this.about.onMouseMove(event);
-	if (this.results) this.results.onMouseMove(event);
+    if (this.home) this.home.onMouseMove(event);
+    if (this.about) this.about.onMouseMove(event);
+    if (this.results) this.results.onMouseMove(event);
   }
 
   update(time) {
-	this.composer.render();
+    this.composer.render();
     // this.renderer.render(this.scene, this.camera);
-    // this.controls.update(); 
+    // this.controls.update();
 
     // Update parallax camera only if resultsPage is active and parallaxCamera exists
-    // if (this.results && this.parallaxCamera) {
-    //     this.parallaxCamera.update();
-    // }
+    if (this.results && this.parallaxCamera) {
+      this.parallaxCamera.update();
+    }
 
     if (this.home) this.home.update(time);
     if (this.about) this.about.update(time);
     if (this.plane) this.plane.update(time);
     if (this.results) this.results.update(time);
-}
-
+  }
 }

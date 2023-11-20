@@ -1,7 +1,6 @@
 import Page from "../classes/Page";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import jQuery from "jquery";
 export default class Results extends Page {
   constructor() {
     super({
@@ -10,56 +9,39 @@ export default class Results extends Page {
       elements: {
         tabs: ".tab",
         contents: ".tab-content",
-		canvas: "canvas",
-
+        canvas: "canvas",
+        sliderInner: ".results-slider__inner",
+        slides: ".results-slider__slide",
+        prevBtn: ".results-slider__prev",
+        nextBtn: ".results-slider__next",
       },
     });
     gsap.registerPlugin(ScrollTrigger);
 
+  
   }
 
-  createTabs() {
+resultAnimIntro() {
+	gsap.fromTo(".results-slider h1", {y:30,autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power3.out",delay: 6});
+	gsap.fromTo(".results-slider__slide", {y: 30, autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power3.out",delay: 6,stagger: 0.2});
+	gsap.fromTo(".mob-heading h1", {y:30,autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power2.out",delay: 4.5});
 
-    this.elements.tabs.forEach((tab, index) => {
-	
-		tab.addEventListener("click", () => {
-        // Remove active class from all tabs
-        this.elements.tabs.forEach((innerTab) => {
-          innerTab.classList.remove("active-tab");
-        });
-
-        // Hide all tab contents
-        this.elements.contents.forEach((content) => {
-          content.classList.remove("active-content");
-        });
-
-        // Set clicked tab to active
-        tab.classList.add("active-tab");
-
-        // Display associated content
-        const tabContent = document.querySelector(
-          `.tab-content[data-content="${tab.getAttribute("data-tab")}"]`
-        );
-        tabContent.classList.add("active-content");
-      });
-    });
-  }
-
-
+}
 
   create() {
+
     super.create();
-    this.createTabs();
+	console.log("results page");
+	// this.resultAnimIntro();
+	
+  }
+
+  onResize() {
+    super.onResize();
 
   }
 
-  show() {
-    super.show();
-  }
-
-
-  hide() {
-	super.hide();
-
+  destroy() {
+    super.destroy();
   }
 }

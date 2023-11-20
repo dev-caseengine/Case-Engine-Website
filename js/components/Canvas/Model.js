@@ -2,6 +2,7 @@ import * as THREE from "three";
 import * as dat from "dat.gui";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 export default class Model {
   constructor(obj) {
     this.name = obj.name;
@@ -10,6 +11,7 @@ export default class Model {
     this.renderer = obj.renderer;
     this.resources = obj.resources;
     this.camera = obj.camera;
+	this.eventEmitter = obj.eventEmitter;
 
     this.loader = this.resources.loaders.gltfLoader;
     this.resource = this.file;
@@ -69,8 +71,37 @@ export default class Model {
 
     if (this.name === "city") {
       this.setCityModel();
-      console.log("city model");
+      this.createSlider();
+
     }
+  }
+
+  createTabs(modal) {
+    const tabs = modal.querySelectorAll(".tab");
+    const contents = modal.querySelectorAll(".tab-content");
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        // Remove active class from all tabs
+        tabs.forEach((innerTab) => {
+          innerTab.classList.remove("active-tab");
+        });
+
+        // Hide all tab contents
+        contents.forEach((content) => {
+          content.classList.remove("active-content");
+        });
+
+        // Set clicked tab to active
+        tab.classList.add("active-tab");
+
+        // Display associated content
+        const tabContent = modal.querySelector(
+          `.tab-content[data-content="${tab.getAttribute("data-tab")}"]`
+        );
+        tabContent.classList.add("active-content");
+      });
+    });
   }
 
   addSphereClickListener() {
@@ -81,6 +112,70 @@ export default class Model {
     );
   }
 
+  updateSlidePosition() {
+    // Calculate the total distance that needs to be moved, considering slideWidth and the gap.
+    let offset = -(this.slideWidth * this.currentSlide);
+
+    // Calculate maximum offset to keep the last slide centered
+    const maxOffset =
+      -(this.slides.length - this.visibleSlides) * this.slideWidth;
+
+    // Ensure offset doesn't exceed the maximum
+    offset = Math.max(offset, maxOffset);
+
+    this.sliderInner.style.transform = `translateX(${offset}px)`;
+
+    // Remove active class from all slides
+    this.slides.forEach((slide) => {
+      slide.classList.remove("active");
+    });
+
+    // Add active class to the current slide
+    this.slides[this.currentSlide].classList.add("active");
+  }
+
+  createSlider() {
+    this.currentSlide = 0;
+    this.visibleSlides = 3;
+    // Set initial slideWidth
+    this.sliderInner = document.querySelector(".results-slider__inner");
+    this.slides = document.querySelectorAll(".results-slider__slide");
+
+    this.slides.forEach((slide, index) => {
+      slide.addEventListener("click", () => {
+        // Remove active class from all slides
+        this.slides.forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        // Add active class to clicked slide
+        slide.classList.add("active");
+
+        // Update currentSlide index
+        this.currentSlide = index;
+
+        // Update slide position
+        this.updateSlidePosition();
+        this.onSlideClick(index);
+      });
+    });
+  }
+
+  onSlideClick(index) {
+    // Deactivate all slides
+    this.slides.forEach((slide) => {
+      slide.classList.remove("active");
+    });
+
+    // Activate the clicked slide
+    this.slides[index].classList.add("active");
+
+    // Trigger the onClick function of the corresponding sphere
+    this.correspondingSphere = this.spheres[index];
+    this.correspondingSphere.onClick();
+    // ... (add any additional behavior you want when a slide is clicked)
+  }
+
   onMouseDown(event) {
     event.preventDefault();
     this.mouse = new THREE.Vector2(
@@ -89,26 +184,30 @@ export default class Model {
     );
 
     const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(this.mouse, this.camera); // Assuming your camera is named 'camera'
-    const intersects = raycaster.intersectObjects(this.spheres); // This will check for intersections with your spheres
+    raycaster.setFromCamera(this.mouse, this.camera);
 
-    if (intersects.length > 0) {
-      const intersectedSphere = intersects[0].object;
-      intersectedSphere.onClick(); // This will call the onClick method of the sphere
+    if (this.spheres && this.spheres.length > 0) {
+      // Check if spheres array is defined and not empty
+      const intersects = raycaster.intersectObjects(this.spheres);
+
+      if (intersects.length > 0) {
+        const intersectedSphere = intersects[0].object;
+        const sphereIndex = this.spheres.indexOf(intersectedSphere); // Get the index of the intersected sphere
+        intersectedSphere.onClick(sphereIndex); // Pass the index to the onClick method
+      }
     }
   }
 
   createGlowingSpheres(positions, textures) {
-
-	const glowShader = {
-		vertexShader: `
+    const glowShader = {
+      vertexShader: `
 			  varying vec3 vertexNormal;
   
 			  void main() {
 				  vertexNormal = normalize(normalMatrix * normal);
 				  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 0.9 );
 			  }`,
-		fragmentShader: `
+      fragmentShader: `
 		  
 			  varying vec3 vertexNormal;
   
@@ -118,24 +217,21 @@ export default class Model {
   
 				  gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0 ) * intensity;	
 			  }`,
-	  };
+    };
 
     const spheres = [];
-	const glowingSpheres = [];
-	const glowMaterial = new THREE.ShaderMaterial({
-        vertexShader: glowShader.vertexShader,
-        fragmentShader: glowShader.fragmentShader,
-		blending: THREE.AdditiveBlending, // Ensures the glow effect appears correctly
-        side: THREE.BackSide,
-        transparent: true ,// Ensures the glow effect appears correctly
-	
+    const glowingSpheres = [];
+    const glowMaterial = new THREE.ShaderMaterial({
+      vertexShader: glowShader.vertexShader,
+      fragmentShader: glowShader.fragmentShader,
+      blending: THREE.AdditiveBlending, // Ensures the glow effect appears correctly
+      side: THREE.BackSide,
+      transparent: true, // Ensures the glow effect appears correctly
     });
 
     let sphereIndex = 1; // Start the index for sphere identification
 
     const textureLoader = new THREE.TextureLoader();
-
-  
 
     for (let i = 0; i < positions.length; i++) {
       const position = positions[i];
@@ -145,7 +241,7 @@ export default class Model {
       const texture = textureLoader.load(texturePath);
       texture.encoding = THREE.sRGBEncoding;
       texture.anisotropy = 16;
-	  texture.flipY = false;
+      texture.flipY = false;
 
       const circleMaterial = new THREE.MeshBasicMaterial({
         map: texture,
@@ -160,217 +256,299 @@ export default class Model {
       circleMesh.userData.isSelected = false;
 
       circleMesh.rotation.set(1.5, 0, 0);
-	
-        // Create the glowing circle mesh
-		const glowingCircle = new THREE.Mesh(circleGeometry, glowMaterial);
-		// Position it slightly below the original mesh
-		glowingCircle.rotation.set(1.5, 0, 3.2);
-		glowingCircle.position.set(position.x, position.y - 0.05, position.z); // Adjust the '0.05' value as needed
-		// Scale it up a bit
-		// glowingCircle.scale.set(0.8, 0.8, 0.8);
 
-			gsap.to(glowingCircle.scale, { x: 0.8, y: 0.8, z: 0.8, duration: 1.5, ease: "power2.out"})
-  
-		    // Link the glowingCircle to the circleMesh
-			circleMesh.userData.glowingSphere = glowingCircle;
-	
+      // Create the glowing circle mesh
+      const glowingCircle = new THREE.Mesh(circleGeometry, glowMaterial);
+      // Position it slightly below the original mesh
+      glowingCircle.rotation.set(1.5, 0, 3.2);
+      glowingCircle.position.set(position.x, position.y - 0.05, position.z); // Adjust the '0.05' value as needed
+      // Scale it up a bit
+      // glowingCircle.scale.set(0.8, 0.8, 0.8);
 
-	
+      gsap.to(glowingCircle.scale, {
+        x: window.innerWidth < 920 ? 0.62 : 0.42,
+        y: window.innerWidth < 920 ? 0.62 : 0.42,
+        z: window.innerWidth < 920 ? 0.62 : 0.42,
+        duration: 1.5,
+        ease: "power2.out",
+      });
 
-			circleMesh.onClick = () => {
-				let tl = gsap.timeline();  // Create a new timeline
-			
-				if (this.selectedSphere && this.selectedSphere !== circleMesh) {
-					// this.selectedSphere.scale.set(0.5, 0.5, 0.5);
+      // Link the glowingCircle to the circleMesh
+      circleMesh.userData.glowingSphere = glowingCircle;
 
-					gsap.to(this.selectedSphere.scale, { x: 0.5, y: 0.5, z: 0.5, duration: 0.5, ease: "power2.out"})
-			
-					// Remove the glowing sphere of the previously selected circle
-					this.model.remove(this.selectedSphere.userData.glowingSphere);
-					this.selectedSphere.userData.isSelected = false;
-			
-					// Get the current modal and slide it out to the left
-					const currentModal = document.getElementById("modal-sphere-" + this.selectedSphere.userData.sphereId);
-					tl.to(currentModal, {
-						translateX: '-130%',
-						duration: .5,
-						ease: "power2.out",
-						onComplete: function() {
-							currentModal.style.display = "none";
-						}
-					});
-				}
-			
-				if (!circleMesh.userData.isSelected) {
-					// circleMesh.scale.set(0.7, 0.7, 0.7);
-					gsap.to(circleMesh.scale, { x: 0.7, y: 0.7, z: 0.7, duration: 0.5, ease: "power2.out"})
-					circleMesh.userData.isSelected = true;
-					this.selectedSphere = circleMesh;
-			
-					// Add the glowing sphere of the clicked circle
-					this.model.add(circleMesh.userData.glowingSphere);
-			
-					const modalId = "modal-sphere-" + circleMesh.userData.sphereId;
-					const modalToShow = document.getElementById(modalId);
-					modalToShow.style.display = "block";
-			
-					// Slide in the new modal from the left, after the previous animation completes
-					tl.fromTo(modalToShow,
-						{translateX: '-130%'},
-						{translateX: '0%', duration: .7, ease: "power2.out"}
-					);
-				}
-			};
-			
+      circleMesh.onClick = () => {
+        let tl = gsap.timeline(); // Create a new timeline
+
+		document.querySelector('.results-swipe').style.display = 'flex';
+
+        if (this.selectedSphere && this.selectedSphere !== circleMesh) {
+          // this.selectedSphere.scale.set(0.5, 0.5, 0.5);
+
+          gsap.to(this.selectedSphere.scale, {
+            x: window.innerWidth < 920 ? 0.45 : 0.3,
+            y: window.innerWidth < 920 ? 0.45 : 0.3,
+            z: window.innerWidth < 920 ? 0.45 : 0.3,
+            duration: 0.5,
+            ease: "power2.out",
+          });
+
+          // Remove the glowing sphere of the previously selected circle
+          this.model.remove(this.selectedSphere.userData.glowingSphere);
+          this.selectedSphere.userData.isSelected = false;
+
+          // Get the current modal and slide it out to the left
+          const currentModal = document.getElementById(
+            "modal-sphere-" + this.selectedSphere.userData.sphereId
+          );
+
+		  
+		  if(window.innerWidth < 920) {
+			tl.to(currentModal, {
+				translateY: "20%",
+				duration: 0.5,
+				ease: "power2.out",
+				onComplete: function () {
+				  currentModal.style.display = "none";
+				},
+			  });
+		  } else {
+			tl.to(currentModal, {
+				translateX: "-130%",
+				duration: 0.5,
+				ease: "power2.out",
+				onComplete: function () {
+				  currentModal.style.display = "none";
+				},
+			  });
+		  }
+
+
+        }
+
+        if (!circleMesh.userData.isSelected) {
+          // circleMesh.scale.set(0.7, 0.7, 0.7);
+          gsap.to(circleMesh.scale, {
+            x: window.innerWidth < 920 ? 0.55 : 0.4,
+            y: window.innerWidth < 920 ? 0.55 : 0.4,
+            z: window.innerWidth < 920 ? 0.55 : 0.4,
+            duration: 0.5,
+            ease: "power2.out",
+          });
+          circleMesh.userData.isSelected = true;
+          this.selectedSphere = circleMesh;
+
+          // Add the glowing sphere of the clicked circle
+          this.model.add(circleMesh.userData.glowingSphere);
+
+          const modalId = "modal-sphere-" + circleMesh.userData.sphereId;
+          const modalToShow = document.getElementById(modalId);
+          modalToShow.style.display = "block";
+		  const innerElement = modalToShow.querySelector('.sidebar__inner');
+		  innerElement.scrollTop = 0;
+
+		  // Slide in the new modal from the left, after the previous animation completes
+
+		  if(window.innerWidth < 920) {
+			tl.fromTo(
+				modalToShow,
+				{ translateY: "20%" },
+				{ translateY: "0%", duration: 0.7, ease: "power2.out" }
+			  );
+		  } else {
+			tl.fromTo(
+				modalToShow,
+				{ translateX: "-130%" },
+				{ translateX: "0%", duration: 0.7, ease: "power2.out" }
+			  );
+		  }
+
+
+
+          // Set the first tab as active
+        //   const tabs = modalToShow.querySelectorAll(".tab");
+        //   const contents = modalToShow.querySelectorAll(".tab-content");
+        //   tabs.forEach((tab) => tab.classList.remove("active-tab"));
+        //   contents.forEach((content) =>
+        //     content.classList.remove("active-content")
+        //   );
+        //   tabs[0].classList.add("active-tab");
+        //   contents[0].classList.add("active-content");
+
+        //   // Run the createTabs function for the opened modal
+        //   this.createTabs(modalToShow);
+
+          // Get the index of the clicked sphere
+          const sphereIndex = circleMesh.userData.sphereId - 1;
+
+          const correspondingSlide = document.querySelectorAll(
+            ".results-slider__slide"
+          )[sphereIndex];
+          correspondingSlide.click();
+        }
+      };
 
       spheres.push(circleMesh);
       glowingSpheres.push(glowingCircle);
-	  this.glowMaterial = glowMaterial;
+      this.glowMaterial = glowMaterial;
     }
 
     gsap.fromTo(
       spheres.map((mesh) => mesh.scale), // Map to the scale property of each mesh
       { x: 0, y: 0, z: 0 },
       {
-        x: 0.5,
-        y: 0.5,
-        z: 0.5,
+        x: window.innerWidth < 920 ? 0.45 : 0.3,
+        y: window.innerWidth < 920 ? 0.45 : 0.3,
+        z: window.innerWidth < 920 ? 0.45 : 0.3,
         duration: 1,
         stagger: 0.5,
         ease: "power2.out",
         delay: 3,
       }
     );
-	this.glowingSpheres = glowingSpheres;
+    this.glowingSpheres = glowingSpheres;
     return [...spheres];
   }
 
   setCityModel() {
-	
-    // this.model.children[0].material = this.m;
-
-	console.log(this.model.children);
-
     // add fog
     // this.scene.fog = new THREE.Fog("#00000f", 14, 30);
 
-    this.scene.fog = new THREE.Fog("#00000f", 2, 22);
-    // this.scene.fog = new THREE.FogExp2('#00000f', 0.2);
+    // this.scene.fog = new THREE.Fog("#00000f", 2, 22);
+    this.scene.fog = new THREE.FogExp2("#00000f", 0.13);
     this.renderer.setClearColor(this.scene.fog.color);
 
+    // const rgbLoader = new RGBELoader();
+    // rgbLoader.setPath(
+    //   "../../../assets/"
+    // );
+    // rgbLoader.load("hdr-demo.hdr", (hdrTexture) => {
+    //   hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
 
-	const textureLoader = new THREE.TextureLoader();
+	//   console.log(this.model, 'this model')
 
-    // Load the matcap texture
-    // textureLoader.load('../../../assets/matcap.png', (texture) => {
-    //     // Create the Matcap material
-    //     const matcapMaterial = new THREE.MeshMatcapMaterial({ matcap: texture });
+    //   // Create a material and set its environment map
+    //   const rgbMaterial = new THREE.MeshStandardMaterial({
+    //     color: 0xffffff,
+    //     metalness: 0.5,
+    //     roughness: 0.1,
+    //     envMap: hdrTexture,
+    //   });
 
-    //     // Check if the model and its first child exist
-    //     if (this.model && this.model.children[0]) {
-    //         // Assign the matcap material to the first child of the model
-    //         this.model.children[0].material = matcapMaterial;
-    //     }
+    //   if (this.model && this.model.children[0]) {
+    //     // Assign the matcap material to the first child of the model
+    //     this.model.children[0].material = rgbMaterial;
+    //   }
+
+    //   // ... rest of your scene setup ...
     // });
 
+	
+    const textureLoader = new THREE.TextureLoader();
 
+    // Load the matcap texture
+    textureLoader.load('../../../assets/environment-map-2.jpg', (texture) => {
+        // Create the Matcap material
+        const matcapMaterial = new THREE.MeshMatcapMaterial({ matcap: texture });
 
+        // Check if the model and its first child exist
+        if (this.model && this.model.children[0]) {
+            // Assign the matcap material to the first child of the model
+            this.model.children[0].material = matcapMaterial;
+			this.model.children[0].material.rotation = 1.5;
 
-	// add point light
-	// const pointLight = new THREE.PointLight('#ffffff', 0.1);
-	// pointLight.position.set(0, 0, 20);
-	// this.scene.add(pointLight);
+			
+        }
+    });
 
+    // add point light
+    // const pointLight = new THREE.PointLight('#ffffff', 0.1);
+    // pointLight.position.set(0, 0, 20);
+    // this.scene.add(pointLight);
 
+    // this.m.onBeforeCompile = (shader) => {
+    //   shader.uniforms.uTime = { value: 0 };
 
-    this.m.onBeforeCompile = (shader) => {
-      shader.uniforms.uTime = { value: 0 };
-
-      shader.fragmentShader =
-        `
-				uniform float uTime;
-				mat4 rotationMatrix(vec3 axis, float angle) {
-					axis = normalize(axis);
-					float s = sin(angle);
-					float c = cos(angle);
-					float oc = 1.0 - c;
+    //   shader.fragmentShader =
+    //     `
+	// 			uniform float uTime;
+	// 			mat4 rotationMatrix(vec3 axis, float angle) {
+	// 				axis = normalize(axis);
+	// 				float s = sin(angle);
+	// 				float c = cos(angle);
+	// 				float oc = 1.0 - c;
 					
-					return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
-								oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
-								oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
-								0.0,                                0.0,                                0.0,                                1.0);
-				}
+	// 				return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
+	// 							oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
+	// 							oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
+	// 							0.0,                                0.0,                                0.0,                                1.0);
+	// 			}
 				
-				vec3 rotate(vec3 v, vec3 axis, float angle) {
-					mat4 m = rotationMatrix(axis, angle);
-					return (m * vec4(v, 1.0)).xyz;
-				}
+	// 			vec3 rotate(vec3 v, vec3 axis, float angle) {
+	// 				mat4 m = rotationMatrix(axis, angle);
+	// 				return (m * vec4(v, 1.0)).xyz;
+	// 			}
 		
-				` + shader.fragmentShader;
+	// 			` + shader.fragmentShader;
 
-      shader.fragmentShader = shader.fragmentShader.replace(
-        `#include <envmap_physical_pars_fragment>`,
-        `
-					#if defined( USE_ENVMAP )
-			vec3 getIBLIrradiance( const in vec3 normal ) {
-				#if defined( ENVMAP_TYPE_CUBE_UV )
-					vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
-					vec4 envMapColor = textureCubeUV( envMap, worldNormal, 1.0 );
-					return PI * envMapColor.rgb * envMapIntensity;
-				#else
-					return vec3( 0.0 );
-				#endif
-			}
-			vec3 getIBLRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness ) {
-				#if defined( ENVMAP_TYPE_CUBE_UV )
-					vec3 reflectVec = reflect( - viewDir, normal );
-					// Mixing the reflection with the normal is more accurate and keeps rough objects from gathering light from behind their tangent plane.
-					reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
-					reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
+    //   shader.fragmentShader = shader.fragmentShader.replace(
+    //     `#include <envmap_physical_pars_fragment>`,
+    //     `
+	// 				#if defined( USE_ENVMAP )
+	// 		vec3 getIBLIrradiance( const in vec3 normal ) {
+	// 			#if defined( ENVMAP_TYPE_CUBE_UV )
+	// 				vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
+	// 				vec4 envMapColor = textureCubeUV( envMap, worldNormal, 1.0 );
+	// 				return PI * envMapColor.rgb * envMapIntensity;
+	// 			#else
+	// 				return vec3( 0.0 );
+	// 			#endif
+	// 		}
+	// 		vec3 getIBLRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness ) {
+	// 			#if defined( ENVMAP_TYPE_CUBE_UV )
+	// 				vec3 reflectVec = reflect( - viewDir, normal );
+	// 				// Mixing the reflection with the normal is more accurate and keeps rough objects from gathering light from behind their tangent plane.
+	// 				reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
+	// 				reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
 		
-					reflectVec = rotate(reflectVec, vec3(0.0, 0.0, 0.5), uTime * 0.01 / 15.0);
-					vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
-					return envMapColor.rgb * envMapIntensity;
-				#else
-					return vec3( 0.0 );
-				#endif
-			}
-		#endif
-					`
-      );
+	// 				reflectVec = rotate(reflectVec, vec3(0.0, 0.0, 0.5), uTime * 0.01 / 15.0);
+	// 				vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
+	// 				return envMapColor.rgb * envMapIntensity;
+	// 			#else
+	// 				return vec3( 0.0 );
+	// 			#endif
+	// 		}
+	// 	#endif
+	// 				`
+    //   );
 
-      this.m.userData.shader = shader;
-    };
+    //   this.m.userData.shader = shader;
+    // };
 
     this.scene.add(this.model);
 
     const texturePaths = [
-      "../../../assets/person-1.png",
-      "../../../assets/person-2.png",
-      "../../../assets/person-3.png",
-	  "../../../assets/person-4.png",
-	  "../../../assets/person-5.png",
+      "../../../assets/mvp.png",
+      "../../../assets/amaro.png",
+      "../../../assets/lem-garcia-law.png",
+
       //... add more paths as needed
     ];
 
     // Adding 3 random glowing spheres
     // Define your manual positions
     const spherePositions = [
-      new THREE.Vector3(-1, 3, -5),
-      new THREE.Vector3(-0.5, 3, -3),
-      new THREE.Vector3(1.5, 3, -5),
-	  new THREE.Vector3(-3.2, 3, -3.5),
-	  new THREE.Vector3(-2, 3, -1),
+      new THREE.Vector3( window.innerWidth < 920 ? -6.5: -4, 5, window.innerWidth < 920 ? -3.5 : -4),
+      new THREE.Vector3(window.innerWidth < 920 ? -4: -2.5, 5, -1.5),
+      new THREE.Vector3( window.innerWidth < 920 ? -4 : -1, 5, window.innerWidth < 920 ? -4.5 : -3.5),
+
     ];
 
-	this.spheres = this.createGlowingSpheres(spherePositions, texturePaths);
-	this.spheres.forEach((sphere) => {
-	  this.model.add(sphere);
-	});
+    this.spheres = this.createGlowingSpheres(spherePositions, texturePaths);
+    this.spheres.forEach((sphere) => {
+      this.model.add(sphere);
+    });
 
-    this.addSphereClickListener();
-
-    this.model.scale.set(0.9, 0.9, 0.9);
+    this.model.scale.set(0.8, 0.8, 0.8);
 
     this.model.position.set(4, -4, -12);
     this.model.rotation.set(1.07, 0, 0);
@@ -939,13 +1117,13 @@ export default class Model {
 
   logoAnimation() {
     this.scrollTl = gsap.timeline({ paused: true });
-    this.scrollTl.to(this.model.position, { x: -1 }, 0);
+    this.scrollTl.to(this.model.position, { x: - 1 }, 0);
     this.scrollTl.to(this.model.rotation, { y: -3.1 }, 0);
 
     ScrollTrigger.create({
       trigger: ".about-hero",
       start: "top top",
-      end: "65%",
+      end:  window.innerWidth < 920 ? "95%" : "65%",
       scrub: true,
       animation: this.scrollTl,
     });
@@ -953,7 +1131,7 @@ export default class Model {
     ScrollTrigger.create({
       trigger: ".about-video",
       start: "top top",
-      end: "10px",
+	  end: "bottom bottom",
       scrub: true,
       onEnter: () => {
         this.model.visible = false;
@@ -977,7 +1155,6 @@ export default class Model {
 
   //Hide Model
   hide() {
-	console.log('hide')
     if (!this.model) return;
     this.model.visible = false;
   }
@@ -1024,29 +1201,28 @@ export default class Model {
       this.spheres = null; // reset the spheres array
     }
 
+    if (this.glowingSpheres) {
+      this.glowingSpheres.forEach((glowingSphere) => {
+        this.model.remove(glowingSphere); // remove the glowing sphere from the model
+        glowingSphere.traverse((child) => {
+          if (child.material) {
+            child.material.dispose();
+            if (child.material.map) {
+              child.material.map.dispose();
+            }
+          }
+          if (child.geometry) {
+            child.geometry.dispose();
+          }
+        });
+      });
+      this.glowingSpheres = null; // reset the glowingSpheres array
+    }
 
-	if (this.glowingSpheres) {
-		this.glowingSpheres.forEach((glowingSphere) => {
-		  this.model.remove(glowingSphere); // remove the glowing sphere from the model
-		  glowingSphere.traverse((child) => {
-			if (child.material) {
-			  child.material.dispose();
-			  if (child.material.map) {
-				child.material.map.dispose();
-			  }
-			}
-			if (child.geometry) {
-			  child.geometry.dispose();
-			}
-		  });
-		});
-		this.glowingSpheres = null; // reset the glowingSpheres array
-	  }
-
-	  if (this.glowMaterial) {
-		this.glowMaterial.dispose();
-		this.glowMaterial = null;
-	 }
+    if (this.glowMaterial) {
+      this.glowMaterial.dispose();
+      this.glowMaterial = null;
+    }
 
     // Remove the main model from the scene and dispose of its materials, geometries, and textures
     this.scene.remove(this.model);
@@ -1112,17 +1288,19 @@ export default class Model {
     }
 
     if (this.name === "city") {
-    //   this.showTl.fromTo(
-    //   	this.model.position,
-    //   	{ z: -30 },
-    //   	{ z: -13.5, duration: 3, ease: "power2.out" }
-    //     );
-    //     this.showTl.fromTo(
-    //   	this.model.rotation,
-    //   	{ x: 0.3 },
-    //   	{ x: 1.07, duration: 3, ease: "power2.out" },
-    //   	1.4
-    //     );
+      //   this.showTl.fromTo(
+      //   	this.model.position,
+      //   	{ z: -30 },
+      //   	{ z: -13.5, duration: 3, ease: "power2.out" }
+      //     );
+      //     this.showTl.fromTo(
+      //   	this.model.rotation,
+      //   	{ x: 0.3 },
+      //   	{ x: 1.07, duration: 3, ease: "power2.out" },
+      //   	1.4
+      //     );
+
+
 
       this.showTl.fromTo(
         this.model.position,
@@ -1137,9 +1315,22 @@ export default class Model {
       );
       this.showTl.to(
         this.model.position,
-        { z: -12.5, duration: 2, ease: "power2.out" },
+        {
+          z: -8,
+          duration: 2,
+          ease: "power2.out",
+          onComplete: () => {
+            this.addSphereClickListener();
+			this.eventEmitter.trigger('animationComplete')
+          },
+        },
         2
       );
+
+	  this.showTl.fromTo(".results-slider h1", {y:30,autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power3.out"}, 3.5);
+	  this.showTl.fromTo(".results-slider__slide", {y: 30, autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power3.out",stagger: 0.2}, 3.5);
+	  this.showTl.fromTo(".mob-heading h1", {y:30,autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power2.out"}, 3.5);
+
     }
   }
 
