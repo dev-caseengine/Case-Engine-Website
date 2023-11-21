@@ -124,13 +124,13 @@ canvas {
 }
 
 .button {
-  padding: 2.2rem 3.5rem;
+  padding: 1.8rem 3rem;
   backdrop-filter: blur(19px);
   background: rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   width: fit-content;
-  border-radius: 45px;
+  border-radius: 12px;
 
   @media (max-width: 640px) {
     padding: 15px 30px;
@@ -144,7 +144,7 @@ canvas {
 
   img {
     width: 3.6rem;
-    margin-left: 5.4rem;
+    margin-left: 4rem;
 
     @media (max-width: 640px) {
       width: 30px;
