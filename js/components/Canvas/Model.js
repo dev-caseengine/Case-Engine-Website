@@ -446,7 +446,7 @@ export default class Model {
     const textureLoader = new THREE.TextureLoader();
 
     // Load the matcap texture
-    textureLoader.load('../../../assets/environment-map-2.jpg', (texture) => {
+    textureLoader.load('/wp-content/themes/case/front/assets/environment-map-2.jpg', (texture) => {
         // Create the Matcap material
         const matcapMaterial = new THREE.MeshMatcapMaterial({ matcap: texture });
 
@@ -527,9 +527,9 @@ export default class Model {
     this.scene.add(this.model);
 
     const texturePaths = [
-      "../../../assets/mvp.png",
-      "../../../assets/amaro.png",
-      "../../../assets/lem-garcia-law.png",
+      "/wp-content/themes/case/front/assets/mvp.png",
+      "/wp-content/themes/case/front/assets/amaro.png",
+      "/wp-content/themes/case/front/assets/lem-garcia-law.png",
 
       //... add more paths as needed
     ];
@@ -812,7 +812,7 @@ export default class Model {
             // });
 
             this.video2 = document.createElement("video");
-            this.video2.src = "../../../assets/videos/problem-1-final.mp4";
+            this.video2.src = "/wp-content/themes/case/front/assets/videos/problem-1-final.mp4";
             this.video2.muted = true;
             this.video2.loop = true;
             this.video2.controls = true;
@@ -838,7 +838,7 @@ export default class Model {
             this.videoTexture3 = {};
             // this.video3 = this.resources.items.problemTwo;
             this.video3 = document.createElement("video");
-            this.video3.src = "../../../assets/videos/problem-2.mp4";
+            this.video3.src = "/wp-content/themes/case/front/assets/videos/problem-2.mp4";
 
             this.video3.muted = true;
             this.video3.loop = true;
@@ -867,7 +867,7 @@ export default class Model {
             this.videoTexture4 = {};
             // this.video4 = this.resources.items.problemThree;
             this.video4 = document.createElement("video");
-            this.video4.src = "../../../assets/videos/problem-3.mp4";
+            this.video4.src = "/wp-content/themes/case/front/assets/videos/problem-3.mp4";
 
             this.video4.muted = true;
             this.video4.loop = true;
