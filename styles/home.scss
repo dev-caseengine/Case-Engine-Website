@@ -527,9 +527,11 @@
     display: grid;
     grid-template-columns: 1.5fr 1fr;
     gap: 6rem;
+	align-items: flex-end;
 
     @media (max-width: 920px) {
       grid-template-columns: 1fr;
+	  align-items: flex-start;
     }
 
     div {
@@ -776,6 +778,15 @@
         color: $black;
       }
     }
+
+	.button {
+		&:after {
+			background: $blue;
+		}
+		&:before {
+			background: $blue;
+		}
+	}
   }
 
   &__bulets {
