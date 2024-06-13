@@ -23,7 +23,9 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import dotenv from "dotenv";
 
+dotenv.config();
 
 export default defineConfig({
   plugins: [
@@ -52,5 +54,8 @@ export default defineConfig({
 		results: resolve(__dirname, "results.html"),
       },
     },
+  },
+  define: {
+	__VALUE__: `"${process.env.VITE_ASSETS_PATH}"`, // wrapping in "" since it's a string
   },
 });

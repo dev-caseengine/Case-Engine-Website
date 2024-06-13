@@ -1021,7 +1021,7 @@
     width: 90rem;
     height: 90rem;
     z-index: -2;
-    -webkit-mask-image: url("/wp-content/themes/case/front/assets/mask-img.png");
+    -webkit-mask-image: url($assetsPath+"mask-img.png");
     -webkit-mask-position: center center;
     -webkit-mask-size: contain;
     mask-type: alpha;

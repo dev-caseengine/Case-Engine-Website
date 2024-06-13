@@ -2,30 +2,30 @@ export default [
   {
     name: "environmentMapTexture",
     type: "texture",
-    path: "/wp-content/themes/case/front/assets/environment-map.jpg",
+    path: `${import.meta.env.VITE_ASSETS_PATH}environment-map.jpg`,
   },
   {
     name: "handModel",
     type: "gltfModel",
-    path: "/wp-content/themes/case/front/assets/hand-mobile-v1.glb",
+    path: `${import.meta.env.VITE_ASSETS_PATH}hand-mobile-v1.glb`,
   },
 
   {
     name: "logoModel",
     type: "gltfModel",
-    path: "/wp-content/themes/case/front/assets/logo-model-v1.glb",
+    path: `${import.meta.env.VITE_ASSETS_PATH}logo-model-v1.glb`,
   },
 
   {
     name: "cityModel",
     type: "gltfModel",
-    path: "/wp-content/themes/case/front/assets/city-test-2.glb",
+    path: `${import.meta.env.VITE_ASSETS_PATH}city-test-2.glb`,
   },
 
   {
     name: "notificationVideo",
     type: "video",
-    path: "/wp-content/themes/case/front/assets/videos/notification.mp4",
+    path: `${import.meta.env.VITE_ASSETS_PATH}videos/notification.mp4`,
   },
 
 //   {
