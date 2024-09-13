@@ -136,7 +136,7 @@ export default class Model {
 
   createSlider() {
     this.currentSlide = 0;
-    this.visibleSlides = 3;
+    this.visibleSlides = 4;
     // Set initial slideWidth
     this.sliderInner = document.querySelector(".results-slider__inner");
     this.slides = document.querySelectorAll(".results-slider__slide");
@@ -530,16 +530,18 @@ export default class Model {
       `${import.meta.env.VITE_ASSETS_PATH}mvp.png`,
       `${import.meta.env.VITE_ASSETS_PATH}amaro.png`,
       `${import.meta.env.VITE_ASSETS_PATH}lem-garcia-law.png`,
+	  `${import.meta.env.VITE_ASSETS_PATH}JR.png`,
 
       //... add more paths as needed
     ];
 
-    // Adding 3 random glowing spheres
+    // Adding random glowing spheres
     // Define your manual positions
     const spherePositions = [
       new THREE.Vector3( window.innerWidth < 920 ? -6.5: -4, 5, window.innerWidth < 920 ? -3.5 : -4),
       new THREE.Vector3(window.innerWidth < 920 ? -4: -2.5, 5, -1.5),
       new THREE.Vector3( window.innerWidth < 920 ? -4 : -1, 5, window.innerWidth < 920 ? -4.5 : -3.5),
+	  new THREE.Vector3( window.innerWidth < 920 ? -6.5: -5.5, 5, window.innerWidth < 920 ? -3.5 : -2),
 
     ];
 
