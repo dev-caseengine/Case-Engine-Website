@@ -541,7 +541,7 @@ export default class Model {
       new THREE.Vector3( window.innerWidth < 920 ? -6.5: -4, 5, window.innerWidth < 920 ? -3.5 : -4),
       new THREE.Vector3(window.innerWidth < 920 ? -4: -2.5, 5, -1.5),
       new THREE.Vector3( window.innerWidth < 920 ? -4 : -1, 5, window.innerWidth < 920 ? -4.5 : -3.5),
-	  new THREE.Vector3( window.innerWidth < 920 ? -6.5: -5.5, 5, window.innerWidth < 920 ? -3.5 : -2),
+	  new THREE.Vector3( window.innerWidth < 920 ? -5: -5.5, 5, window.innerWidth < 920 ? -3 : -2),
 
     ];
 
