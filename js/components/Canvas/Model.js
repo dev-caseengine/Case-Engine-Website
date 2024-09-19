@@ -417,31 +417,6 @@ export default class Model {
     this.scene.fog = new THREE.FogExp2("#00000f", 0.13);
     this.renderer.setClearColor(this.scene.fog.color);
 
-    // const rgbLoader = new RGBELoader();
-    // rgbLoader.setPath(
-    //   "../../../assets/"
-    // );
-    // rgbLoader.load("hdr-demo.hdr", (hdrTexture) => {
-    //   hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
-
-	//   console.log(this.model, 'this model')
-
-    //   // Create a material and set its environment map
-    //   const rgbMaterial = new THREE.MeshStandardMaterial({
-    //     color: 0xffffff,
-    //     metalness: 0.5,
-    //     roughness: 0.1,
-    //     envMap: hdrTexture,
-    //   });
-
-    //   if (this.model && this.model.children[0]) {
-    //     // Assign the matcap material to the first child of the model
-    //     this.model.children[0].material = rgbMaterial;
-    //   }
-
-    //   // ... rest of your scene setup ...
-    // });
-
 	
     const textureLoader = new THREE.TextureLoader();
 
@@ -455,82 +430,22 @@ export default class Model {
             // Assign the matcap material to the first child of the model
             this.model.children[0].material = matcapMaterial;
 			this.model.children[0].material.rotation = 1.5;
-
-			
         }
     });
 
-    // add point light
-    // const pointLight = new THREE.PointLight('#ffffff', 0.1);
-    // pointLight.position.set(0, 0, 20);
-    // this.scene.add(pointLight);
-
-    // this.m.onBeforeCompile = (shader) => {
-    //   shader.uniforms.uTime = { value: 0 };
-
-    //   shader.fragmentShader =
-    //     `
-	// 			uniform float uTime;
-	// 			mat4 rotationMatrix(vec3 axis, float angle) {
-	// 				axis = normalize(axis);
-	// 				float s = sin(angle);
-	// 				float c = cos(angle);
-	// 				float oc = 1.0 - c;
-					
-	// 				return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
-	// 							oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
-	// 							oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
-	// 							0.0,                                0.0,                                0.0,                                1.0);
-	// 			}
-				
-	// 			vec3 rotate(vec3 v, vec3 axis, float angle) {
-	// 				mat4 m = rotationMatrix(axis, angle);
-	// 				return (m * vec4(v, 1.0)).xyz;
-	// 			}
-		
-	// 			` + shader.fragmentShader;
-
-    //   shader.fragmentShader = shader.fragmentShader.replace(
-    //     `#include <envmap_physical_pars_fragment>`,
-    //     `
-	// 				#if defined( USE_ENVMAP )
-	// 		vec3 getIBLIrradiance( const in vec3 normal ) {
-	// 			#if defined( ENVMAP_TYPE_CUBE_UV )
-	// 				vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
-	// 				vec4 envMapColor = textureCubeUV( envMap, worldNormal, 1.0 );
-	// 				return PI * envMapColor.rgb * envMapIntensity;
-	// 			#else
-	// 				return vec3( 0.0 );
-	// 			#endif
-	// 		}
-	// 		vec3 getIBLRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness ) {
-	// 			#if defined( ENVMAP_TYPE_CUBE_UV )
-	// 				vec3 reflectVec = reflect( - viewDir, normal );
-	// 				// Mixing the reflection with the normal is more accurate and keeps rough objects from gathering light from behind their tangent plane.
-	// 				reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
-	// 				reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
-		
-	// 				reflectVec = rotate(reflectVec, vec3(0.0, 0.0, 0.5), uTime * 0.01 / 15.0);
-	// 				vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
-	// 				return envMapColor.rgb * envMapIntensity;
-	// 			#else
-	// 				return vec3( 0.0 );
-	// 			#endif
-	// 		}
-	// 	#endif
-	// 				`
-    //   );
-
-    //   this.m.userData.shader = shader;
-    // };
-
+   
     this.scene.add(this.model);
+
+
+	//Add glowing spheres
 
     const texturePaths = [
       `${import.meta.env.VITE_ASSETS_PATH}mvp.png`,
       `${import.meta.env.VITE_ASSETS_PATH}amaro.png`,
       `${import.meta.env.VITE_ASSETS_PATH}lem-garcia-law.png`,
 	  `${import.meta.env.VITE_ASSETS_PATH}JR.png`,
+	  `${import.meta.env.VITE_ASSETS_PATH}tj-logo.png`,
+	  `${import.meta.env.VITE_ASSETS_PATH}friedland-logo.png`,
 
       //... add more paths as needed
     ];
@@ -539,9 +454,11 @@ export default class Model {
     // Define your manual positions
     const spherePositions = [
       new THREE.Vector3( window.innerWidth < 920 ? -6.5: -4, 5, window.innerWidth < 920 ? -3.5 : -4),
-      new THREE.Vector3(window.innerWidth < 920 ? -4: -2.5, 5, -1.5),
-      new THREE.Vector3( window.innerWidth < 920 ? -4 : -1, 5, window.innerWidth < 920 ? -4.5 : -3.5),
-	  new THREE.Vector3( window.innerWidth < 920 ? -5: -5.5, 5, window.innerWidth < 920 ? -3 : -2),
+      new THREE.Vector3(window.innerWidth < 920 ? -4: -2.5, 5,  window.innerWidth < 920 ? -1.2 : -1.5),
+      new THREE.Vector3( window.innerWidth < 920 ? -3.5 : -1, 5, window.innerWidth < 920 ? -4.5 : -3.5),
+	  new THREE.Vector3( window.innerWidth < 920 ? -4.5: -5.5, 5, window.innerWidth < 920 ? -3 : -2),
+	  new THREE.Vector3( window.innerWidth < 920 ? -7: -6.5, 5, window.innerWidth < 920 ? -1.5 : -3.5),
+	  new THREE.Vector3( window.innerWidth < 920 ? -7.2: -3.5, 5, window.innerWidth < 920 ? -5 : -2.5),
 
     ];
 
@@ -550,9 +467,14 @@ export default class Model {
       this.model.add(sphere);
     });
 
-    this.model.scale.set(0.8, 0.8, 0.8);
 
-    this.model.position.set(4, -4, -12);
+	if (window.innerWidth < 920) {
+		this.model.scale.set(0.75, 0.75, 0.75);
+	} else {
+		this.model.scale.set(0.8, 0.8, 0.8);
+	}
+
+    this.model.position.set( window.innerWidth < 920 ? 4 : 5, -4, -12);
     this.model.rotation.set(1.07, 0, 0);
   }
 
@@ -1312,13 +1234,13 @@ export default class Model {
       this.showTl.fromTo(
         this.model.rotation,
         { x: -0.09 },
-        { x: 1.07, duration: 3, ease: "power2.out" },
+        { x: window.innerWidth < 920 ? 1.15 : 1.07, duration: 3, ease: "power2.out" },
         1
       );
       this.showTl.to(
         this.model.position,
         {
-          z: -8,
+          z: window.innerWidth < 920 ? -8.5 : -8,
           duration: 2,
           ease: "power2.out",
           onComplete: () => {

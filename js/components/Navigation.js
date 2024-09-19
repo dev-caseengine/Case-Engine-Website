@@ -160,7 +160,7 @@ export default class Navigation extends Page {
         autoAlpha: 1,
         yPercent: 0,
         stagger: 0.05,
-        duration: 1,
+        duration: .5,
         ease: "power4.out",
       },
       0.4
