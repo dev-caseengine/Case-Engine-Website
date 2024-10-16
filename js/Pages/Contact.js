@@ -37,7 +37,7 @@ export default class Contact extends Page {
 
         const form = new FormData(this);
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "/sendMail.php", true);
+        xhr.open("POST", "https://caseengine.com/wp-json/api/v1/sendMail", true);
 
         xhr.onload = function () {
           if (xhr.status === 200) {
