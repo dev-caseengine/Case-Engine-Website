@@ -1,17 +1,18 @@
 import * as THREE from "three";
-import * as dat from "dat.gui";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+
 export default class Model {
   constructor(obj) {
+
+
     this.name = obj.name;
     this.file = obj.file;
     this.scene = obj.scene;
     this.renderer = obj.renderer;
     this.resources = obj.resources;
     this.camera = obj.camera;
-	this.eventEmitter = obj.eventEmitter;
+    this.eventEmitter = obj.eventEmitter;
 
     this.loader = this.resources.loaders.gltfLoader;
     this.resource = this.file;
@@ -72,7 +73,6 @@ export default class Model {
     if (this.name === "city") {
       this.setCityModel();
       this.createSlider();
-
     }
   }
 
@@ -155,7 +155,7 @@ export default class Model {
         this.currentSlide = index;
 
         // Update slide position
-        this.updateSlidePosition();
+        // this.updateSlidePosition();
         this.onSlideClick(index);
       });
     });
@@ -201,22 +201,35 @@ export default class Model {
   createGlowingSpheres(positions, textures) {
     const glowShader = {
       vertexShader: `
-			  varying vec3 vertexNormal;
-  
-			  void main() {
-				  vertexNormal = normalize(normalMatrix * normal);
-				  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 0.9 );
-			  }`,
+        varying vec3 vNormal;
+        varying vec3 vWorldPosition;
+
+        void main() {
+            vNormal = normalize(normalMatrix * normal);
+            vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+            vWorldPosition = worldPosition.xyz;
+            gl_Position = projectionMatrix * viewMatrix * worldPosition;
+        }`,
       fragmentShader: `
-		  
-			  varying vec3 vertexNormal;
-  
-			  void main() {
-  
-				  float intensity = pow(0.2 - dot( vertexNormal, vec3( 0.0, 0.0, 1.0 )), 3.0 );
-  
-				  gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0 ) * intensity;	
-			  }`,
+        uniform vec3 glowColor;
+        uniform float intensity;
+        varying vec3 vNormal;
+        varying vec3 vWorldPosition;
+
+        void main() {
+            // Calculate glow intensity based on the angle of the normal
+            float normalIntensity = max(0.0, pow(0.5 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0));
+
+            // Final intensity calculation combining normal intensity and the provided intensity uniform
+            float finalIntensity = normalIntensity * intensity;
+
+            // Set the glow color with the calculated intensity
+            gl_FragColor = vec4(glowColor, finalIntensity);
+        }`,
+      uniforms: {
+        glowColor: { value: new THREE.Color(0.3, 0.6, 1.0) },
+        intensity: { value: 3.0 }, // Increased the intensity for a stronger glow effect
+      },
     };
 
     const spheres = [];
@@ -224,6 +237,7 @@ export default class Model {
     const glowMaterial = new THREE.ShaderMaterial({
       vertexShader: glowShader.vertexShader,
       fragmentShader: glowShader.fragmentShader,
+      uniforms: glowShader.uniforms,
       blending: THREE.AdditiveBlending, // Ensures the glow effect appears correctly
       side: THREE.BackSide,
       transparent: true, // Ensures the glow effect appears correctly
@@ -239,7 +253,7 @@ export default class Model {
 
       const circleGeometry = new THREE.CircleGeometry(1, 32);
       const texture = textureLoader.load(texturePath);
-      texture.encoding = THREE.sRGBEncoding;
+      texture.colorSpace = THREE.SRGBColorSpace;
       texture.anisotropy = 16;
       texture.flipY = false;
 
@@ -276,10 +290,12 @@ export default class Model {
       // Link the glowingCircle to the circleMesh
       circleMesh.userData.glowingSphere = glowingCircle;
 
+
+
       circleMesh.onClick = () => {
         let tl = gsap.timeline(); // Create a new timeline
 
-		document.querySelector('.results-swipe').style.display = 'flex';
+        document.querySelector(".results-swipe").style.display = "flex";
 
         if (this.selectedSphere && this.selectedSphere !== circleMesh) {
           // this.selectedSphere.scale.set(0.5, 0.5, 0.5);
@@ -301,28 +317,25 @@ export default class Model {
             "modal-sphere-" + this.selectedSphere.userData.sphereId
           );
 
-		  
-		  if(window.innerWidth < 920) {
-			tl.to(currentModal, {
-				translateY: "20%",
-				duration: 0.5,
-				ease: "power2.out",
-				onComplete: function () {
-				  currentModal.style.display = "none";
-				},
-			  });
-		  } else {
-			tl.to(currentModal, {
-				translateX: "-130%",
-				duration: 0.5,
-				ease: "power2.out",
-				onComplete: function () {
-				  currentModal.style.display = "none";
-				},
-			  });
-		  }
-
-
+          if (window.innerWidth < 920) {
+            tl.to(currentModal, {
+              translateY: "20%",
+              duration: 0.5,
+              ease: "power2.out",
+              onComplete: function () {
+                currentModal.style.display = "none";
+              },
+            });
+          } else {
+            tl.to(currentModal, {
+              translateX: "-130%",
+              duration: 0.5,
+              ease: "power2.out",
+              onComplete: function () {
+                currentModal.style.display = "none";
+              },
+            });
+          }
         }
 
         if (!circleMesh.userData.isSelected) {
@@ -343,41 +356,25 @@ export default class Model {
           const modalId = "modal-sphere-" + circleMesh.userData.sphereId;
           const modalToShow = document.getElementById(modalId);
           modalToShow.style.display = "block";
-		  const innerElement = modalToShow.querySelector('.sidebar__inner');
-		  innerElement.scrollTop = 0;
+          const innerElement = modalToShow.querySelector(".sidebar__inner");
+          innerElement.scrollTop = 0;
 
-		  // Slide in the new modal from the left, after the previous animation completes
+          // Slide in the new modal from the left, after the previous animation completes
 
-		  if(window.innerWidth < 920) {
-			tl.fromTo(
-				modalToShow,
-				{ translateY: "20%" },
-				{ translateY: "0%", duration: 0.7, ease: "power2.out" }
-			  );
-		  } else {
-			tl.fromTo(
-				modalToShow,
-				{ translateX: "-130%" },
-				{ translateX: "0%", duration: 0.7, ease: "power2.out" }
-			  );
-		  }
+          if (window.innerWidth < 920) {
+            tl.fromTo(
+              modalToShow,
+              { translateY: "20%" },
+              { translateY: "0%", duration: 0.7, ease: "power2.out" }
+            );
+          } else {
+            tl.fromTo(
+              modalToShow,
+              { translateX: "-130%" },
+              { translateX: "0%", duration: 0.7, ease: "power2.out" }
+            );
+          }
 
-
-
-          // Set the first tab as active
-        //   const tabs = modalToShow.querySelectorAll(".tab");
-        //   const contents = modalToShow.querySelectorAll(".tab-content");
-        //   tabs.forEach((tab) => tab.classList.remove("active-tab"));
-        //   contents.forEach((content) =>
-        //     content.classList.remove("active-content")
-        //   );
-        //   tabs[0].classList.add("active-tab");
-        //   contents[0].classList.add("active-content");
-
-        //   // Run the createTabs function for the opened modal
-        //   this.createTabs(modalToShow);
-
-          // Get the index of the clicked sphere
           const sphereIndex = circleMesh.userData.sphereId - 1;
 
           const correspondingSlide = document.querySelectorAll(
@@ -410,42 +407,138 @@ export default class Model {
   }
 
   setCityModel() {
-    // add fog
-    // this.scene.fog = new THREE.Fog("#00000f", 14, 30);
-
-    // this.scene.fog = new THREE.Fog("#00000f", 2, 22);
-    this.scene.fog = new THREE.FogExp2("#00000f", 0.13);
-    this.renderer.setClearColor(this.scene.fog.color);
-
-	
     const textureLoader = new THREE.TextureLoader();
 
-    // Load the matcap texture
-    textureLoader.load(`${import.meta.env.VITE_ASSETS_PATH}environment-map-2.jpg`, (texture) => {
-        // Create the Matcap material
-        const matcapMaterial = new THREE.MeshMatcapMaterial({ matcap: texture });
+    const vertexShader = `
+	varying vec2 vUv;
+	varying vec3 vPosition;
+	varying vec3 vNormal;
+	varying float vViewZ;
+	varying float vYPosition;
+	
+	void main() {
+		vUv = uv;
+		vPosition = position;
+		vNormal = normal;
+		vViewZ = -(modelViewMatrix * vec4(position, 1.0)).z;
+		vYPosition = position.y;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+	}
+	`;
+
+    const fragmentShader = `
+	uniform sampler2D matcap;
+	uniform vec2 mouse;
+	uniform vec3 lightColor;
+	uniform float lightRadius;
+	uniform vec2 resolution;
+	uniform float fogDensity;
+	uniform vec3 fogColor;
+	uniform bool isSmallScreen;  // New uniform for screen size
+	
+	varying vec2 vUv;
+	varying vec3 vPosition;
+	varying vec3 vNormal;
+	varying float vViewZ;
+	varying float vYPosition;
+	
+	void main() {
+		// Convert mouse position to screen space coordinates
+		vec2 screenPosition = gl_FragCoord.xy / resolution;
+	
+		// Calculate distance from the mouse to this fragment in screen space
+		float distance = length(screenPosition - mouse);
+	
+		// Adjust edge factor calculation based on screen size
+		vec2 edgeFactor;
+		if (isSmallScreen) {
+			edgeFactor = vec2(1.1 - abs(screenPosition.x - 0.8), 1.1 - abs(screenPosition.y - 0.9));
+		} else {
+			edgeFactor = 1.0 - abs(2.0 * screenPosition - 1.0);
+		}
+		float edgeFalloff = pow(edgeFactor.x * edgeFactor.y, 1.0);
+	
+		// Calculate a gradient-based lighting intensity
+		float lightIntensity = 1.0 - smoothstep(0.0, lightRadius, distance);
+		lightIntensity = mix(lightIntensity, 1.0, 0.65); // Reduce the falloff intensity
+		lightIntensity *= clamp(1.0 - vYPosition * 0.004, 0.0, 1.0); // Reduce intensity towards the top of the object
+	
+		// Apply edge sensitivity adjustment
+		lightIntensity *= edgeFalloff;
+	
+		// Calculate the matcap UV coordinates
+		vec3 viewDir = normalize(vPosition - cameraPosition);
+		vec3 reflectDir = reflect(viewDir, normalize(vNormal));
+		vec2 matcapUV = (reflectDir.xy + vec2(0.1, -0.1)) * 0.5 + 0.5;
+	
+		// Fetch the color from the matcap texture
+		vec4 matcapColor = texture2D(matcap, matcapUV);
+	
+		// Blend matcap color with light color based on brightness
+		vec3 finalColor = mix(matcapColor.rgb * 30.0, lightColor * lightIntensity * 10.0, 0.5);
+	
+		// Calculate a localized fog factor based on distance from the mouse
+		float fogFactor = clamp(exp(-vViewZ * fogDensity * (0.65 - lightIntensity)), 0.0, 1.0);
+	
+		// Apply the localized fog
+		finalColor = mix(fogColor, finalColor, fogFactor);
+	
+		gl_FragColor = vec4(finalColor, 1.0);
+	}
+	`;
+
+    textureLoader.load(
+      `${import.meta.env.VITE_ASSETS_PATH}environment-map-2.jpg`,
+      (texture) => {
+        // Create the extended matcap material
+        const extendedMatcapMaterial = new THREE.ShaderMaterial({
+          vertexShader: vertexShader,
+          fragmentShader: fragmentShader,
+          uniforms: {
+            matcap: { value: texture },
+            mouse: { value: new THREE.Vector2() },
+            lightColor: { value: new THREE.Color("blue") },
+            lightRadius: { value: 0.15 },
+            resolution: {
+              value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+            },
+            fogDensity: { value: 1.0 },
+            fogColor: { value: new THREE.Color(0x00000f) },
+            isSmallScreen: { value: window.innerWidth < 500 }, // New uniform
+          },
+        });
 
         // Check if the model and its first child exist
         if (this.model && this.model.children[0]) {
-            // Assign the matcap material to the first child of the model
-            this.model.children[0].material = matcapMaterial;
-			this.model.children[0].material.rotation = 1.5;
-        }
-    });
+          // Assign the extended matcap material to the first child of the model
+          this.model.children[0].material = extendedMatcapMaterial;
 
-   
+          this.cityMaterial = this.model.children[0].material;
+        }
+      }
+    );
+
     this.scene.add(this.model);
 
+    if (window.innerWidth > 500) {
+      const handleMouseMove = (event) => {
+        this.model.children[0].material.uniforms.mouse.value.x =
+          event.clientX / window.innerWidth;
+        this.model.children[0].material.uniforms.mouse.value.y =
+          1 - event.clientY / window.innerHeight;
+      };
+      window.addEventListener("mousemove", handleMouseMove);
+    }
 
-	//Add glowing spheres
+    //Add glowing spheres
 
     const texturePaths = [
       `${import.meta.env.VITE_ASSETS_PATH}mvp.png`,
       `${import.meta.env.VITE_ASSETS_PATH}amaro.png`,
       `${import.meta.env.VITE_ASSETS_PATH}lem-garcia-law.png`,
-	  `${import.meta.env.VITE_ASSETS_PATH}JR.png`,
-	  `${import.meta.env.VITE_ASSETS_PATH}tj-logo.png`,
-	  `${import.meta.env.VITE_ASSETS_PATH}friedland-logo.png`,
+      `${import.meta.env.VITE_ASSETS_PATH}JR.png`,
+      `${import.meta.env.VITE_ASSETS_PATH}tj-logo.png`,
+      `${import.meta.env.VITE_ASSETS_PATH}friedland-logo.png`,
 
       //... add more paths as needed
     ];
@@ -453,13 +546,36 @@ export default class Model {
     // Adding random glowing spheres
     // Define your manual positions
     const spherePositions = [
-      new THREE.Vector3( window.innerWidth < 920 ? -6.5: -4, 5, window.innerWidth < 920 ? -3.5 : -4),
-      new THREE.Vector3(window.innerWidth < 920 ? -4: -2.5, 5,  window.innerWidth < 920 ? -1.2 : -1.5),
-      new THREE.Vector3( window.innerWidth < 920 ? -3.5 : -1, 5, window.innerWidth < 920 ? -4.5 : -3.5),
-	  new THREE.Vector3( window.innerWidth < 920 ? -4.5: -5.5, 5, window.innerWidth < 920 ? -3 : -2),
-	  new THREE.Vector3( window.innerWidth < 920 ? -7: -6.5, 5, window.innerWidth < 920 ? -1.5 : -3.5),
-	  new THREE.Vector3( window.innerWidth < 920 ? -7.2: -3.5, 5, window.innerWidth < 920 ? -5 : -2.5),
-
+      new THREE.Vector3(
+        window.innerWidth < 920 ? -6.5 : -5,
+        5,
+        window.innerWidth < 920 ? -4.0 : -4
+      ),
+      new THREE.Vector3(
+        window.innerWidth < 920 ? -4 : -2.5,
+        5,
+        window.innerWidth < 920 ? -1.7 : -1.5
+      ),
+      new THREE.Vector3(
+        window.innerWidth < 920 ? -4.1 : -1,
+        5,
+        window.innerWidth < 920 ? -5.8 : -3.5
+      ),
+      new THREE.Vector3(
+        window.innerWidth < 920 ? -4.5 : -5.5,
+        5,
+        window.innerWidth < 920 ? -3.5 : -2
+      ),
+      new THREE.Vector3(
+        window.innerWidth < 920 ? -7 : -6.5,
+        5,
+        window.innerWidth < 920 ? -1.5 : -3.5
+      ),
+      new THREE.Vector3(
+        window.innerWidth < 920 ? -8 : -3,
+        5,
+        window.innerWidth < 920 ? -6.0 : -3.5
+      ),
     ];
 
     this.spheres = this.createGlowingSpheres(spherePositions, texturePaths);
@@ -467,14 +583,13 @@ export default class Model {
       this.model.add(sphere);
     });
 
+    if (window.innerWidth < 920) {
+      this.model.scale.set(0.7, 0.7, 0.7);
+    } else {
+      this.model.scale.set(0.8, 0.8, 0.8);
+    }
 
-	if (window.innerWidth < 920) {
-		this.model.scale.set(0.75, 0.75, 0.75);
-	} else {
-		this.model.scale.set(0.8, 0.8, 0.8);
-	}
-
-    this.model.position.set( window.innerWidth < 920 ? 4 : 5, -4, -12);
+    this.model.position.set(window.innerWidth < 920 ? 4 : 5, -4, -12);
     this.model.rotation.set(1.07, 0, 0);
   }
 
@@ -661,8 +776,17 @@ export default class Model {
 
             this.videoTexture = new THREE.VideoTexture(this.video);
             this.videoTexture.flipY = false;
-            this.videoTexture.colorSpace = THREE.sRGBColorSpace;
-            this.videoTexture.encoding = THREE.sRGBEncoding;
+
+            this.videoTexture.format = THREE.RGBFormat;
+
+            //change color brightness
+
+            this.videoTexture.minFilter = THREE.LinearFilter;
+            this.videoTexture.magFilter = THREE.LinearFilter;
+
+            this.videoTexture.generateMipmaps = false;
+
+            this.videoTexture.colorSpace = THREE.SRGBColorSpace;
 
             this.videoTexture.needsUpdate = true;
 
@@ -736,7 +860,9 @@ export default class Model {
             // });
 
             this.video2 = document.createElement("video");
-            this.video2.src = `${import.meta.env.VITE_ASSETS_PATH}videos/problem-1-final.mp4`;
+            this.video2.src = `${
+              import.meta.env.VITE_ASSETS_PATH
+            }videos/problem-1-final.mp4`;
             this.video2.muted = true;
             this.video2.loop = true;
             this.video2.controls = true;
@@ -747,8 +873,9 @@ export default class Model {
             this.video2.addEventListener("loadeddata", () => {
               this.videoTexture2 = new THREE.VideoTexture(this.video2);
               this.videoTexture2.flipY = true;
-              this.videoTexture2.colorSpace = THREE.sRGBColorSpace;
-              this.videoTexture2.encoding = THREE.sRGBEncoding;
+
+              this.videoTexture2.colorSpace = THREE.SRGBColorSpace;
+
               this.videoTexture2.needsUpdate = true;
 
               this.clone1.material = new THREE.MeshBasicMaterial({
@@ -762,7 +889,9 @@ export default class Model {
             this.videoTexture3 = {};
             // this.video3 = this.resources.items.problemTwo;
             this.video3 = document.createElement("video");
-            this.video3.src = `${import.meta.env.VITE_ASSETS_PATH}videos/problem-2.mp4`;
+            this.video3.src = `${
+              import.meta.env.VITE_ASSETS_PATH
+            }videos/problem-2.mp4`;
 
             this.video3.muted = true;
             this.video3.loop = true;
@@ -774,8 +903,8 @@ export default class Model {
             this.video3.addEventListener("loadeddata", () => {
               this.videoTexture3 = new THREE.VideoTexture(this.video3);
               this.videoTexture3.flipY = true;
-              this.videoTexture3.colorSpace = THREE.sRGBColorSpace;
-              this.videoTexture3.encoding = THREE.sRGBEncoding;
+              this.videoTexture3.colorSpace = THREE.SRGBColorSpace;
+
               this.videoTexture3.needsUpdate = true;
 
               this.clone2.material = new THREE.MeshBasicMaterial({
@@ -791,7 +920,9 @@ export default class Model {
             this.videoTexture4 = {};
             // this.video4 = this.resources.items.problemThree;
             this.video4 = document.createElement("video");
-            this.video4.src = `${import.meta.env.VITE_ASSETS_PATH}videos/problem-3.mp4`;
+            this.video4.src = `${
+              import.meta.env.VITE_ASSETS_PATH
+            }videos/problem-3.mp4`;
 
             this.video4.muted = true;
             this.video4.loop = true;
@@ -805,8 +936,8 @@ export default class Model {
             this.video4.addEventListener("loadeddata", () => {
               this.videoTexture4 = new THREE.VideoTexture(this.video4);
               this.videoTexture4.flipY = true;
-              this.videoTexture4.colorSpace = THREE.sRGBColorSpace;
-              this.videoTexture4.encoding = THREE.sRGBEncoding;
+              this.videoTexture4.colorSpace = THREE.SRGBColorSpace;
+
               this.videoTexture4.minFilter = THREE.LinearFilter;
               this.videoTexture4.magFilter = THREE.LinearFilter;
 
@@ -1041,13 +1172,13 @@ export default class Model {
 
   logoAnimation() {
     this.scrollTl = gsap.timeline({ paused: true });
-    this.scrollTl.to(this.model.position, { x: - 1 }, 0);
+    this.scrollTl.to(this.model.position, { x: -1 }, 0);
     this.scrollTl.to(this.model.rotation, { y: -3.1 }, 0);
 
     ScrollTrigger.create({
       trigger: ".about-hero",
       start: "top top",
-      end:  window.innerWidth < 920 ? "95%" : "65%",
+      end: window.innerWidth < 920 ? "95%" : "65%",
       scrub: true,
       animation: this.scrollTl,
     });
@@ -1055,7 +1186,7 @@ export default class Model {
     ScrollTrigger.create({
       trigger: ".about-video",
       start: "top top",
-	  end: "bottom bottom",
+      end: "bottom bottom",
       scrub: true,
       onEnter: () => {
         this.model.visible = false;
@@ -1224,18 +1355,20 @@ export default class Model {
       //   	1.4
       //     );
 
-
-
       this.showTl.fromTo(
         this.model.position,
-        { z: -15.3 },
-        { z: -7, duration: 3, ease: "power2.out" }
+        { z: -11.5 },
+        { z: -7, duration: 2, ease: "power2.out" }
       );
       this.showTl.fromTo(
         this.model.rotation,
         { x: -0.09 },
-        { x: window.innerWidth < 920 ? 1.15 : 1.07, duration: 3, ease: "power2.out" },
-        1
+        {
+          x: window.innerWidth < 920 ? 1.15 : 1.07,
+          duration: 3,
+          ease: "power2.out",
+        },
+        0.5
       );
       this.showTl.to(
         this.model.position,
@@ -1245,16 +1378,30 @@ export default class Model {
           ease: "power2.out",
           onComplete: () => {
             this.addSphereClickListener();
-			this.eventEmitter.trigger('animationComplete')
+            this.eventEmitter.trigger("animationComplete");
           },
         },
-        2
+        1
       );
 
-	  this.showTl.fromTo(".results-slider h1", {y:30,autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power3.out"}, 3.5);
-	  this.showTl.fromTo(".results-slider__slide", {y: 30, autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power3.out",stagger: 0.2}, 3.5);
-	  this.showTl.fromTo(".mob-heading h1", {y:30,autoAlpha: 0}, {y:0,autoAlpha: 1, duration: 1, ease: "power2.out"}, 3.5);
-
+      this.showTl.fromTo(
+        ".results-slider h1",
+        { y: 30, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 1, ease: "power3.out" },
+        3.5
+      );
+      this.showTl.fromTo(
+        ".results-slider__slide",
+        { y: 30, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 1, ease: "power3.out", stagger: 0.2 },
+        3.5
+      );
+      this.showTl.fromTo(
+        ".mob-heading h1",
+        { y: 30, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
+        3.5
+      );
     }
   }
 

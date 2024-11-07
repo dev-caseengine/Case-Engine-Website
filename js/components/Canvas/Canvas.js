@@ -64,9 +64,9 @@ export default class Canvas {
     // Initialize the bloom pass (but don't add it to the composer just yet)
     this.bloomPass = new UnrealBloomPass(
       new THREE.Vector2(this.sizes.width, this.sizes.height),
-      1.5,
-      0.1,
-      0.1
+	  1.1,
+	  0.4,
+	  0
     );
   }
 
