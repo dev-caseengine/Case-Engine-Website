@@ -73,6 +73,7 @@ export default class Model {
     if (this.name === "city") {
       this.setCityModel();
       this.createSlider();
+	//   this.setGridModel();
     }
   }
 
@@ -406,119 +407,137 @@ export default class Model {
     return [...spheres];
   }
 
+
+
+  setGridModel() {
+	console.log("setGridModel");
+  }
+
+
   setCityModel() {
-    const textureLoader = new THREE.TextureLoader();
+    const textureLoader = new THREE.TextureLoader();const vertexShader = `
+    varying vec2 vUv;
+    varying vec3 vPosition;
+    varying vec3 vNormal;
+    varying float vViewZ;
+    varying float vYPosition;
+    
+    void main() {
+        vUv = uv;
+        vPosition = position;
+        vNormal = normal;
+        vViewZ = -(modelViewMatrix * vec4(position, 1.0)).z;
+        vYPosition = position.y;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+`;
 
-    const vertexShader = `
-	varying vec2 vUv;
-	varying vec3 vPosition;
-	varying vec3 vNormal;
-	varying float vViewZ;
-	varying float vYPosition;
-	
-	void main() {
-		vUv = uv;
-		vPosition = position;
-		vNormal = normal;
-		vViewZ = -(modelViewMatrix * vec4(position, 1.0)).z;
-		vYPosition = position.y;
-		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-	}
-	`;
+const fragmentShader = `
+    uniform sampler2D matcap;
+    uniform vec2 mouse;
+    uniform vec3 lightColor;
+    uniform float lightRadius;
+    uniform vec2 resolution;
+    uniform float fogDensity;
+    uniform vec3 fogColor;
+    uniform bool isSmallScreen;
+    uniform float time; // New uniform for time
+    
+    varying vec2 vUv;
+    varying vec3 vPosition;
+    varying vec3 vNormal;
+    varying float vViewZ;
+    varying float vYPosition;
+    
+    void main() {
+        // Convert mouse position to screen space coordinates
+        vec2 screenPosition = gl_FragCoord.xy / resolution;
 
-    const fragmentShader = `
-	uniform sampler2D matcap;
-	uniform vec2 mouse;
-	uniform vec3 lightColor;
-	uniform float lightRadius;
-	uniform vec2 resolution;
-	uniform float fogDensity;
-	uniform vec3 fogColor;
-	uniform bool isSmallScreen;  // New uniform for screen size
-	
-	varying vec2 vUv;
-	varying vec3 vPosition;
-	varying vec3 vNormal;
-	varying float vViewZ;
-	varying float vYPosition;
-	
-	void main() {
-		// Convert mouse position to screen space coordinates
-		vec2 screenPosition = gl_FragCoord.xy / resolution;
-	
-		// Calculate distance from the mouse to this fragment in screen space
-		float distance = length(screenPosition - mouse);
-	
-		// Adjust edge factor calculation based on screen size
-		vec2 edgeFactor;
-		if (isSmallScreen) {
-			edgeFactor = vec2(1.1 - abs(screenPosition.x - 0.8), 1.1 - abs(screenPosition.y - 0.9));
-		} else {
-			edgeFactor = 1.0 - abs(2.0 * screenPosition - 1.0);
-		}
-		float edgeFalloff = pow(edgeFactor.x * edgeFactor.y, 1.0);
-	
-		// Calculate a gradient-based lighting intensity
-		float lightIntensity = 1.0 - smoothstep(0.0, lightRadius, distance);
-		lightIntensity = mix(lightIntensity, 1.0, 0.65); // Reduce the falloff intensity
-		lightIntensity *= clamp(1.0 - vYPosition * 0.004, 0.0, 1.0); // Reduce intensity towards the top of the object
-	
-		// Apply edge sensitivity adjustment
-		lightIntensity *= edgeFalloff;
-	
-		// Calculate the matcap UV coordinates
-		vec3 viewDir = normalize(vPosition - cameraPosition);
-		vec3 reflectDir = reflect(viewDir, normalize(vNormal));
-		vec2 matcapUV = (reflectDir.xy + vec2(0.1, -0.1)) * 0.5 + 0.5;
-	
-		// Fetch the color from the matcap texture
-		vec4 matcapColor = texture2D(matcap, matcapUV);
-	
-		// Blend matcap color with light color based on brightness
-		vec3 finalColor = mix(matcapColor.rgb * 30.0, lightColor * lightIntensity * 10.0, 0.5);
-	
-		// Calculate a localized fog factor based on distance from the mouse
-		float fogFactor = clamp(exp(-vViewZ * fogDensity * (0.65 - lightIntensity)), 0.0, 1.0);
-	
-		// Apply the localized fog
-		finalColor = mix(fogColor, finalColor, fogFactor);
-	
-		gl_FragColor = vec4(finalColor, 1.0);
-	}
-	`;
+        // Add time-based distortion for a morph effect
+        float morphFactor = 0.05 * sin(time * 1.0);
+        vec2 morphedUv = vUv + vec2(morphFactor * cos(time + vPosition.y), morphFactor * sin(time + vPosition.x));
 
-    textureLoader.load(
-      `${import.meta.env.VITE_ASSETS_PATH}environment-map-2.jpg`,
-      (texture) => {
-        // Create the extended matcap material
+        // Calculate distance from the mouse to this fragment in screen space
+        float distance = length(screenPosition - mouse);
+
+        // Adjust edge factor calculation based on screen size
+        vec2 edgeFactor;
+        if (isSmallScreen) {
+            edgeFactor = vec2(1.1 - abs(screenPosition.x - 0.8), 1.1 - abs(screenPosition.y - 0.9));
+        } else {
+            edgeFactor = 1.0 - abs(2.0 * screenPosition - 1.0);
+        }
+        float edgeFalloff = pow(edgeFactor.x * edgeFactor.y, 1.0);
+
+        // Calculate a gradient-based lighting intensity
+        float lightIntensity = 1.0 - smoothstep(0.0, lightRadius, distance);
+        lightIntensity = mix(lightIntensity, 1.0, 0.65); // Reduce the falloff intensity
+        lightIntensity *= clamp(1.0 - vYPosition * 0.004, 0.0, 1.0); // Reduce intensity towards the top of the object
+
+        // Apply edge sensitivity adjustment
+        lightIntensity *= edgeFalloff;
+
+        // Calculate the matcap UV coordinates with morph effect
+        vec3 viewDir = normalize(vPosition - cameraPosition);
+        vec3 reflectDir = reflect(viewDir, normalize(vNormal));
+        vec2 matcapUV = (reflectDir.xy + vec2(0.1 + morphFactor, -0.1 - morphFactor)) * 0.5 + 0.5;
+
+        // Fetch the color from the matcap texture
+        vec4 matcapColor = texture2D(matcap, matcapUV);
+
+        // Blend matcap color with light color based on brightness
+        vec3 finalColor = mix(matcapColor.rgb * 30.0, lightColor * lightIntensity * 10.0, 0.5);
+
+        // Calculate a localized fog factor based on distance from the mouse
+        float fogFactor = clamp(exp(-vViewZ * fogDensity * (0.65 - lightIntensity)), 0.0, 1.0);
+
+        // Apply the localized fog
+        finalColor = mix(fogColor, finalColor, fogFactor);
+
+        gl_FragColor = vec4(finalColor, 1.0);
+    }
+`;
+
+// Load texture and create shader material
+textureLoader.load(
+    `${import.meta.env.VITE_ASSETS_PATH}environment-map-2.jpg`,
+    (texture) => {
+        // Create the extended matcap material with time uniform
         const extendedMatcapMaterial = new THREE.ShaderMaterial({
-          vertexShader: vertexShader,
-          fragmentShader: fragmentShader,
-          uniforms: {
-            matcap: { value: texture },
-            mouse: { value: new THREE.Vector2() },
-            lightColor: { value: new THREE.Color("blue") },
-            lightRadius: { value: 0.15 },
-            resolution: {
-              value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            uniforms: {
+                matcap: { value: texture },
+                mouse: { value: new THREE.Vector2() },
+                lightColor: { value: new THREE.Color("blue") },
+                lightRadius: { value: 0.15 },
+                resolution: {
+                    value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+                },
+                fogDensity: { value: 1.0 },
+                fogColor: { value: new THREE.Color(0x00000f) },
+                isSmallScreen: { value: window.innerWidth < 500 },
+                time: { value: 0.0 }, // Add time uniform
             },
-            fogDensity: { value: 1.0 },
-            fogColor: { value: new THREE.Color(0x00000f) },
-            isSmallScreen: { value: window.innerWidth < 500 }, // New uniform
-          },
         });
 
         // Check if the model and its first child exist
         if (this.model && this.model.children[0]) {
-          // Assign the extended matcap material to the first child of the model
-          this.model.children[0].material = extendedMatcapMaterial;
+            // Assign the extended matcap material to the first child of the model
+            this.model.children[0].material = extendedMatcapMaterial;
 
-          this.cityMaterial = this.model.children[0].material;
+            this.cityMaterial = this.model.children[0].material;
         }
-      }
-    );
 
-    this.scene.add(this.model);
+   
+ 
+
+       
+    }
+);
+
+this.scene.add(this.model);
+
 
     if (window.innerWidth > 500) {
       const handleMouseMove = (event) => {
@@ -1407,6 +1426,8 @@ export default class Model {
 
   // Update
   update(time) {
+
+
     if (!this.model) return;
     if (
       this.m &&
@@ -1415,7 +1436,12 @@ export default class Model {
       this.m.userData.shader.uniforms
     ) {
       this.m.userData.shader.uniforms.uTime.value = time;
+	  
     }
+
+	
+	
+
 
     // this.model.traverse(child => {
     //     if (child.isPoints && child.geometry instanceof THREE.BufferGeometry) {

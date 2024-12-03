@@ -1,6 +1,7 @@
 import Page from "../classes/Page";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 export default class Results extends Page {
   constructor() {
     super({
@@ -21,6 +22,8 @@ export default class Results extends Page {
     });
     gsap.registerPlugin(ScrollTrigger);
     this.isDragging = false;
+
+
   }
 
   dragSlider() {
