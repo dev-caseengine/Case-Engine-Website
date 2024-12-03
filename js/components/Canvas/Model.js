@@ -441,7 +441,7 @@ const fragmentShader = `
     uniform float fogDensity;
     uniform vec3 fogColor;
     uniform bool isSmallScreen;
-    uniform float time; // New uniform for time
+    uniform float time;
     
     varying vec2 vUv;
     varying vec3 vPosition;
@@ -450,48 +450,61 @@ const fragmentShader = `
     varying float vYPosition;
     
     void main() {
-        // Convert mouse position to screen space coordinates
+        // Detect if we're on a 2K monitor (2560x1440 or higher)
+        bool is2K = resolution.x >= 2560.0;
+        
         vec2 screenPosition = gl_FragCoord.xy / resolution;
+        vec2 adjustedMouse = mouse;
+        
+        // Adjust parameters for 2K
+        if (is2K) {
+            // Adjust mouse coordinates for 2K
+            adjustedMouse *= 0.9; // Scale down mouse movement range
+            adjustedMouse += 0.05; // Small offset to center
+            
+            // Adjust screen position for 2K
+            screenPosition *= 0.5;
+            screenPosition += 0.05;
+        }
+        
+        float distance = length(screenPosition - adjustedMouse);
+        
+        // Adjust light radius based on resolution
+        float adjustedRadius = is2K ? lightRadius * 0.85 : lightRadius;
 
-        // Add time-based distortion for a morph effect
+        // Time-based distortion
         float morphFactor = 0.05 * sin(time * 1.0);
         vec2 morphedUv = vUv + vec2(morphFactor * cos(time + vPosition.y), morphFactor * sin(time + vPosition.x));
 
-        // Calculate distance from the mouse to this fragment in screen space
-        float distance = length(screenPosition - mouse);
-
-        // Adjust edge factor calculation based on screen size
+        // Edge factor calculation
         vec2 edgeFactor;
         if (isSmallScreen) {
             edgeFactor = vec2(1.1 - abs(screenPosition.x - 0.8), 1.1 - abs(screenPosition.y - 0.9));
         } else {
-            edgeFactor = 1.0 - abs(2.0 * screenPosition - 1.0);
+            vec2 centeredPos = screenPosition - vec2(0.5);
+            edgeFactor = 1.1 - 2.0 * abs(centeredPos);
         }
-        float edgeFalloff = pow(edgeFactor.x * edgeFactor.y, 1.0);
+        float edgeFalloff = pow(clamp(edgeFactor.x * edgeFactor.y, 0.0, 1.0), 1.0);
 
-        // Calculate a gradient-based lighting intensity
-        float lightIntensity = 1.0 - smoothstep(0.0, lightRadius, distance);
-        lightIntensity = mix(lightIntensity, 1.0, 0.65); // Reduce the falloff intensity
-        lightIntensity *= clamp(1.0 - vYPosition * 0.004, 0.0, 1.0); // Reduce intensity towards the top of the object
-
-        // Apply edge sensitivity adjustment
+        // Adjust light intensity based on resolution
+        float lightIntensity = 1.0 - smoothstep(0.0, adjustedRadius, distance);
+        lightIntensity = mix(lightIntensity, 1.0, is2K ? 0.55 : 0.65); // Slightly less ambient light on 2K
+        lightIntensity *= clamp(1.0 - vYPosition * (is2K ? 0.0035 : 0.004), 0.0, 1.0);
         lightIntensity *= edgeFalloff;
-
-        // Calculate the matcap UV coordinates with morph effect
+        
+        // Matcap calculation
         vec3 viewDir = normalize(vPosition - cameraPosition);
         vec3 reflectDir = reflect(viewDir, normalize(vNormal));
         vec2 matcapUV = (reflectDir.xy + vec2(0.1 + morphFactor, -0.1 - morphFactor)) * 0.5 + 0.5;
 
-        // Fetch the color from the matcap texture
+        // Color blending with adjusted intensity for 2K
         vec4 matcapColor = texture2D(matcap, matcapUV);
+        float lightMultiplier = is2K ? 8.5 : 10.0; // Slightly reduced light intensity for 2K
+        vec3 finalColor = mix(matcapColor.rgb * 30.0, lightColor * lightIntensity * lightMultiplier, 0.5);
 
-        // Blend matcap color with light color based on brightness
-        vec3 finalColor = mix(matcapColor.rgb * 30.0, lightColor * lightIntensity * 10.0, 0.5);
-
-        // Calculate a localized fog factor based on distance from the mouse
-        float fogFactor = clamp(exp(-vViewZ * fogDensity * (0.65 - lightIntensity)), 0.0, 1.0);
-
-        // Apply the localized fog
+        // Adjusted fog for 2K
+        float fogMultiplier = is2K ? 0.85 : 1.0;
+        float fogFactor = clamp(exp(-vViewZ * fogDensity * (0.65 - lightIntensity) * fogMultiplier), 0.0, 1.0);
         finalColor = mix(fogColor, finalColor, fogFactor);
 
         gl_FragColor = vec4(finalColor, 1.0);
@@ -510,7 +523,7 @@ textureLoader.load(
                 matcap: { value: texture },
                 mouse: { value: new THREE.Vector2() },
                 lightColor: { value: new THREE.Color("blue") },
-                lightRadius: { value: 0.15 },
+                lightRadius: { value: 0.10 },
                 resolution: {
                     value: new THREE.Vector2(window.innerWidth, window.innerHeight),
                 },
