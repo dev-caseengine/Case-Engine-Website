@@ -415,7 +415,8 @@ export default class Model {
 
 
   setCityModel() {
-    const textureLoader = new THREE.TextureLoader();const vertexShader = `
+	const textureLoader = new THREE.TextureLoader();
+const vertexShader = `
     varying vec2 vUv;
     varying vec3 vPosition;
     varying vec3 vNormal;
@@ -450,62 +451,60 @@ const fragmentShader = `
     varying float vYPosition;
     
     void main() {
-        // Detect if we're on a 2K monitor (2560x1440 or higher)
-        bool is2K = resolution.x >= 2560.0;
-        
         vec2 screenPosition = gl_FragCoord.xy / resolution;
-        vec2 adjustedMouse = mouse;
-        
-        // Adjust parameters for 2K
-        if (is2K) {
-            // Adjust mouse coordinates for 2K
-            adjustedMouse *= 0.9; // Scale down mouse movement range
-            adjustedMouse += 0.05; // Small offset to center
-            
-            // Adjust screen position for 2K
-            screenPosition *= 0.5;
-            screenPosition += 0.05;
-        }
-        
-        float distance = length(screenPosition - adjustedMouse);
-        
-        // Adjust light radius based on resolution
-        float adjustedRadius = is2K ? lightRadius * 0.85 : lightRadius;
+        vec2 centeredMouse = mouse - 0.5;
+        vec2 centeredScreen = screenPosition - 0.5;
 
-        // Time-based distortion
         float morphFactor = 0.05 * sin(time * 1.0);
         vec2 morphedUv = vUv + vec2(morphFactor * cos(time + vPosition.y), morphFactor * sin(time + vPosition.x));
 
-        // Edge factor calculation
-        vec2 edgeFactor;
-        if (isSmallScreen) {
-            edgeFactor = vec2(1.1 - abs(screenPosition.x - 0.8), 1.1 - abs(screenPosition.y - 0.9));
-        } else {
-            vec2 centeredPos = screenPosition - vec2(0.5);
-            edgeFactor = 1.1 - 2.0 * abs(centeredPos);
-        }
-        float edgeFalloff = pow(clamp(edgeFactor.x * edgeFactor.y, 0.0, 1.0), 1.0);
+        float distance = length(centeredScreen - centeredMouse);
 
-        // Adjust light intensity based on resolution
-        float lightIntensity = 1.0 - smoothstep(0.0, adjustedRadius, distance);
-        lightIntensity = mix(lightIntensity, 1.0, is2K ? 0.55 : 0.65); // Slightly less ambient light on 2K
-        lightIntensity *= clamp(1.0 - vYPosition * (is2K ? 0.0035 : 0.004), 0.0, 1.0);
-        lightIntensity *= edgeFalloff;
+        vec2 edgeFactor;
+        float lightIntensityMultiplier;
+        float matcapMultiplier;
         
-        // Matcap calculation
+        if (isSmallScreen) {
+            // Mobile-specific adjustments
+            edgeFactor = vec2(1.1 - abs(screenPosition.x - 0.5), 1.1 - abs(screenPosition.y - 0.3));
+            lightIntensityMultiplier = 0.5; // Reduced light intensity for mobile
+            matcapMultiplier = 35.0; // Reduced matcap brightness for mobile
+            distance *= 1.2; // Increase effective light radius on mobile
+        } else {
+            edgeFactor = 1.0 - abs(2.0 * screenPosition - 1.0);
+            lightIntensityMultiplier = 1.0;
+            matcapMultiplier = 30.0;
+        }
+        
+        float edgeFalloff = pow(edgeFactor.x * edgeFactor.y, 1.0);
+
+        float lightIntensity = 1.0 - smoothstep(0.0, lightRadius, distance);
+        lightIntensity = mix(lightIntensity, 1.0, isSmallScreen ? 0.9 : 0.65); // More ambient light on mobile
+        lightIntensity *= clamp(1.0 - vYPosition * 0.004, 0.0, 1.0);
+        lightIntensity *= edgeFalloff * lightIntensityMultiplier;
+
         vec3 viewDir = normalize(vPosition - cameraPosition);
         vec3 reflectDir = reflect(viewDir, normalize(vNormal));
         vec2 matcapUV = (reflectDir.xy + vec2(0.1 + morphFactor, -0.1 - morphFactor)) * 0.5 + 0.5;
 
-        // Color blending with adjusted intensity for 2K
         vec4 matcapColor = texture2D(matcap, matcapUV);
-        float lightMultiplier = is2K ? 8.5 : 10.0; // Slightly reduced light intensity for 2K
-        vec3 finalColor = mix(matcapColor.rgb * 30.0, lightColor * lightIntensity * lightMultiplier, 0.5);
 
-        // Adjusted fog for 2K
-        float fogMultiplier = is2K ? 0.85 : 1.0;
-        float fogFactor = clamp(exp(-vViewZ * fogDensity * (0.65 - lightIntensity) * fogMultiplier), 0.0, 1.0);
+        vec3 finalColor = mix(
+            matcapColor.rgb * matcapMultiplier, 
+            lightColor * lightIntensity * (isSmallScreen ? 5.0 : 10.0), 
+            0.5
+        );
+
+        // Increase fog on mobile for a softer look
+        float adjustedFogDensity = isSmallScreen ? fogDensity * 1.2 : fogDensity;
+        float fogFactor = clamp(exp(-vViewZ * adjustedFogDensity * (0.65 - lightIntensity)), 0.0, 1.0);
+
         finalColor = mix(fogColor, finalColor, fogFactor);
+        
+        // Additional brightness adjustment for mobile
+        if (isSmallScreen) {
+            finalColor *= 0.7; // Reduce overall brightness
+        }
 
         gl_FragColor = vec4(finalColor, 1.0);
     }
@@ -515,53 +514,70 @@ const fragmentShader = `
 textureLoader.load(
     `${import.meta.env.VITE_ASSETS_PATH}environment-map-2.jpg`,
     (texture) => {
-        // Create the extended matcap material with time uniform
-        const extendedMatcapMaterial = new THREE.ShaderMaterial({
+        const dpr = window.devicePixelRatio || 1;
+        
+        // Create the extended matcap material
+		const extendedMatcapMaterial = new THREE.ShaderMaterial({
             vertexShader: vertexShader,
             fragmentShader: fragmentShader,
             uniforms: {
                 matcap: { value: texture },
-                mouse: { value: new THREE.Vector2() },
+                mouse: { value: new THREE.Vector2(0.5, 0.5) },
                 lightColor: { value: new THREE.Color("blue") },
-                lightRadius: { value: 0.10 },
+                lightRadius: { value: 0.15 },
                 resolution: {
-                    value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+                    value: new THREE.Vector2(
+                        window.innerWidth * dpr,
+                        window.innerHeight * dpr
+                    ),
                 },
                 fogDensity: { value: 1.0 },
                 fogColor: { value: new THREE.Color(0x00000f) },
                 isSmallScreen: { value: window.innerWidth < 500 },
-                time: { value: 0.0 }, // Add time uniform
+                time: { value: 0.0 },
             },
         });
 
         // Check if the model and its first child exist
         if (this.model && this.model.children[0]) {
-            // Assign the extended matcap material to the first child of the model
             this.model.children[0].material = extendedMatcapMaterial;
-
             this.cityMaterial = this.model.children[0].material;
         }
-
-   
- 
-
-       
     }
 );
 
 this.scene.add(this.model);
 
-
-    if (window.innerWidth > 500) {
-      const handleMouseMove = (event) => {
-        this.model.children[0].material.uniforms.mouse.value.x =
-          event.clientX / window.innerWidth;
-        this.model.children[0].material.uniforms.mouse.value.y =
-          1 - event.clientY / window.innerHeight;
-      };
-      window.addEventListener("mousemove", handleMouseMove);
+// Handle window resize
+const handleResize = () => {
+    const dpr = window.devicePixelRatio || 1;
+    if (this.model && this.model.children[0] && this.model.children[0].material) {
+        this.model.children[0].material.uniforms.resolution.value.set(
+            window.innerWidth * dpr,
+            window.innerHeight * dpr
+        );
+        this.model.children[0].material.uniforms.isSmallScreen.value = window.innerWidth < 500;
     }
+};
 
+window.addEventListener('resize', handleResize);
+
+// Mouse move handler with proper coordinate normalization
+if (window.innerWidth > 500) {
+    const handleMouseMove = (event) => {
+        if (this.model && this.model.children[0] && this.model.children[0].material) {
+            // Get the bounding rectangle of the canvas
+            const rect = event.target.getBoundingClientRect();
+            
+            // Calculate normalized coordinates (0 to 1)
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = 1 - (event.clientY - rect.top) / rect.height;
+            
+            this.model.children[0].material.uniforms.mouse.value.set(x, y);
+        }
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+}
     //Add glowing spheres
 
     const texturePaths = [
