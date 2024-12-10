@@ -939,7 +939,7 @@ if (window.innerWidth > 500) {
             this.video3 = document.createElement("video");
             this.video3.src = `${
               import.meta.env.VITE_ASSETS_PATH
-            }videos/problem-2.mp4`;
+            }videos/mvp-2024.mp4`;
 
             this.video3.muted = true;
             this.video3.loop = true;
