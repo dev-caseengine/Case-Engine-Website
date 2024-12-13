@@ -17,7 +17,7 @@ export default class Results extends Page {
         nextBtn: ".results-slider__next",
         dragHandle: ".drag-handle",
         afterImage: ".after-image",
-        dragContainer: ".drag-container",
+       
       },
     });
     gsap.registerPlugin(ScrollTrigger);
@@ -27,55 +27,65 @@ export default class Results extends Page {
   }
 
   dragSlider() {
-	// Check if the drag-container exists in the DOM
-	if (!this.elements.dragContainer) {
-	
-	  return; // Exit the function if drag-container is missing
-	}
+	// Select all drag-container elements
+	const dragContainers = document.querySelectorAll('.drag-container');
   
-	// Proceed with event listeners only if drag-container is present
-	this.elements.dragHandle.addEventListener("mousedown", (e) => {
-	  this.isDragging = true;
-	});
+	// Loop through each drag container
+	dragContainers.forEach((container) => {
+	  const dragHandle = container.querySelector('.drag-handle');
+	  const afterImage = container.querySelector('.after-image');
   
-	this.elements.dragHandle.addEventListener("touchstart", (e) => {
-	  this.isDragging = true;
-	  e.preventDefault(); // Prevent touch scrolling when starting drag
-	});
+	  if (!container || !dragHandle || !afterImage) {
+		return; // Skip if any required element is missing
+	  }
   
-	this.elements.dragContainer.addEventListener("mousemove", (e) => {
-	  if (!this.isDragging) return;
+	  let isDragging = false;
   
-	  const rect = this.elements.dragContainer.getBoundingClientRect();
-	  let offsetX = e.clientX - rect.left;
+	  // Add event listeners for mouse and touch events
+	  dragHandle.addEventListener("mousedown", () => {
+		isDragging = true;
+	  });
   
-	  if (offsetX < 0) offsetX = 0;
-	  if (offsetX > rect.width) offsetX = rect.width;
+	  dragHandle.addEventListener("touchstart", (e) => {
+		isDragging = true;
+		e.preventDefault(); // Prevent touch scrolling when starting drag
+	  });
   
-	  this.elements.dragHandle.style.left = offsetX + "px";
-	  this.elements.afterImage.style.clipPath = `inset(0 ${rect.width - offsetX}px 0 0)`;
-	});
+	  container.addEventListener("mousemove", (e) => {
+		if (!isDragging) return;
   
-	this.elements.dragContainer.addEventListener("touchmove", (e) => {
-	  if (!this.isDragging) return;
-	  e.preventDefault();
+		const rect = container.getBoundingClientRect();
+		let offsetX = e.clientX - rect.left;
   
-	  const rect = this.elements.dragContainer.getBoundingClientRect();
-	  let offsetX = e.touches[0].clientX - rect.left;
+		if (offsetX < 0) offsetX = 0;
+		if (offsetX > rect.width) offsetX = rect.width;
   
-	  if (offsetX < 0) offsetX = 0;
-	  if (offsetX > rect.width) offsetX = rect.width;
+		dragHandle.style.left = offsetX + "px";
+		afterImage.style.clipPath = `inset(0 ${rect.width - offsetX}px 0 0)`;
+	  });
   
-	  this.elements.dragHandle.style.left = offsetX + "px";
-	  this.elements.afterImage.style.clipPath = `inset(0 ${rect.width - offsetX}px 0 0)`;
-	});
+	  container.addEventListener("touchmove", (e) => {
+		if (!isDragging) return;
+		e.preventDefault();
   
-	window.addEventListener("mouseup", () => {
-	  this.isDragging = false;
-	});
+		const rect = container.getBoundingClientRect();
+		let offsetX = e.touches[0].clientX - rect.left;
   
-	window.addEventListener("touchend", () => {
-	  this.isDragging = false;
+		if (offsetX < 0) offsetX = 0;
+		if (offsetX > rect.width) offsetX = rect.width;
+  
+		dragHandle.style.left = offsetX + "px";
+		afterImage.style.clipPath = `inset(0 ${rect.width - offsetX}px 0 0)`;
+	  });
+  
+	  // Add global event listeners to stop dragging
+	  window.addEventListener("mouseup", () => {
+		isDragging = false;
+	  });
+  
+	  window.addEventListener("touchend", () => {
+		isDragging = false;
+	  });
 	});
   }
   

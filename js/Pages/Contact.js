@@ -38,11 +38,11 @@ export default class Contact extends Page {
         const form = new FormData(this);
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "https://caseengine.com/wp-json/api/v1/sendMail", true);
-
+		document.querySelector(".button-send-mail").style.display = "none";
         xhr.onload = function () {
           if (xhr.status === 200) {
             var res = JSON.parse(xhr.responseText);
-            document.querySelector(".button-send-mail").style.display = "none";
+            // document.querySelector(".button-send-mail").style.display = "none";
             document.querySelector(".mail-response").innerHTML = res.message;
             document.querySelector(".mail-response").style.display = "block";
           }

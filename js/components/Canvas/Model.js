@@ -73,7 +73,7 @@ export default class Model {
     if (this.name === "city") {
       this.setCityModel();
       this.createSlider();
-	//   this.setGridModel();
+
     }
   }
 
@@ -113,31 +113,31 @@ export default class Model {
     );
   }
 
-  updateSlidePosition() {
-    // Calculate the total distance that needs to be moved, considering slideWidth and the gap.
-    let offset = -(this.slideWidth * this.currentSlide);
+//   updateSlidePosition() {
+//     // Calculate the total distance that needs to be moved, considering slideWidth and the gap.
+//     let offset = -(this.slideWidth * this.currentSlide);
 
-    // Calculate maximum offset to keep the last slide centered
-    const maxOffset =
-      -(this.slides.length - this.visibleSlides) * this.slideWidth;
+//     // Calculate maximum offset to keep the last slide centered
+//     const maxOffset =
+//       -(this.slides.length - this.visibleSlides) * this.slideWidth;
 
-    // Ensure offset doesn't exceed the maximum
-    offset = Math.max(offset, maxOffset);
+//     // Ensure offset doesn't exceed the maximum
+//     offset = Math.max(offset, maxOffset);
 
-    this.sliderInner.style.transform = `translateX(${offset}px)`;
+//     this.sliderInner.style.transform = `translateX(${offset}px)`;
 
-    // Remove active class from all slides
-    this.slides.forEach((slide) => {
-      slide.classList.remove("active");
-    });
+//     // Remove active class from all slides
+//     this.slides.forEach((slide) => {
+//       slide.classList.remove("active");
+//     });
 
-    // Add active class to the current slide
-    this.slides[this.currentSlide].classList.add("active");
-  }
+//     // Add active class to the current slide
+//     this.slides[this.currentSlide].classList.add("active");
+//   }
 
   createSlider() {
     this.currentSlide = 0;
-    this.visibleSlides = 4;
+    // this.visibleSlides = 4;
     // Set initial slideWidth
     this.sliderInner = document.querySelector(".results-slider__inner");
     this.slides = document.querySelectorAll(".results-slider__slide");
@@ -409,9 +409,7 @@ export default class Model {
 
 
 
-  setGridModel() {
-	console.log("setGridModel");
-  }
+
 
 
   setCityModel() {
@@ -639,6 +637,128 @@ if (window.innerWidth > 500) {
 
     this.model.position.set(window.innerWidth < 920 ? 4 : 5, -4, -12);
     this.model.rotation.set(1.07, 0, 0);
+
+
+	//GRIDS code here
+
+	this.gridBtn = document.querySelector(".grid-btn");
+	const resultsSlider = document.querySelector(".results-slider");
+	const resultsSwipe = document.querySelector(".results-swipe");
+
+	let isToggled = false;
+	const gridContainer = document.querySelector(".grids");
+
+this.gridBtn.addEventListener("click", () => {
+	const mobHeading = document.querySelector(".mob-heading");
+    // Close any active modals
+    const activeModals = document.querySelectorAll(".sidebar");
+    activeModals.forEach((modal) => {
+        modal.classList.remove("active");
+        modal.style.display = "none"; // Hide the modal
+		console.log("Modal closed.");
+    });
+
+	if (window.innerWidth < 920) {
+		const anyModalOpen = Array.from(activeModals).some(
+			(modal) => modal.style.display !== "none"
+		);
+	
+		if (anyModalOpen) {
+			gsap.set(resultsSwipe, { display: "block" });
+		} else {
+			gsap.set(resultsSwipe, { display: "none" });
+		}
+	}
+
+    // Deselect any active slides
+    const activeSlides = document.querySelectorAll(".results-slider__slide.active");
+    activeSlides.forEach((slide) => {
+        slide.classList.remove("active");
+    });
+
+    // Deselect any active spheres
+    if (this.selectedSphere) {
+        gsap.to(this.selectedSphere.scale, {
+            x: window.innerWidth < 920 ? 0.45 : 0.3,
+            y: window.innerWidth < 920 ? 0.45 : 0.3,
+            z: window.innerWidth < 920 ? 0.45 : 0.3,
+            duration: 0.5,
+            ease: "power2.out",
+        });
+        this.model.remove(this.selectedSphere.userData.glowingSphere); // Remove the glow
+        this.selectedSphere.userData.isSelected = false;
+        this.selectedSphere = null; // Reset the selected sphere
+    }
+
+    if (isToggled) {
+        // Reverse animation
+        gridContainer.classList.remove("active");
+        gsap.to(".see-cases__text", { y: "100%", duration: 1, ease: "expo.out" });
+        gsap.to(".grid-btn__text", { y: 0, duration: 1, ease: "expo.out" });
+        gsap.to(this.model.rotation, { x: window.innerWidth < 920 ? 1.15 : 1.07, duration: 2.5, ease: "power2.out" });
+        gsap.to(this.model.position, { z: window.innerWidth < 920 ? -8.5 : -8, duration: 1, ease: "expo.out" });
+        gsap.to(this.model.position, { y: -4, duration: 1, ease: "expo.out" });
+		if (window.innerWidth >= 921) {
+			gsap.set(resultsSlider, { display: "block", delay: 1 });
+		  }
+        gsap.fromTo(
+            ".results-slider__slide",
+            { autoAlpha: 0, y: 50 },
+            { autoAlpha: 1, y: 0, duration: 1, ease: "expo.out", stagger: 0.1, delay: 1 }
+        );
+
+		if (window.innerWidth < 921 && mobHeading) {
+			gsap.set(mobHeading, { display: "block" });
+			gsap.from(mobHeading, { y: 20, opacity: 0, duration: 1, ease: "expo.out", delay: 1 });
+		}
+
+		if(window.innerWidth < 921) {
+			gsap.to(this.gridBtn, { top: '14rem', duration: 1, ease: "expo.out", });
+		}
+
+        console.log("Reverse animation applied.");
+    } else {
+        // Forward animation
+        gridContainer.classList.add("active");
+        resultsSlider.style.display = "none";
+        gsap.to(".grid-btn__text", { y: "-200%", duration: 1, ease: "expo.out" });
+        gsap.to(".see-cases__text", { y: "-100%", duration: 1, ease: "expo.out" });
+        gsap.to(this.model.rotation, { x: Math.PI * 1.5, duration: 2.5, ease: "power2.out" });
+        gsap.to(this.model.position, { z: -9, duration: 1, ease: "expo.out" });
+        gsap.to(this.model.position, { y: -7, duration: 1, ease: "expo.out" });
+
+		gsap.from(".grids__card", {scale:0, ease: 'expo.out', duration: 3, stagger: {
+			each: 0.02,
+			from: "center",
+			// grid: [3, 3]
+		}}, "<.8")
+
+		
+		// gsap.from(".grids__card .drag-container", {opacity:0, ease: 'power.out', duration: 1, stagger: {
+		// 	each: 0.02,
+		// 	from: "left",
+
+		// }}, "<15%")
+
+    // Hide mob-heading if below 920px
+
+	if(window.innerWidth < 921) {
+		gsap.to(this.gridBtn, { top: 'calc(100dvh - 13rem)', duration: 1, ease: "expo.out", });
+	}
+
+	if (window.innerWidth < 921 && mobHeading) {
+		console.log('asdasd');
+		gsap.set(mobHeading, { display: "none" });
+	}
+
+        console.log("Forward animation applied.");
+
+    }
+
+    // Toggle the state
+    isToggled = !isToggled;
+});
+
   }
 
   setAboutModel() {
