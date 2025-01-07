@@ -748,6 +748,7 @@
 		will-change: transform opacity;
 
 		&__heading {
+			margin-bottom: 1rem;
 			h3 {
 				@extend %description-22;
 				font-weight: 500;
@@ -765,8 +766,7 @@
 			color: #fff;
 			display: flex;
 			align-items: center;
-			margin-top: 1rem;
-			margin-bottom: 3rem;
+			margin-bottom: 1.5rem;
 			span {
 				@extend %description-14;
 				display: block;
@@ -787,6 +787,15 @@
 					font-size: 14px;
 				}
 		
+			}
+		}
+
+		&__notes {
+			margin-bottom: 1.5rem;
+
+			p {
+				@extend %description-14-normal;
+				color: #fff;
 			}
 		}
 
