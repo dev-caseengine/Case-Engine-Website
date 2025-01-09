@@ -1570,6 +1570,10 @@ this.gridBtn.addEventListener("click", () => {
         { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" },
         3.5
       );
+
+	  this.showTl.fromTo(".grid-btn", {y: 20, autoAlpha: 0}, {y: 0, autoAlpha: 1, duration: 1, ease: "power2.out"}, 3.6);
+
+
     }
   }
 

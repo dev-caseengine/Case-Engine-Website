@@ -749,6 +749,10 @@
 
 		&__heading {
 			margin-bottom: 1rem;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
 			h3 {
 				@extend %description-22;
 				font-weight: 500;
@@ -765,7 +769,8 @@
 		&__search-term {
 			color: #fff;
 			display: flex;
-			align-items: center;
+			flex-direction: column;
+			align-items: flex-start;
 			margin-bottom: 1.5rem;
 			span {
 				@extend %description-14;
@@ -777,7 +782,7 @@
 				@extend %description-14-normal;
 				padding: .5rem 1rem;
 				border-radius: 6px;
-				margin-left: 1.5rem;
+				margin-top: 1rem;
 				background: rgba(255, 255, 255, 0.1);
 				border: 1px solid rgba(255, 255, 255, 0.1);
 				color: #3573ff;
@@ -817,14 +822,14 @@
 				.after-image {
 					// filter: hue-rotate(309deg) invert(1) saturate(1.5) brightness(1.1);
 			
-					filter: sepia(100%) brightness(0.95) hue-rotate(357deg) invert(1) saturate(1.8);
+					// filter: sepia(100%) brightness(0.95) hue-rotate(357deg) invert(1) saturate(1.8);
 					width: 100%;
 					height: 100%;
 				}
 
 				.before-image {
 					// filter: hue-rotate(104deg) invert(1) brightness(0.7) saturate(1);
-					filter: sepia(100%) brightness(0.95) hue-rotate(119deg) invert(1) saturate(1);
+					// filter: sepia(100%) brightness(0.95) hue-rotate(119deg) invert(1) saturate(1);
 					width: 100%;
 					height: 100%;
 				}
