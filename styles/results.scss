@@ -49,7 +49,7 @@
   }
 
   &__inner {
-    padding: 4rem 2rem 0rem 4rem;
+    padding: 4rem 4rem 0rem 4rem;
     height: 100%;
     overflow: hidden;
     overflow-y: auto;
@@ -813,11 +813,14 @@
     }
 
     &__notes {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
 
       p {
         @extend %description-14-normal;
         color: #fff;
+		font-size: 13px;
+		font-style: italic;
+		opacity: .5;
       }
     }
 

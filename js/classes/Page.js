@@ -66,6 +66,16 @@ export default class Page {
     //   );
     // }
 
+    if (document.querySelector(".google-partner") != null) {
+		this.introAnim.fromTo(
+		  ".google-partner",
+		  { autoAlpha: 0, yPercent: 50 },
+		  { autoAlpha: 1, yPercent: 0, duration: 1, ease: "power2.out" },
+		  0.8
+		);
+	  }
+
+
     if (document.querySelector(".hero-desc") != null) {
       this.introAnim.fromTo(
         ".hero-desc",

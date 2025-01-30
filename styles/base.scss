@@ -307,9 +307,10 @@ canvas {
 
 .scroll-down {
   position: absolute;
-  right: 0;
-  bottom: 12rem;
-  padding: 4rem 2.2rem 3rem 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 4rem;
+  padding: 2rem 2.2rem 3rem 2.2rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -321,12 +322,12 @@ canvas {
   opacity: 0;
   will-change: opacity;
 
-  @media (max-width: 640px) {
+  @media (max-width: 920px) {
     display: none;
   }
 
   img {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     will-change: opacity transform;
   }
 
