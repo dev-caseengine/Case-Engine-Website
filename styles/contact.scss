@@ -1,7 +1,7 @@
 .contact-hero {
   position: relative;
   width: 100%;
-  height: 100dvh;
+  min-height: 100dvh;
 
   //   @media (max-width: 640px) {
   //     height: 100vh;
@@ -9,14 +9,15 @@
 
   &__inner {
     width: inherit;
-    height: inherit;
+    min-height: inherit;
     display: grid;
     grid-template-rows: 0.2fr 1fr 0.2fr;
     justify-content: center;
     align-items: center;
 
     @media (max-width: 640px) {
-      grid-template-rows: 1fr 0.11fr;
+      grid-template-rows: 1fr ;
+
     }
   }
 
@@ -68,12 +69,22 @@
     justify-content: center;
     align-self: flex-start;
 
+	@media(max-width: 640px) {
+		margin: 3rem 0;
+	}
+
     p {
       //   width: 95rem;
       color: rgba(255, 255, 255, 0.4);
       @extend %description-18;
       font-weight: 300;
       text-align: center;
+
+	  @media(max-width: 640px) {
+		font-size: 12px;
+		line-height: 1.2;
+		width: 95%;
+	  }
     }
   }
 
@@ -146,6 +157,17 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+
+	// @media(max-width: 640px) {
+	// 	height: 50vh;
+	// 	overflow: hidden;
+
+	// 	&.step__form {
+	// 		height: 100%;
+	// 		overflow-y: auto;
+		
+	// 	}
+	// }
   }
 
   &__form {
@@ -160,7 +182,8 @@
     }
 
     &__input {
-      width: 33.333%;
+    //   width: 33.333%;
+	  width: 50%;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -184,6 +207,7 @@
 		@media (max-width: 920px) {
 			font-size: 14px;
 			height: 54px;
+			width: 100%;
 		  }
 
         &:focus {
@@ -436,7 +460,7 @@ p.mail-response {
 
 .contact-form {
   @media (max-width: 640px) {
-    margin-top: 12rem;
+    margin-top: 27rem;
   }
 
   .step__title {
