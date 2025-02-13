@@ -1,7 +1,7 @@
 .contact-hero {
   position: relative;
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100svh;
 
   //   @media (max-width: 640px) {
   //     height: 100vh;
@@ -10,10 +10,14 @@
   &__inner {
     width: inherit;
     min-height: inherit;
-    display: grid;
-    grid-template-rows: 0.2fr 1fr 0.2fr;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
     justify-content: center;
-    align-items: center;
+    // display: grid;
+    // // grid-template-rows: 0.2fr 1fr 0.2fr;
+    // justify-content: center;
+    // align-items: center;
 
     @media (max-width: 640px) {
       grid-template-rows: 1fr ;
@@ -25,7 +29,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    align-self: flex-end;
+	margin-bottom: 3rem;
+    // align-self: flex-end;
 
     @media (max-width: 640px) {
       display: none;
@@ -68,6 +73,11 @@
     display: flex;
     justify-content: center;
     align-self: flex-start;
+	position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
 
 	@media(max-width: 640px) {
 		margin: 3rem 0;
@@ -156,7 +166,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 95%;
 
 	// @media(max-width: 640px) {
 	// 	height: 50vh;
@@ -277,11 +287,17 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: flex-start;
+		justify-content: center;
 		min-height: 13rem;
 		width: 100%;
+		margin-bottom: 6rem;
+
+		@media(max-width: 920px) {
+			margin-bottom: 14rem;
+		}
 
 		.button {
+			margin: 0;
 			display: none;
 			cursor: pointer;
 		}
@@ -356,6 +372,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
 
   @media (max-width: 920px) {
     top: 12rem;
@@ -455,6 +473,7 @@ p.mail-response {
 
   @media (max-width: 920px) {
     min-height: 10rem;
+	margin-bottom: 14rem;
   }
 }
 
@@ -475,3 +494,37 @@ p.mail-response {
     display: flex;
     align-items: center;
 }
+
+.calendar {
+    margin-top: 8rem;
+
+	@media(max-width: 920px) {
+		width: 90%;
+	}
+
+	@media(max-width: 920px) {
+		margin-top: 14rem;
+	}
+
+	.step__title {
+		margin-bottom: 0 !important;
+
+		@media(max-width: 920px) {
+			margin-bottom: 3rem !important;
+		}
+	}
+
+	iframe {
+		height: 82vh;
+		@media(max-width: 920px) {
+			min-height: 110vh;
+		}
+	}
+}
+
+
+.calender-iframe {
+	width: 100%;
+	opacity: 0;
+}
+

@@ -69,6 +69,7 @@ export default class Contact extends Page {
   }
 
   titleAnim() {
+
     this.titleTl = gsap.timeline({
       onComplete: () => {
         gsap.set(this.elements.title, { display: "none" });
@@ -89,6 +90,14 @@ export default class Contact extends Page {
       ease: "power2.out",
       delay: 1.5,
     });
+
+	this.titleTl.to('.contact-hero__top', {
+		yPercent: -100,
+		duration: 1,
+		opacity: 0,
+		ease: "power2.out",
+
+	  },'<')
   }
 
   setupSteps() {
@@ -108,10 +117,18 @@ export default class Contact extends Page {
     gsap.set(this.elements.steps, { display: "flex" });
     step7.style.display = "flex";
 
+
+    // gsap.to(
+	// 	".calender-iframe",
+	// 	{ opacity:1,duration: 1.5, ease: "power2.out", delay: 1, }
+	//   );
+
+	
+
     gsap.fromTo(
       ".step__title h2",
-      { yPercent: 100 },
-      { yPercent: 0, duration: 1, ease: "power2.out" }
+      { yPercent: 100, delay: 1 },
+      { yPercent: 0, duration: 1, ease: "power2.out", }
     );
 
 
@@ -177,15 +194,29 @@ export default class Contact extends Page {
         lawFirmWebInput.value.trim() !== ""
       );
     };
+	
+	gsap.set(nextButton, {display: 'block'})
+	gsap.fromTo(nextButton,
+		{
+		opacity: 0,
+	},
+	{
+		opacity: 1,
+		delay: 1,
+	}
+
+)
+
+	// nextButton.style.display = "block"; 
 
     // Event listeners for inputs
-    lawFirmNameInput.addEventListener("input", () => {
-      nextButton.style.display = checkInputs() ? "block" : "none";
-    });
+    // lawFirmNameInput.addEventListener("input", () => {
+    //   nextButton.style.display = checkInputs() ? "block" : "none";
+    // });
 
-    lawFirmWebInput.addEventListener("input", () => {
-      nextButton.style.display = checkInputs() ? "block" : "none";
-    });
+    // lawFirmWebInput.addEventListener("input", () => {
+    //   nextButton.style.display = checkInputs() ? "block" : "none";
+    // });
 
     // Show step 8 and hide step 7
     nextButton.addEventListener("click", () => {
