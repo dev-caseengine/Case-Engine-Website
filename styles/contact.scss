@@ -1,3 +1,13 @@
+[data-template="contact"]  {
+	overflow-y: auto !important;
+	overflow-x: hidden !important;
+}
+
+// .contact-content {
+// 	overflow-y: auto !important;
+// 	overflow-x: hidden !important;
+// }
+
 .contact-hero {
   position: relative;
   width: 100%;
@@ -103,6 +113,7 @@
     top: -30rem;
     left: 0;
     width: 100%;
+	height: 100vh;
     z-index: -1;
     pointer-events: none;
     backface-visibility: hidden;
@@ -515,16 +526,26 @@ p.mail-response {
 	}
 
 	iframe {
-		height: 82vh;
-		@media(max-width: 920px) {
-			min-height: 110vh;
+		width: 100%;
+		min-height: 800px;
+		height: auto;
+
+		@media(max-width:1640px) {
+			min-height: 1000px;
+		}
+		@media(max-width:640px) {
+			min-height: 1110px;
 		}
 	}
+
+
 }
 
 
 .calender-iframe {
 	width: 100%;
+	height: 100%;
 	opacity: 0;
+
 }
 
