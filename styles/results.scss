@@ -641,6 +641,8 @@
   padding: 1rem 3rem 1rem 1.5rem;
   cursor: pointer;
   overflow: hidden;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(19px);
   // height: 4.2rem;
 
   @media (max-width: 920px) {

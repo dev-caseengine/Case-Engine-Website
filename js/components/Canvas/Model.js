@@ -414,6 +414,7 @@ export default class Model {
 
   setCityModel() {
 	const textureLoader = new THREE.TextureLoader();
+	textureLoader.crossOrigin = 'anonymous';
 const vertexShader = `
     varying vec2 vUv;
     varying vec3 vPosition;
@@ -512,8 +513,10 @@ const fragmentShader = `
 textureLoader.load(
     `${import.meta.env.VITE_ASSETS_PATH}environment-map-2.jpg`,
     (texture) => {
+		texture.generateMipmaps = false;
+		texture.minFilter = THREE.LinearFilter;
         const dpr = window.devicePixelRatio || 1;
-        
+
         // Create the extended matcap material
 		const extendedMatcapMaterial = new THREE.ShaderMaterial({
             vertexShader: vertexShader,
@@ -535,6 +538,10 @@ textureLoader.load(
                 time: { value: 0.0 },
             },
         });
+		
+		if (this.model) {
+			this.renderer.compile(this.model, this.camera);
+		  }
 
         // Check if the model and its first child exist
         if (this.model && this.model.children[0]) {
@@ -698,6 +705,7 @@ this.gridBtn.addEventListener("click", () => {
         gsap.to(this.model.rotation, { x: window.innerWidth < 920 ? 1.15 : 1.07, duration: 2.5, ease: "power2.out" });
         gsap.to(this.model.position, { z: window.innerWidth < 920 ? -8.5 : -8, duration: 1, ease: "expo.out" });
         gsap.to(this.model.position, { y: -4, duration: 1, ease: "expo.out" });
+		history.pushState("", document.title, window.location.pathname + window.location.search);
 		if (window.innerWidth >= 921) {
 			gsap.set(resultsSlider, { display: "block", delay: 1 });
 		  }
@@ -752,6 +760,7 @@ this.gridBtn.addEventListener("click", () => {
 	}
 
         console.log("Forward animation applied.");
+		history.pushState(null, null, '#grids');
 
     }
 

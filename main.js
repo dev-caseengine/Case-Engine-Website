@@ -27,6 +27,24 @@ class App {
     this.addLinkListeners();
     this.onResize();
     this.update();
+
+	this.handleHashFragment();
+  }
+
+
+  handleHashFragment() {
+    if (window.location.hash === '#grids' && this.template === 'resultsPage') {
+		console.log('hash fragment');
+      // Wait for everything to be loaded and then trigger the grid button
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const gridBtn = document.querySelector('.grid-btn');
+          if (gridBtn) {
+            gridBtn.click();
+          }
+        }, 6000); // Short delay to ensure animations have completed
+      });
+    }
   }
 
   createPreloader() {
@@ -169,6 +187,21 @@ class App {
     window.addEventListener("popstate", this.onPopState.bind(this));
     window.addEventListener("resize", this.onResize.bind(this));
     window.addEventListener("mousemove", this.onMouseMove.bind(this));
+
+	window.addEventListener("hashchange", () => {
+		if (this.template === 'resultsPage') {
+		  const gridBtn = document.querySelector('.grid-btn');
+		  const isGridView = document.querySelector('.grids.active') !== null;
+		  
+		  if (window.location.hash === '#grids' && !isGridView && gridBtn) {
+			gridBtn.click();
+		  } else if (window.location.hash === '' && isGridView && gridBtn) {
+			gridBtn.click();
+		  }
+		}
+	  });
+	
+
   }
 
   addLinkListeners() {
