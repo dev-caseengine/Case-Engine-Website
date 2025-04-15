@@ -1,0 +1,21 @@
+.calendar-hero {
+	width: 100%;
+	min-height: 100svh;
+	position: relative;
+
+	&__inner {
+		padding-top: 16rem;
+
+		h1 {
+			@extend %heading-123;
+			color: #fff;
+			margin: 0 auto;
+			text-align: center;
+
+			@media(max-width: 768px) {
+				padding-bottom: 6rem;
+			}
+		}
+	}
+}
+

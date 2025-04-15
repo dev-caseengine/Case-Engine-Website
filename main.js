@@ -9,8 +9,12 @@ import About from "./js/Pages/About";
 import Home from "./js/Pages/Home";
 import Contact from "./js/Pages/Contact";
 import Results from "./js/Pages/Results";
+import ContactMeta from "./js/Pages/ContactMeta";
+import ThankYou from "./js/Pages/ThankYou";
 import Resources from "./js/utils/Resources";
+
 import "./styles/main.scss";
+
 
 class App {
   constructor() {
@@ -85,6 +89,8 @@ class App {
       about: new About(),
       contact: new Contact(),
       resultsPage: new Results(),
+	  contactMeta: new ContactMeta(),
+	  thankYouPage: new ThankYou(),
     };
 
     this.page = this.pages[this.template];

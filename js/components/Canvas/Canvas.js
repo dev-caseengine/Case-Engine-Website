@@ -206,6 +206,7 @@ export default class Canvas {
       this.parallaxCamera.mousePos = { x: 0, y: 0 };
       document.querySelector("canvas").style.zIndex = "-1";
     }
+
   }
 
   onChangeEnd(template) {
@@ -246,6 +247,14 @@ export default class Canvas {
     if (template === "contact") {
       if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
     }
+
+	if (template === "contactMeta") {
+		if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
+	  }
+
+	  if (template === "thankYouPage") {
+		if (!this.plane) this.createPlane(); // Create the plane if it doesn't exist
+	  }
 
     // Add similar logic for the 'contact' page when it's added.
   }

@@ -20,7 +20,7 @@ export default class Footer {
       this.footer && this.footer.classList.remove("dark-footer");
     }
 
-    if (template === "resultsPage" || template === "contact") {
+    if (template === "resultsPage" || template === "contact" || template === "contactMeta" || template === "thankYouPage") {
       this.footer && (this.footer.style.display = "none");
     } else {
       this.footer && (this.footer.style.display = "block");
