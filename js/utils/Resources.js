@@ -58,20 +58,54 @@ export default class Resources extends EventEmitter {
           undefined,
         );
       } else if (source.type === "video") {
-        const video = document.createElement("video");
-        video.id = source.name;
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-          video.autoplay = true;
-          video.muted = true;
-          video.loop = true;
-          video.playsinline = true;
-        }
-
-        video.src = source.path;
-        video.addEventListener("loadeddata", () => {
-          this.sourceLoaded(source, video);
-        });
-      } else if (source.type === "image") {
+		const video = document.createElement("video");
+		video.id = source.name;
+		video.src = source.path;
+	  
+		// Attributes (required for iOS/Instagram)
+		video.autoplay = true;
+		video.muted = true;
+		video.loop = true;
+		video.playsInline = true;
+		video.setAttribute("autoplay", "");
+		video.setAttribute("muted", "");
+		video.setAttribute("loop", "");
+		video.setAttribute("playsinline", "");
+		video.setAttribute("webkit-playsinline", "");
+		video.setAttribute("preload", "auto");
+	  
+		// Hide video element but keep in DOM for compliance
+		video.style.display = "none";
+		document.body.appendChild(video);
+	  
+		// iOS autoplay fallback — wait for gesture if needed
+		const tryPlay = () => {
+		  const playPromise = video.play();
+		  if (playPromise !== undefined) {
+			playPromise
+			  .then(() => {
+				this.sourceLoaded(source, video);
+			  })
+			  .catch(() => {
+				const onUserGesture = () => {
+				  video.play().then(() => {
+					this.sourceLoaded(source, video);
+					window.removeEventListener("touchstart", onUserGesture);
+					window.removeEventListener("click", onUserGesture);
+				  });
+				};
+				window.addEventListener("touchstart", onUserGesture);
+				window.addEventListener("click", onUserGesture);
+			  });
+		  } else {
+			this.sourceLoaded(source, video);
+		  }
+		};
+	  
+		// Wait for metadata or data before trying to play
+		video.addEventListener("loadeddata", tryPlay);
+		video.load();
+	  } else if (source.type === "image") {
         const image = new Image();
         image.src = source.path;
         image.addEventListener("load", () => {
@@ -83,7 +117,7 @@ export default class Resources extends EventEmitter {
   sourceLoaded(source, file) {
     this.items[source.name] = file;
     this.loaded++;
-
+	
     this.trigger("progress", [this.loaded, this.toLoad]);
   }
 

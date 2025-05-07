@@ -433,80 +433,80 @@ const vertexShader = `
 `;
 
 const fragmentShader = `
-    uniform sampler2D matcap;
-    uniform vec2 mouse;
-    uniform vec3 lightColor;
-    uniform float lightRadius;
-    uniform vec2 resolution;
-    uniform float fogDensity;
-    uniform vec3 fogColor;
-    uniform bool isSmallScreen;
-    uniform float time;
-    
-    varying vec2 vUv;
-    varying vec3 vPosition;
-    varying vec3 vNormal;
-    varying float vViewZ;
-    varying float vYPosition;
-    
-    void main() {
-        vec2 screenPosition = gl_FragCoord.xy / resolution;
-        vec2 centeredMouse = mouse - 0.5;
-        vec2 centeredScreen = screenPosition - 0.5;
+uniform sampler2D matcap;
+uniform vec2 mouse;
+uniform vec3 lightColor;
+uniform float lightRadius;
+uniform vec2 resolution;
+uniform float fogDensity;
+uniform vec3 fogColor;
+uniform bool isSmallScreen;
+uniform float time;
 
-        float morphFactor = 0.05 * sin(time * 1.0);
-        vec2 morphedUv = vUv + vec2(morphFactor * cos(time + vPosition.y), morphFactor * sin(time + vPosition.x));
+varying vec2 vUv;
+varying vec3 vPosition;
+varying vec3 vNormal;
+varying float vViewZ;
+varying float vYPosition;
 
-        float distance = length(centeredScreen - centeredMouse);
+void main() {
+    vec2 screenPosition = gl_FragCoord.xy / resolution;
+    vec2 centeredMouse = mouse - 0.5;
+    vec2 centeredScreen = screenPosition - 0.5;
 
-        vec2 edgeFactor;
-        float lightIntensityMultiplier;
-        float matcapMultiplier;
-        
-        if (isSmallScreen) {
-            // Mobile-specific adjustments
-            edgeFactor = vec2(1.1 - abs(screenPosition.x - 0.5), 1.1 - abs(screenPosition.y - 0.3));
-            lightIntensityMultiplier = 0.5; // Reduced light intensity for mobile
-            matcapMultiplier = 35.0; // Reduced matcap brightness for mobile
-            distance *= 1.2; // Increase effective light radius on mobile
-        } else {
-            edgeFactor = 1.0 - abs(2.0 * screenPosition - 1.0);
-            lightIntensityMultiplier = 1.0;
-            matcapMultiplier = 30.0;
-        }
-        
-        float edgeFalloff = pow(edgeFactor.x * edgeFactor.y, 1.0);
+    float morphFactor = 0.05 * sin(time);
+    vec2 morphedUv = vUv + vec2(
+        morphFactor * cos(time + vPosition.y),
+        morphFactor * sin(time + vPosition.x)
+    );
 
-        float lightIntensity = 1.0 - smoothstep(0.0, lightRadius, distance);
-        lightIntensity = mix(lightIntensity, 1.0, isSmallScreen ? 0.9 : 0.65); // More ambient light on mobile
-        lightIntensity *= clamp(1.0 - vYPosition * 0.004, 0.0, 1.0);
-        lightIntensity *= edgeFalloff * lightIntensityMultiplier;
+    float distance = length(centeredScreen - centeredMouse);
+    float isSmall = float(isSmallScreen);
 
-        vec3 viewDir = normalize(vPosition - cameraPosition);
-        vec3 reflectDir = reflect(viewDir, normalize(vNormal));
-        vec2 matcapUV = (reflectDir.xy + vec2(0.1 + morphFactor, -0.1 - morphFactor)) * 0.5 + 0.5;
+    // Interpolated adjustments instead of if-else
+    vec2 edgeFactor = mix(
+        1.0 - abs(2.0 * screenPosition - 1.0),
+        vec2(1.1 - abs(screenPosition.x - 0.5), 1.1 - abs(screenPosition.y - 0.3)),
+        isSmall
+    );
 
-        vec4 matcapColor = texture2D(matcap, matcapUV);
+    float lightIntensityMultiplier = mix(1.0, 0.5, isSmall);
+    float matcapMultiplier = mix(30.0, 35.0, isSmall);
+    distance *= mix(1.0, 1.2, isSmall);
 
-        vec3 finalColor = mix(
-            matcapColor.rgb * matcapMultiplier, 
-            lightColor * lightIntensity * (isSmallScreen ? 5.0 : 10.0), 
-            0.5
-        );
+    // Replace pow() with multiplication for performance
+    float edgeFalloff = edgeFactor.x * edgeFactor.y;
+    edgeFalloff *= edgeFalloff;
 
-        // Increase fog on mobile for a softer look
-        float adjustedFogDensity = isSmallScreen ? fogDensity * 1.2 : fogDensity;
-        float fogFactor = clamp(exp(-vViewZ * adjustedFogDensity * (0.65 - lightIntensity)), 0.0, 1.0);
+    float lightIntensity = 1.0 - smoothstep(0.0, lightRadius, distance);
+    lightIntensity = mix(lightIntensity, 1.0, mix(0.65, 0.9, isSmall));
+    lightIntensity *= clamp(1.0 - vYPosition * 0.004, 0.0, 1.0);
+    lightIntensity *= edgeFalloff * lightIntensityMultiplier;
 
-        finalColor = mix(fogColor, finalColor, fogFactor);
-        
-        // Additional brightness adjustment for mobile
-        if (isSmallScreen) {
-            finalColor *= 0.7; // Reduce overall brightness
-        }
+    // Optimized matcap reflect
+    vec3 n = normalize(vNormal);
+    vec3 view = normalize(vPosition - cameraPosition);
+    vec3 r = reflect(view, n);
+    float m = 2.8284271247461903 * sqrt(r.z + 1.0);
+    vec2 matcapUV = r.xy / m + 0.5;
 
-        gl_FragColor = vec4(finalColor, 1.0);
-    }
+    vec4 matcapColor = texture2D(matcap, matcapUV);
+
+    vec3 finalColor = mix(
+        matcapColor.rgb * matcapMultiplier,
+        lightColor * lightIntensity * mix(10.0, 5.0, isSmall),
+        0.5
+    );
+
+    float adjustedFogDensity = fogDensity * mix(1.0, 1.2, isSmall);
+    float fogFactor = clamp(exp(-vViewZ * adjustedFogDensity * (0.65 - lightIntensity)), 0.0, 1.0);
+
+    finalColor = mix(fogColor, finalColor, fogFactor);
+    finalColor *= mix(1.0, 0.7, isSmall); // Darken for small screens
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+
 `;
 
 // Load texture and create shader material

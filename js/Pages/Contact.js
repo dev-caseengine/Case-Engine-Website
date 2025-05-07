@@ -1,3 +1,4 @@
+import { handleFormSubmit, setupSubmitButtonVisibility } from "../utils/contactHelpers";
 import Page from "../classes/Page";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -20,8 +21,9 @@ export default class Contact extends Page {
 
   create() {
     super.create();
-    this.form();
-    this.hideFormBtn();
+	handleFormSubmit();
+    setupSubmitButtonVisibility();
+
   }
 
   show() {
@@ -37,48 +39,41 @@ export default class Contact extends Page {
 
         const form = new FormData(this);
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://caseengine.com/wp-json/api/v1/sendMail", true);
-		document.querySelector(".button-send-mail").style.display = "none";
-		
+        xhr.open(
+          "POST",
+          "https://caseengine.com/wp-json/api/v1/sendMail",
+          true
+        );
+        document.querySelector(".button-send-mail").style.display = "none";
+
         xhr.onload = function () {
           if (xhr.status === 200) {
             var res = JSON.parse(xhr.responseText);
-			 if (res.status) {
-      
-      		window.location.href = "/thank-you-meta"; // update this if the slug is different
-    } else {
-      // Fallback error if form didn't process correctly
-      document.querySelector(".mail-response").innerHTML = res.message || "Something went wrong.";
-      document.querySelector(".mail-response").style.display = "block";
-    }
-            // document.querySelector(".button-send-mail").style.display = "none";
-            document.querySelector(".mail-response").innerHTML = res.message;
-            document.querySelector(".mail-response").style.display = "block";
+            if (res.status) {
+                const currentPath = window.location.pathname;
+
+				if (currentPath.includes("/contact-meta")) {
+					window.location.href = "/thank-you-meta";
+				  } else {
+					window.location.href = "/thank-you";
+				  }
+            } else {
+              // Fallback error if form didn't process correctly
+              document.querySelector(".mail-response").innerHTML =
+                res.message || "Something went wrong.";
+              document.querySelector(".mail-response").style.display = "block";
+            }
+
           }
         };
 
         xhr.send(form);
       });
 
-    // jQuery(".contact-hero__steps").on("submit", function (e) {
-    //   var form = jQuery(this).serialize();
 
-    //   e.preventDefault();
-    //   jQuery.ajax({
-    //     url: "/sendMail.php",
-    //     data: form,
-    //     type: "POST",
-    //     success: function (data) {
-    //       var res = JSON.parse(JSON.stringify(data));
-    //       jQuery(".button-send-mail").hide();
-    //       jQuery(".mail-response").html(res.message).show();
-    //     },
-    //   });
-    // });
   }
 
   titleAnim() {
-
     this.titleTl = gsap.timeline({
       onComplete: () => {
         gsap.set(this.elements.title, { display: "none" });
@@ -100,13 +95,16 @@ export default class Contact extends Page {
       delay: 1.5,
     });
 
-	this.titleTl.to('.contact-hero__top', {
-		yPercent: -100,
-		duration: 1,
-		opacity: 0,
-		ease: "power2.out",
-
-	  },'<')
+    this.titleTl.to(
+      ".contact-hero__top",
+      {
+        yPercent: -100,
+        duration: 1,
+        opacity: 0,
+        ease: "power2.out",
+      },
+      "<"
+    );
   }
 
   setupSteps() {
@@ -126,26 +124,22 @@ export default class Contact extends Page {
     gsap.set(this.elements.steps, { display: "flex" });
     step7.style.display = "flex";
 
-
     // gsap.to(
-	// 	".calender-iframe",
-	// 	{ opacity:1,duration: 1.5, ease: "power2.out", delay: 1, }
-	//   );
-
-	
+    // 	".calender-iframe",
+    // 	{ opacity:1,duration: 1.5, ease: "power2.out", delay: 1, }
+    //   );
 
     gsap.fromTo(
       ".step__title h2",
       { yPercent: 100, delay: 1 },
-      { yPercent: 0, duration: 1, ease: "power2.out", }
+      { yPercent: 0, duration: 1, ease: "power2.out" }
     );
 
-
     gsap.fromTo(
-		".step__form__input",
-		{ yPercent: 20, autoAlpha: 0 },
-		{ yPercent: 0, autoAlpha: 1, duration: 1, ease: "power2.out" }
-	  );
+      ".step__form__input",
+      { yPercent: 20, autoAlpha: 0 },
+      { yPercent: 0, autoAlpha: 1, duration: 1, ease: "power2.out" }
+    );
 
     // Function to animate step transition
     function animateStep(fromStep, toStep, fromInputs, toInputs, forward) {
@@ -203,20 +197,20 @@ export default class Contact extends Page {
         lawFirmWebInput.value.trim() !== ""
       );
     };
-	
-	gsap.set(nextButton, {display: 'block'})
-	gsap.fromTo(nextButton,
-		{
-		opacity: 0,
-	},
-	{
-		opacity: 1,
-		delay: 1,
-	}
 
-)
+    gsap.set(nextButton, { display: "block" });
+    gsap.fromTo(
+      nextButton,
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+        delay: 1,
+      }
+    );
 
-	// nextButton.style.display = "block"; 
+    // nextButton.style.display = "block";
 
     // Event listeners for inputs
     // lawFirmNameInput.addEventListener("input", () => {
@@ -503,6 +497,9 @@ export default class Contact extends Page {
   //       });
   //     }
   //   }
+
+
+ 
 
   hideFormBtn() {
     const firstNameInput = document.querySelector(
