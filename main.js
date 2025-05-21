@@ -12,8 +12,9 @@ import Results from "./js/Pages/Results";
 import ContactMeta from "./js/Pages/ContactMeta";
 import ThankYou from "./js/Pages/ThankYou";
 import Resources from "./js/utils/Resources";
-
+import GeneralTempalte from "./js/Pages/General";
 import "./styles/main.scss";
+
 
 
 class App {
@@ -91,6 +92,7 @@ class App {
       resultsPage: new Results(),
 	  contactMeta: new ContactMeta(),
 	  thankYouPage: new ThankYou(),
+	  general: new GeneralTempalte(),
     };
 
     this.page = this.pages[this.template];
