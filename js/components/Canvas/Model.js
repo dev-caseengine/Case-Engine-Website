@@ -360,6 +360,9 @@ export default class Model {
           const innerElement = modalToShow.querySelector(".sidebar__inner");
           innerElement.scrollTop = 0;
 
+          // Update URL hash with project name
+          this.updateProjectHash(circleMesh.userData.sphereId);
+
           // Slide in the new modal from the left, after the previous animation completes
 
           if (window.innerWidth < 920) {
@@ -662,8 +665,10 @@ this.gridBtn.addEventListener("click", () => {
     activeModals.forEach((modal) => {
         modal.classList.remove("active");
         modal.style.display = "none"; // Hide the modal
-		console.log("Modal closed.");
     });
+
+    // Clear project hash when closing modals
+    this.clearProjectHash();
 
 	if (window.innerWidth < 920) {
 		const anyModalOpen = Array.from(activeModals).some(
@@ -755,11 +760,8 @@ this.gridBtn.addEventListener("click", () => {
 	}
 
 	if (window.innerWidth < 921 && mobHeading) {
-		console.log('asdasd');
 		gsap.set(mobHeading, { display: "none" });
 	}
-
-        console.log("Forward animation applied.");
 		history.pushState(null, null, '#grids');
 
     }
@@ -941,44 +943,53 @@ this.gridBtn.addEventListener("click", () => {
 
           // Add the video texture to the "phoneScreen" mesh
           if (phoneScreenMesh) {
-            this.videoTexture = {};
             this.video = this.resources.items.notificationVideo;
 
-            this.video.muted = true;
-            this.video.loop = true;
-            this.video.controls = true;
-            this.video.setAttribute("playsinline", true);
-            this.video.autoplay = true;
-            this.video.play();
+            if (this.video) {
+              
+              // Create texture immediately and handle video loading
+              this.createNotificationVideoTexture(phoneScreenMesh);
+              
+              // Ensure video is playing
+              const ensureVideoPlays = () => {
+                const playPromise = this.video.play();
+                if (playPromise !== undefined) {
+                  playPromise
+                    .then(() => {
+                      // Video is playing successfully
+                    })
+                    .catch(() => {
+                      // Try to play on user interaction
+                      const playOnClick = () => {
+                        this.video.play().then(() => {
+                          document.removeEventListener('click', playOnClick);
+                        });
+                      };
+                      document.addEventListener('click', playOnClick);
+                    });
+                }
+              };
 
-            this.videoTexture = new THREE.VideoTexture(this.video);
-            this.videoTexture.flipY = false;
-
-            this.videoTexture.format = THREE.RGBFormat;
-
-            //change color brightness
-
-            this.videoTexture.minFilter = THREE.LinearFilter;
-            this.videoTexture.magFilter = THREE.LinearFilter;
-
-            this.videoTexture.generateMipmaps = false;
-
-            this.videoTexture.colorSpace = THREE.SRGBColorSpace;
-
-            this.videoTexture.needsUpdate = true;
-
-            phoneScreenMesh.material = new THREE.MeshBasicMaterial({
-              map: this.videoTexture,
-              transparent: true,
-              opacity: 1,
-              side: THREE.DoubleSide,
-            });
-
-            phoneScreenMesh.material.needsUpdate = true;
-
-            phoneScreenMesh.scale.set(0.45, 0.45, 0.46);
-
-            phoneScreenMesh.position.z = 0.073;
+              // Try to play immediately if ready, otherwise wait
+              if (this.video.readyState >= 2) {
+                ensureVideoPlays();
+              } else {
+                this.video.addEventListener('loadeddata', () => {
+                  ensureVideoPlays();
+                }, { once: true });
+                
+                // Fallback - try after a short delay
+                setTimeout(() => {
+                  if (this.video.readyState >= 2) {
+                    ensureVideoPlays();
+                  }
+                }, 1000);
+              }
+            } else {
+              // Fallback: create video element directly
+              // Fallback: create video element directly
+              this.createFallbackVideo(phoneScreenMesh);
+            }
           }
 
           // Clone the "phoneScreen" mesh three times and add other images to the clones
@@ -1138,6 +1149,85 @@ this.gridBtn.addEventListener("click", () => {
     });
 
     this.scene.add(this.model);
+  }
+
+  createNotificationVideoTexture(phoneScreenMesh) {
+    if (!this.video) {
+      return;
+    }
+
+    try {
+      this.videoTexture = new THREE.VideoTexture(this.video);
+      this.videoTexture.flipY = false;
+      this.videoTexture.minFilter = THREE.LinearFilter;
+      this.videoTexture.magFilter = THREE.LinearFilter;
+      this.videoTexture.generateMipmaps = false;
+      this.videoTexture.colorSpace = THREE.SRGBColorSpace;
+      this.videoTexture.needsUpdate = true;
+
+      // Create material with video texture
+      const videoMaterial = new THREE.MeshBasicMaterial({
+        map: this.videoTexture,
+        transparent: true,
+        opacity: 1,
+        side: THREE.DoubleSide,
+      });
+
+      phoneScreenMesh.material = videoMaterial;
+      phoneScreenMesh.material.needsUpdate = true;
+      phoneScreenMesh.scale.set(0.45, 0.45, 0.46);
+      phoneScreenMesh.position.z = 0.073;
+      
+      // Force texture update in animation loop
+      this.shouldUpdateVideoTexture = true;
+      
+    } catch (error) {
+      this.createFallbackVideo(phoneScreenMesh);
+    }
+  }
+
+  createFallbackVideo(phoneScreenMesh) {
+    // Create video element directly
+    this.fallbackVideo = document.createElement('video');
+    this.fallbackVideo.src = `${import.meta.env.VITE_ASSETS_PATH}videos/notification.mp4`;
+    this.fallbackVideo.muted = true;
+    this.fallbackVideo.loop = true;
+    this.fallbackVideo.playsInline = true;
+    this.fallbackVideo.autoplay = true;
+    this.fallbackVideo.setAttribute('playsinline', '');
+    this.fallbackVideo.setAttribute('webkit-playsinline', '');
+    this.fallbackVideo.crossOrigin = 'anonymous';
+    
+    this.fallbackVideo.addEventListener('loadeddata', () => {
+      this.videoTexture = new THREE.VideoTexture(this.fallbackVideo);
+      this.videoTexture.flipY = false;
+      this.videoTexture.minFilter = THREE.LinearFilter;
+      this.videoTexture.magFilter = THREE.LinearFilter;
+      this.videoTexture.generateMipmaps = false;
+      this.videoTexture.colorSpace = THREE.SRGBColorSpace;
+      this.videoTexture.needsUpdate = true;
+
+      phoneScreenMesh.material = new THREE.MeshBasicMaterial({
+        map: this.videoTexture,
+        transparent: true,
+        opacity: 1,
+        side: THREE.DoubleSide,
+      });
+
+      phoneScreenMesh.material.needsUpdate = true;
+      phoneScreenMesh.scale.set(0.45, 0.45, 0.46);
+      phoneScreenMesh.position.z = 0.073;
+      
+      this.video = this.fallbackVideo; // Use fallback as main video
+      this.shouldUpdateVideoTexture = true;
+    });
+
+    this.fallbackVideo.load();
+    
+    // Try to play
+    setTimeout(() => {
+      this.fallbackVideo.play().catch(() => {});
+    }, 100);
   }
 
   modelAnimation() {
@@ -1375,6 +1465,24 @@ this.gridBtn.addEventListener("click", () => {
     });
   }
 
+  // Update URL hash with project name
+  updateProjectHash(sphereId) {
+    // Get the Results page instance and call its method
+    const app = window.app;
+    if (app && app.page && app.page.id === 'resultsPage') {
+      app.page.updateProjectHash(sphereId);
+    }
+  }
+
+  // Clear project hash when modal is closed
+  clearProjectHash() {
+    // Get the Results page instance and call its method
+    const app = window.app;
+    if (app && app.page && app.page.id === 'resultsPage') {
+      app.page.clearProjectHash();
+    }
+  }
+
   // Model Mouse Move
   onMouseMove(e) {
     // const x = e.clientX;
@@ -1588,9 +1696,9 @@ this.gridBtn.addEventListener("click", () => {
 
   // Update
   update(time) {
-
-
     if (!this.model) return;
+    
+    // Update shader time uniform
     if (
       this.m &&
       this.m.userData &&
@@ -1598,24 +1706,16 @@ this.gridBtn.addEventListener("click", () => {
       this.m.userData.shader.uniforms
     ) {
       this.m.userData.shader.uniforms.uTime.value = time;
-	  
     }
 
-	
-	
+    // Update video texture if needed
+    if (this.shouldUpdateVideoTexture && this.videoTexture && this.video) {
+      this.videoTexture.needsUpdate = true;
+    }
 
-
-    // this.model.traverse(child => {
-    //     if (child.isPoints && child.geometry instanceof THREE.BufferGeometry) {
-    //         let positions = child.geometry.attributes.position.array;
-    //         for (let i = 0; i < positions.length; i += 3) {
-    //             positions[i] += (Math.random() - 0.5) * 0.001;     // Adjust X position
-    //             positions[i + 1] += (Math.random() - 0.5) * 0.001; // Adjust Y position
-    //             positions[i + 2] += (Math.random() - 0.5) * 0.001; // Adjust Z position
-    //         }
-    //         child.geometry.attributes.position.needsUpdate = true;
-
-    //     }
-    // });
+    // Update time uniform for city material
+    if (this.cityMaterial && this.cityMaterial.uniforms && this.cityMaterial.uniforms.time) {
+      this.cityMaterial.uniforms.time.value = time * 0.001;
+    }
   }
 }

@@ -226,4 +226,4 @@ class App {
   }
 }
 
-new App();
+window.app = new App();
