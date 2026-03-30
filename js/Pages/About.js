@@ -1,13 +1,8 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Page from "../classes/Page";
-import Swiper, {
-  Autoplay,
-  Pagination,
-  Mousewheel,
-  Navigation,
-  EffectFade,
-} from "swiper";
+import Swiper from "swiper";
+import { Autoplay, Pagination, Mousewheel, Navigation, EffectFade } from "swiper/modules";
 
 export default class About extends Page {
   constructor() {
